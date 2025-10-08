@@ -1,6 +1,8 @@
-import { Welcome } from "./Welcome.js";
+import Layout from "./Layout";
+
 
 export const Home = () => {
-  // _Feel free to delete this element and its import_
-  return <Welcome />;
+  return(
+    <Layout/>
+  );
 };
