@@ -1,17 +1,10 @@
 
-
+import Header from "../../components/Header";
 export default function Layout(){
     return (
         <>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
+        {/* Header vises øverst på siden */}
+        <Header />
 
         <section>
             <h1>Welcome to the Dashboard</h1>
