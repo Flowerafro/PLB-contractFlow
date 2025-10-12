@@ -38,7 +38,7 @@ export function Login({ onLogin }: LoginProps) {
             if (onLogin) {
                 onLogin();
             } else {
-                window.location.href = '/';
+                window.location.href = '/Home'; // suksessfull login sender til /Home
             }
         } catch (err) {
             console.error(err);
