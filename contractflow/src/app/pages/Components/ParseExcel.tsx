@@ -7,7 +7,7 @@ import { useState } from 'react';
 export default function ParseExcel() {
 
     const [fileName, setFileName] = useState(""); 
-    const [columns, setColumns] = useState<String[]>([]);
+    const [columns, setColumns] = useState<string[]>([]);
 
     const handleFile = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -136,13 +136,14 @@ export default function ParseExcel() {
                     <p>
                         Columns: {" "}
                         <select>
-                        {columns.map((c) => (
-                            <option value={c}>{c}</option>
+                        {columns.map((c, idx) => (
+                            <option key={idx} value={c}>{c}</option>
                         ))}
                         </select>
                     </p>
                 </>
             )}
+            <input type="file" accept=".xlsx,.xls" onChange={fileDataAsTable} />
         </article>
     )
 }

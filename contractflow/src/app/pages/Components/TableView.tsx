@@ -1,47 +1,87 @@
+"use client";
+
 import { 
     ColumnDef, 
     getCoreRowModel, 
     useReactTable,
     flexRender
 } from '@tanstack/react-table';
-import DATA from '@/app/resources/data';
-import { useState } from 'react';
 
-//  Kolonne-struktur defineres:
-const columns: ColumnDef<Row>[] = [
+// Objekt-typen for tabell-innholdet bestemmes:
+type Person = {
+    id: number;
+    name: string;
+    age?: number;
+};
+
+// Data etableres med en liste av objekter:
+const data: Person[] = [
+    { id: 1, name: 'Ashley J. Williams', age: 30 },
+    { id: 2, name: 'Ellen Ripley', age: 35 },
+    { id: 3, name: 'Sarah Connor', age: 28 }
+];
+
+const columns: ColumnDef<Person>[] = [
     {
-        accessorKey: 'task',
-        header: 'Task',
-        cell: () => <p>{props.getValue()}</p>
+        accessorKey: 'name',
+        header: 'Name',
+        cell: (info) => <span>{String(info.getValue())}</span>
     },
     {
-        accessorKey: 'status',
-        header: 'Status',
-        cell: () => <p>{props.getValue()}</p>
+        accessorKey: 'id',
+        header: 'ID',
+        cell: (info) => <span>{String(info.getValue())}</span>
     },
     {
-        accessorKey: 'dueDate',
-        header: 'Due',
-        cell: () => <p>{props.getValue()}</p>
-    },
-    {
-        accessorKey: 'notes',
-        header: 'Notes',
-        cell: () => <p>{props.getValue()}</p>
+        accessorKey: 'age',
+        header: 'Age',
+        cell: (info) => <span>{String(info.getValue())}</span>
     }
-]
+];
 
 export default function TableView() {
-    const [data, setData] = useState(DATA);
+    console.log('TableView component rendering...');
+    console.log('Data:', data);
+    console.log('Columns:', columns);
+    
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
-    console.log(table.getHeaderGroups());
+    
+    console.log('Table object:', table);
+    console.log('Header groups:', table.getHeaderGroups());
+    console.log('Row model:', table.getRowModel());
+    
     return(
-        <article className="table">
-    //        {table.getHeaderGroups().map(headerGroup =>)}
-        </article>
+        <div>
+            <h2>Table View</h2>
+            <p>Rows: {table.getRowModel().rows.length}</p>
+            <table style={{ border: '1px solid #ccc', borderCollapse: 'collapse' }}>
+                <thead>
+                    {table.getHeaderGroups().map(headerGroup => (
+                        <tr key={headerGroup.id}>
+                            {headerGroup.headers.map(header => (
+                                <th key={header.id} style={{ border: '1px solid #ccc', padding: '8px' }}>
+                                    {flexRender(header.column.columnDef.header, header.getContext())}
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
+                </thead>
+                <tbody>
+                    {table.getRowModel().rows.map(row => (
+                        <tr key={row.id}>
+                            {row.getVisibleCells().map(cell => (
+                                <td key={cell.id} style={{ border: '1px solid #ccc', padding: '8px' }}>
+                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     )
 }
