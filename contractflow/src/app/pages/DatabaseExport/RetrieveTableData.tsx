@@ -10,6 +10,7 @@ import React, {
     useEffect
 } from "react";
  import classicBooksData from '@/app/resources/classic_books.json';
+import { create } from "domain";
 
 type Book = {
     title: string;
@@ -73,6 +74,7 @@ export default function RetrieveTableData(){
     
     const columnHelper = createColumnHelper<Book>();
     
+/*    
     const defaultColumns = [
         columnHelper.display({
             id: 'actions',
@@ -84,6 +86,7 @@ export default function RetrieveTableData(){
             columns: [
                 columnHelper.accessor('title', {
                     cell: info => info.getValue(),
+                    header: () => <span>Title</span>,
                     footer: props => props.column.id,
                 }),
                 columnHelper.accessor('author', {
@@ -142,6 +145,27 @@ export default function RetrieveTableData(){
             ]
         }),
     ]
+*/
+    const createStandardColumns = (key: keyof Book, header: String) =>
+        columnHelper.accessor(key, {
+            id: key,
+            cell: infor => infor.getValue(),
+            header: () => <span>{header}</span>,
+            footer: props => props.column.id,
+        });
+
+    const bookColumns = [
+        createStandardColumns('title', 'Title'),
+        createStandardColumns('author', 'Author'),
+        createStandardColumns('year', 'Year'),
+        createStandardColumns('genre', 'Genre'),
+        createStandardColumns('country', 'Country'),
+        createStandardColumns('language', 'Language'),
+        createStandardColumns('pages', 'Pages'),
+        createStandardColumns('rating', 'Rating'),
+        createStandardColumns('isbn', 'ISBN'),
+        createStandardColumns('publisher', 'Publisher'),
+    ]
 
 // KI generert funksjon:    
     function RowActions({ row }: { row: any}) {
@@ -167,7 +191,7 @@ export default function RetrieveTableData(){
   
     const table = useReactTable({
         data,
-        columns: defaultColumns,
+        columns: bookColumns,
         getCoreRowModel: getCoreRowModel(),
     });
     
