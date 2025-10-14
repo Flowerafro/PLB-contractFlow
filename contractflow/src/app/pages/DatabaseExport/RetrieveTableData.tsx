@@ -167,7 +167,7 @@ export default function RetrieveTableData(){
         createStandardColumns('publisher', 'Publisher'),
     ]
 
-// KI generert funksjon:    
+/* KI generert funksjon for tilleggelse av knapper (siktet til i utkommentert defaultColumns):    
     function RowActions({ row }: { row: any}) {
         const book = row.original as Book;
 
@@ -188,6 +188,7 @@ export default function RetrieveTableData(){
             </div>
         );
     }
+*/
   
     const table = useReactTable({
         data,
