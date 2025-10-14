@@ -4,6 +4,8 @@ import { defineApp } from "rwsdk/worker";
 import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/Home";
+import './TempStyle.css';
+
 
 export type AppContext = {};
 

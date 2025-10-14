@@ -9,9 +9,8 @@ import React, {
     useState,
     useEffect
 } from "react";
- import classicBooksData from '@/app/resources/classic_books.json';
-import { create } from "domain";
 
+//  Typen anvendt i eksperimenter:
 type Book = {
     title: string;
     author: string;
@@ -30,18 +29,18 @@ export default function RetrieveTableData(){
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
+//  Henter data fra JSON-filen:    
     const loadBooks = async () => {
         try {
             setLoading(true);
             setError(null);
 
-            const { default: classicBooksData } = await import('@/app/resources/classic_books.json');
+//  Dynamisk import av JSON-filen:            
+            const { default: classicBooksData } = await import('@/app/Resources/classic_books.json');
             const booksArray = classicBooksData[0]?.data || [];
-
 /*
-    Eksempel filen er nestet. Uten dette fille følgende linje se slik ut:
+    Eksempel filen er nestet. Uten dette ville følgende linje se slik ut:
             const transformedBooks: Book[] = classicBooksData.map((book: any) => ({
-
 */
             const transformedBooks: Book[] = classicBooksData[0].data.map((book: any) => ({
                 title: book["Title"] || 'Unknown',
@@ -75,6 +74,7 @@ export default function RetrieveTableData(){
     const columnHelper = createColumnHelper<Book>();
     
 /*    
+    Eksempel-spesikk kolonne-etablering med detaljer:
     const defaultColumns = [
         columnHelper.display({
             id: 'actions',
@@ -146,7 +146,9 @@ export default function RetrieveTableData(){
         }),
     ]
 */
-    const createStandardColumns = (key: keyof Book, header: String) =>
+
+//  Gjenbrukbar kolonne-funksjon:
+    const createColumns = (key: keyof Book, header: String) =>
         columnHelper.accessor(key, {
             id: key,
             cell: infor => infor.getValue(),
@@ -154,17 +156,18 @@ export default function RetrieveTableData(){
             footer: props => props.column.id,
         });
 
+//  Tabellkolonner instansieres i en liste:        
     const bookColumns = [
-        createStandardColumns('title', 'Title'),
-        createStandardColumns('author', 'Author'),
-        createStandardColumns('year', 'Year'),
-        createStandardColumns('genre', 'Genre'),
-        createStandardColumns('country', 'Country'),
-        createStandardColumns('language', 'Language'),
-        createStandardColumns('pages', 'Pages'),
-        createStandardColumns('rating', 'Rating'),
-        createStandardColumns('isbn', 'ISBN'),
-        createStandardColumns('publisher', 'Publisher'),
+        createColumns('title', 'Title'),
+        createColumns('author', 'Author'),
+        createColumns('year', 'Year'),
+        createColumns('genre', 'Genre'),
+        createColumns('country', 'Country'),
+        createColumns('language', 'Language'),
+        createColumns('pages', 'Pages'),
+        createColumns('rating', 'Rating'),
+        createColumns('isbn', 'ISBN'),
+        createColumns('publisher', 'Publisher'),
     ]
 
 /* KI generert funksjon for tilleggelse av knapper (siktet til i utkommentert defaultColumns):    
@@ -203,12 +206,12 @@ export default function RetrieveTableData(){
     return(
         <>
             <h2>Data presented in table... hopefully:</h2>
-            <table>
+            <table style={{ borderCollapse: 'collapse' }}>
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
-                                <th key={header.id}>
+                                <th key={header.id} style={{ border: '1px solid #ccc', padding: '8px' }}>
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
@@ -222,9 +225,9 @@ export default function RetrieveTableData(){
                 </thead>
                 <tbody>
                     {table.getRowModel().rows.map(row => (
-                        <tr key={row.id}>
+                        <tr key={row.id} >
                             {row.getVisibleCells().map(cell => (
-                                <td key={cell.id}>
+                                <td key={cell.id} style={{ border: '1px solid #ccc', padding: '8px', margin: '0'}}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
 
