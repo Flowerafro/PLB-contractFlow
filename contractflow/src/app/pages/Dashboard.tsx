@@ -59,7 +59,7 @@ export default function Dashboard() {
       <section style={{ marginTop: 16 }}>
         {searchTrimmed ? (
           results.length === 0 ? (
-            <p>Ingen treff for "{searchTerm}"</p>
+            <div> <p>Ingen treff for "{searchTerm}"</p><a href="/Home"><button>Tilbake</button></a></div>
           ) : (
             <DetailView filteredItems={results.map(r => ({ id: r.id, name: r.container, client: r.client, contactperson: r.contactperson }))} />
           )
