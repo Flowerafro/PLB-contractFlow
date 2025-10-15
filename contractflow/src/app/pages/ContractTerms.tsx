@@ -1,12 +1,13 @@
 "use client";
 
+
 import React, { useState } from "react"; 
-import Layout from "./Layout";
+import Layout from "./Layout"; 
 
 /**
  * ContractTerms – side 2 i kontraktflyten.
  * Denne siden lar brukeren skrive inn kontraktens vilkår før den opprettes.
- * Når skjemaet sendes inn, går man videre til neste steg.
+ * Når skjemaet sendes inn, går man videre til neste steg (suksess-siden).
  */
 export default function ContractTerms() {
   // useState hook brukes til å holde styr på innholdet i tekstfeltet (terms).
@@ -23,7 +24,7 @@ export default function ContractTerms() {
     e.preventDefault(); // Stopper siden fra å oppdatere.
     console.log("Terms submitted:", terms); // Logger verdien i konsollen for testing.
 
-    // Midlertidig feedback og senere kan dette byttes ut med redirect til /success.
+    // Midlertidig feedback – senere kan dette byttes ut med redirect til /success.
     alert("Contract created successfully!");
   };
 
@@ -86,7 +87,7 @@ export default function ContractTerms() {
             <button
               type="submit"
               style={{
-                backgroundColor: "#1D391D", 
+                backgroundColor: "#1D391D",
                 color: "white",
                 padding: 12,
                 border: "none",

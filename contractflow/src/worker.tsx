@@ -23,6 +23,8 @@ render(Document, [
     route("/", () => <Login />), // default route is now login
     route("/Home", () => <Home />),
     route("/create", () => <CreateContract />),
+    route("/terms", () => <ContractTerms />), 
+
 
   ]),
 ]);
