@@ -1,5 +1,7 @@
 
 import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+
 export default function Layout(){
     return (
         <>
@@ -11,10 +13,9 @@ export default function Layout(){
             <p> Her kommer et komponent som vi dynamisk endrer</p>
         </section>
 
-        <footer>
-            <p>Footer content goes here</p>
-        </footer>
+        <Footer />
         </>
+        
         
     )
 }
