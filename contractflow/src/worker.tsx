@@ -5,6 +5,7 @@ import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/Home";
 import { Login } from "@/app/pages/Login";
+import Dashboard from "@/app/pages/Dashboard";
 import CreateContract from "@/app/pages/CreateContract";
 
 
@@ -20,6 +21,5 @@ render(Document, [
     route("/", () => <Login />), // default route is now login
     route("/Home", () => <Home />),
     route("/create", () => <CreateContract />),
-
   ]),
 ]);
