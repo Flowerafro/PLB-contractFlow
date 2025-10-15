@@ -7,12 +7,9 @@ import {
     flexRender
 } from '@tanstack/react-table';
 
-// Objekt-typen for tabell-innholdet bestemmes:
-type Person = {
-    id: number;
-    name: string;
-    age?: number;
-};
+import type { Person } from '@/app/types/types';
+
+
 
 // Data etableres med en liste av objekter:
 const data: Person[] = [
