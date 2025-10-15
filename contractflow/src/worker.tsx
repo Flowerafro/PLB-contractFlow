@@ -6,6 +6,8 @@ import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/Home";
 import { Login } from "@/app/pages/Login";
 import CreateContract from "@/app/pages/CreateContract";
+import ContractTerms from "@/app/pages/ContractTerms";
+
 
 
 export type AppContext = {};
@@ -20,6 +22,9 @@ render(Document, [
     route("/", () => <Login />), // default route is now login
     route("/Home", () => <Home />),
     route("/create", () => <CreateContract />),
+    route("/terms", () => <ContractTerms />),
+
+    
 
   ]),
 ]);

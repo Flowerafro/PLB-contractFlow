@@ -25,6 +25,8 @@ export default function CreateContract() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Submitted:", form);
+    window.location.href = "/terms";
+
   };
 
   return (
