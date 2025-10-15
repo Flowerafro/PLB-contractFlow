@@ -6,6 +6,7 @@ interface SearchItem {
   id: number;
   name: string;
   client: string;
+    contactperson?: string;
 }
 
 export default function DetailView({ filteredItems }: { filteredItems: SearchItem[] }) {
@@ -14,10 +15,10 @@ export default function DetailView({ filteredItems }: { filteredItems: SearchIte
       <h2>Søkeresultater:</h2>
       <ul>
         {filteredItems.map((item) => (
-            <div key={item.id} style={{ padding: "8px 0", borderBottom: "1px solid red" }}>
-              <h3 key={item.id} style={{ padding: "8px 0", borderBottom: "1px solid red" }}>
-            <strong>{item.name}</strong> — <span style={{ color: "#666" }}>{item.client}</span>
-          </h3>
+            <div key={item.id} style={{ padding: "8px 0", borderBottom: "1px solid red", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+              <h3 key={item.id} style={{ padding: "8px 0", borderBottom: "1px solid red" }}>{item.name}</h3>
+              <p><span style={{ color: "#666" }}>{item.client}</span></p>
+              <p><span style={{ color: "#666" }}>{item.contactperson}</span></p>
           <a href={`/Home`}><button>back</button></a>
             </div>
         ))}

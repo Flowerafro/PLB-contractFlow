@@ -18,7 +18,13 @@ const dummyShipments: Shipment[] = [
   { id: 3, container: "GHI789", client: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
   { id: 4, container: "JKL012", client: "Nordic Foods", status: "In transit", contactperson: "Anna Lee" },
   { id: 5, container: "MNO345", client: "PEace Products", status: "Delayed", contactperson: "Tom Brown" },
-  { id: 6, container: "PQR678", client: "Potato BBoys", status: "In transit", contactperson: "Lisa White" }
+  { id: 6, container: "PQR678", client: "Potato BBoys", status: "In transit", contactperson: "Lisa White" },
+  { id: 7, container: "STU901", client: "Veggie Delights", status: "In transit", contactperson: "Mark Green"},
+  { id: 8, container: "GHI729", client: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
+  { id: 9, container: "JKL112", client: "Nordic Foods", status: "Delivered", contactperson: "Anna Banana" },
+  { id: 10, container: "GHG711", client: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
+  { id: 11, container: "JKE034", client: "Swedish Kjottabulla", status: "Ready", contactperson: "Kong Karl" },
+
 ];
 
 export default function Dashboard() {
