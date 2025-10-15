@@ -30,11 +30,14 @@ export function Login({ onLogin }: LoginProps) {
         setIsLoading(true);
        
         try {
-            const isValid = await checkLogin(username, password);
+          const isValid = true; // midlertidig: alltid godkjent
+
+            /*const isValid = await checkLogin(username, password);
             if (!isValid) {
                 setError("Invalid username or password")
                 return;
             }
+                */
             if (onLogin) {
                 onLogin();
             } else {
