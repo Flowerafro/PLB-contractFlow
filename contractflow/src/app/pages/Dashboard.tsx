@@ -12,6 +12,7 @@ interface Shipment {
   status?: string;
 }
 
+// midlertidig dummy-data for testing av søkefunksjonalitet
 const dummyShipments: Shipment[] = [
   { id: 1, container: "ABC123", client: "Maverick Foods", status: "In transit", contactperson: "John Doe" },
   { id: 2, container: "DEF456", client: "Sterling Products", status: "Delivered", contactperson: "Jane Smith" },
@@ -24,7 +25,6 @@ const dummyShipments: Shipment[] = [
   { id: 9, container: "JKL112", client: "Nordic Foods", status: "Delivered", contactperson: "Anna Banana" },
   { id: 10, container: "GHG711", client: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
   { id: 11, container: "JKE034", client: "Swedish Kjottabulla", status: "Ready", contactperson: "Kong Karl" },
-
 ];
 
 export default function Dashboard() {
