@@ -21,7 +21,6 @@ export default function TableGeneration(){
             footer: props => props.column.id,
         });
 
-        
         //  Tabellkolonner instansieres i en liste:        
     const bookColumns = [
         createColumns('title', 'Title'),
@@ -67,7 +66,6 @@ export default function TableGeneration(){
                                 <td key={cell.id} style={{ border: '1px solid #ccc', padding: '8px', margin: '0'}}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
-
                             ))}
                         </tr>
                     ))}

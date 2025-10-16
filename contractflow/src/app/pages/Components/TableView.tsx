@@ -9,8 +9,6 @@ import {
 
 import type { Person } from '@/app/types/types';
 
-
-
 // Data etableres med en liste av objekter:
 const data: Person[] = [
     { id: 1, name: 'Ashley J. Williams', age: 30 },
@@ -37,20 +35,12 @@ const columns: ColumnDef<Person>[] = [
 ];
 
 export default function TableView() {
-    console.log('TableView component rendering...');
-    console.log('Data:', data);
-    console.log('Columns:', columns);
-    
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
-    
-    console.log('Table object:', table);
-    console.log('Header groups:', table.getHeaderGroups());
-    console.log('Row model:', table.getRowModel());
-    
+        
     return(
         <div>
             <h2>Table View</h2>

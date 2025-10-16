@@ -1,9 +1,5 @@
 "use client"
 
-import { 
-    useEffect,
-    useState 
-} from "react";
 import useData from "./useData";
 import TableGeneration from "@/app/pages/TablePresentation/TableGeneration";
 
