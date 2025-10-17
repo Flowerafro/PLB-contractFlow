@@ -8,6 +8,8 @@ import { Login } from "@/app/pages/Login";
 import Dashboard from "@/app/pages/Dashboard";
 import CreateContract from "@/app/pages/CreateContract";
 import ContractTerms from "@/app/pages/ContractTerms";
+import ContractSuccess from "@/app/pages/ContractSuccess";
+
 
 
 
@@ -24,6 +26,8 @@ render(Document, [
     route("/Home", () => <Home />),
     route("/create", () => <CreateContract />),
     route("/terms", () => <ContractTerms />), 
+    route("/success", () => <ContractSuccess />),
+
 
 
   ]),

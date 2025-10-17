@@ -23,9 +23,7 @@ export default function ContractTerms() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault(); // Stopper siden fra å oppdatere.
     console.log("Terms submitted:", terms); // Logger verdien i konsollen for testing.
-
-    // Midlertidig feedback – senere kan dette byttes ut med redirect til /success.
-    alert("Contract created successfully!");
+    window.location.href = "/success"; // Gå til side 3
   };
 
   // JSX strukturen som beskriver hvordan komponenten skal vises i nettleseren.
