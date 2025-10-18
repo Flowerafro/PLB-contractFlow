@@ -5,7 +5,6 @@ import * as XLSX from "xlsx";
 import { useState } from 'react';
 
 export default function ParseExcel() {
-
     const [fileName, setFileName] = useState(""); 
     const [columns, setColumns] = useState<string[]>([]);
 

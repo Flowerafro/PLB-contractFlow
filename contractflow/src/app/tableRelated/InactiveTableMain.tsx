@@ -1,6 +1,6 @@
 "use client"
 
-import useData from "./UseData";
+import useData from "./custom_hooks/useData";
 import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
 import { BookTableColumns } from "@/app/tableRelated/table_column_structure/BookTableColumns";
 import {ColumnUpset } from "@/app/interfaces/ColumnSetup";
