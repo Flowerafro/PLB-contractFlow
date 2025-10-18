@@ -1,11 +1,9 @@
 import { render, route } from "rwsdk/router";
 import { defineApp } from "rwsdk/worker";
-
 import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/Home";
-import './TempStyle.css';
-
+import { Login } from "@/app/pages/Login";
 
 export type AppContext = {};
 
@@ -15,5 +13,8 @@ export default defineApp([
     // setup ctx here
     ctx;
   },
-  render(Document, [route("/", Home)]),
+render(Document, [
+    route("/", () => <Login />), // default route is now login
+    route("/Home", () => <Home />)
+  ]),
 ]);
