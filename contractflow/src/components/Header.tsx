@@ -135,9 +135,9 @@ export default function Header() {
       ),
     },
     {
-      id: "conn",
-      label: "Connections",
-      href: "/connections",
+      id: "clients",
+      label: "Clients",
+      href: "/clients",
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none">
           <circle cx="12" cy="12" r="3" />

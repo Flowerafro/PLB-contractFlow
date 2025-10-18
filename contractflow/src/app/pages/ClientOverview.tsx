@@ -49,7 +49,10 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
     const clientResults = dummyClients.filter(client =>
       client.customerCode.toLowerCase().includes(trimmedClient) ||
       client.customer.toLowerCase().includes(trimmedClient) ||
-      client.contactperson.toLowerCase().includes(trimmedClient)
+      client.contactperson.toLowerCase().includes(trimmedClient) ||
+        client.email.toLowerCase().includes(trimmedClient) ||
+        client.phone.toLowerCase().includes(trimmedClient) ||
+        client.country.toLowerCase().includes(trimmedClient)
     );
     setFilteredClients(clientResults);
   };
@@ -97,7 +100,7 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
                   <a href="/clients"><button>Back</button></a>
                 </div>
               ) : (
-                <ClientDetailView filteredClients={filteredClients.map(c => ({ id: Number(c.id), name: c.customer, customer: c.customer, contactperson: c.contactperson }))} />
+                <ClientDetailView filteredClients={filteredClients.map(c => ({ id: Number(c.id), name: c.customer, customer: c.customer, contactperson: c.contactperson, title: c.title, email: c.email, phone: c.phone, country: c.country }))} />
               )
             ) : (
               <>
