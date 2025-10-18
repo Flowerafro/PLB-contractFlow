@@ -11,7 +11,7 @@ interface ClientSearchItem {
 
 export default function ClientDetailView({ filteredClients }: { filteredClients: ClientSearchItem[] }) {
   return (
-    <section style={{ background: "#fff", padding: 16, borderRadius: 8, width: "50%" }}>
+    <section style={{ background: "#fff", padding: 16, borderRadius: 8 }}>
       <h2>Søkeresultater:</h2>
       <ul>
         {filteredClients.map((item) => (
