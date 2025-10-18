@@ -3,7 +3,7 @@ import {
     flexRender,
     getCoreRowModel, 
     useReactTable } from "@tanstack/react-table";
-import type { ColumnUpset } from "@/app/pages/Interfaces/ColumnSetup";
+import type { ColumnUpset } from "@/app/interfaces/ColumnSetup";
 
 interface TableGenerationProps<T>{
     data: T[];

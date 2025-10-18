@@ -1,5 +1,5 @@
 import type { Book } from "@/app/types/types.ts";
-import { ColumnUpset } from "@/app/pages/Interfaces/ColumnSetup";
+import { ColumnUpset } from "@/app/interfaces/ColumnSetup";
 
 export const BookTableColumns: ColumnUpset<Book>[] = [
     { key: "title", header: "Title" },

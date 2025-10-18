@@ -1,11 +1,11 @@
 "use client";
 
 import Header from "../../components/Header";
-import TableView from "./Components/TableView";
-import ParseExcel from "./FileHandling/ParseExcel";
-import XLSXToJSONConverter from './FileHandling/XLSXToJSON';
-import TableGeneration from "./TablePresentation/TableGeneration";
-import { BookTableColumns } from "./TableContents/BookTableColumns";
+import TableView from "../tableRelated/InactiveTableView";
+import ParseExcel from "../file_handling/ParseExcel";
+import XLSXToJSONConverter from '../file_handling/XLSXToJSON';
+import TableGeneration from "../tableRelated/table_presentation/TableGeneration";
+import { BookTableColumns } from "../tableRelated/table_column_structure/BookTableColumns";
 
 export default function Layout(){
     return (

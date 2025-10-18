@@ -1,9 +1,9 @@
 "use client"
 
 import useData from "./UseData";
-import TableGeneration from "@/app/pages/TablePresentation/TableGeneration";
-import { BookTableColumns } from "@/app/pages/TableContents/BookTableColumns";
-import {ColumnUpset } from "@/app/pages/Interfaces/ColumnSetup";
+import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
+import { BookTableColumns } from "@/app/tableRelated/table_column_structure/BookTableColumns";
+import {ColumnUpset } from "@/app/interfaces/ColumnSetup";
 
 // Tidlig arbeid. Ikke i bruk etter refaktorering
 
