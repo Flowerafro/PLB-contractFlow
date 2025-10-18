@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 interface SearchBarProps {
   placeholder?: string;
@@ -9,6 +9,7 @@ interface SearchBarProps {
 
 export default function SearchBar({ placeholder = "Søk...", onSearch }: SearchBarProps) {
   const [value, setValue] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -18,6 +19,12 @@ export default function SearchBar({ placeholder = "Søk...", onSearch }: SearchB
     e.preventDefault();
     onSearch?.(value.trim());
   };
+
+  const handleClear = () => {
+    setValue("");
+    onSearch?.("");
+    inputRef.current?.focus();
+  }
 
   return (
     <form onSubmit={handleSubmit} style={{ padding: 16 }}>
@@ -32,6 +39,9 @@ export default function SearchBar({ placeholder = "Søk...", onSearch }: SearchB
         />
         <button type="submit" style={{ padding: "8px 12px", borderRadius: 6, backgroundColor: "#767676", color: "#fff", border: "none" }}>
           Søk
+        </button>
+        <button type="button" onClick={handleClear} style={{ padding: "8px 12px", borderRadius: 6, backgroundColor: "#ccc", color: "#1E1E1E", border: "none" }}>
+          Tøm
         </button>
       </div>
     </form>

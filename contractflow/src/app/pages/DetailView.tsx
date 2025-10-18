@@ -11,7 +11,7 @@ interface SearchItem {
 
 export default function DetailView({ filteredItems }: { filteredItems: SearchItem[] }) {
   return (
-    <section style={{ background: "#fff", padding: 16, borderRadius: 8 }}>
+    <section style={{ background: "#fff", padding: 16, borderRadius: 8, width: "50%" }}>
       <h2>Søkeresultater:</h2>
       <ul>
         {filteredItems.map((item) => (
