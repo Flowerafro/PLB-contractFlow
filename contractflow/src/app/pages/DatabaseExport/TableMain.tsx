@@ -3,7 +3,7 @@
 import useData from "./UseData";
 import TableGeneration from "@/app/pages/TablePresentation/TableGeneration";
 import { BookTableColumns } from "@/app/pages/TableContents/BookTableColumns";
-import {ColumnUpset } from "@/app/pages/Interfaces/ColumnUpset";
+import {ColumnUpset } from "@/app/pages/Interfaces/ColumnSetup";
 
 // Tidlig arbeid. Ikke i bruk etter refaktorering
 

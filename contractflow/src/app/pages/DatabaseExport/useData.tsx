@@ -4,9 +4,10 @@ import {
 } from "react";
 import type { Book } from "@/app/types/types.ts";
 
-//  Her anvendes data fetching 
+//  Her bearbeides data for tabell-innleggelse. Denne filen er en av de siste hvor
+//  det bør gjøre arbeid for å få en løs-kodet applikasjon.
 
-export default function UseData(){
+export default function useData(){
     const [data, setData] = useState<Book[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
