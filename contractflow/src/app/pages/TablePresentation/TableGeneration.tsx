@@ -3,8 +3,6 @@ import {
     flexRender,
     getCoreRowModel, 
     useReactTable } from "@tanstack/react-table";
-import type { Book } from "@/app/types/types.ts";
-import useData from "@/app/pages/DatabaseExport/useData";
 import type { ColumnUpset } from "@/app/pages/Interfaces/ColumnUpset";
 
 interface TableGenerationProps<T>{
@@ -67,6 +65,8 @@ export default function TableGeneration<T>({ data, columnConfig }: TableGenerati
 }
 
 /*
+    Tidlig arbeid som inkluderer mer hardkodet løsning:
+
 import { 
     createColumnHelper,
     flexRender,

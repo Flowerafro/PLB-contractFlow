@@ -6,8 +6,9 @@ import {
     useReactTable,
     flexRender
 } from '@tanstack/react-table';
-
 import type { Person } from '@/app/types/types';
+
+//  TabellEksempel - Enkel tabell-visning for Person-data
 
 // Data etableres med en liste av objekter:
 const data: Person[] = [

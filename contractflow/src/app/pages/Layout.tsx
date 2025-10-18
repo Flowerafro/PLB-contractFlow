@@ -1,21 +1,25 @@
+"use client";
+
 import TableView from "./Components/TableView";
-import TableMain from './DatabaseExport/TableMain';
 import ParseExcel from "./FileHandling/ParseExcel";
 import XLSXToJSONConverter from './FileHandling/XLSXToJSON';
-import { BookTableColumns } from "./PotTableContents/BookTable";
-import useData from "./DatabaseExport/useData";
+import TableGeneration from "./TablePresentation/TableGeneration";
+import UseData from "./DatabaseExport/useData";
+import { BookTableColumns } from "./TableContents/BookTableColumns";
+
 
 export default function Layout(){
-    function FullBookTable(){
-        const { data, loading, error } = useData();
-    }
+    const { data, loading, error } = UseData(); 
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <>
             <ParseExcel />
             <TableView />
             <XLSXToJSONConverter />
-            <TableMain data={data} columnConfig={BookTableColumns} />
+            <TableGeneration data={ data } columnConfig={BookTableColumns}  />
         </>
     )
 }

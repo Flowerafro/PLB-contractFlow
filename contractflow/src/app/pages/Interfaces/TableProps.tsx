@@ -1,12 +1,6 @@
-import { 
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel, 
-    useReactTable } from "@tanstack/react-table";
-import type { Book } from "@/app/types/types.ts";
-import useData from "@/app/pages/DatabaseExport/useData";
+import { createColumnHelper } from "@tanstack/react-table";
 
-
+// Interface for props brukt i genererng av tabell-struktur
 
 interface TableGenerationProps<T>{
     data: T[];
@@ -19,5 +13,4 @@ interface TableGenerationProps<T>{
 
 export default function TableGeneration<T>({ data, columnConfig }: TableGenerationProps<T>) {
     const columnHelper = createColumnHelper<T>();
-
 }

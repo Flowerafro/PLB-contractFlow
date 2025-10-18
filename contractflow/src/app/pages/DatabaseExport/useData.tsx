@@ -4,7 +4,9 @@ import {
 } from "react";
 import type { Book } from "@/app/types/types.ts";
 
-export default function useData(){
+//  Her anvendes data fetching 
+
+export default function UseData(){
     const [data, setData] = useState<Book[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);

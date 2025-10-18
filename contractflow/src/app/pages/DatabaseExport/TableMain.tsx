@@ -1,8 +1,16 @@
 "use client"
 
-import useData from "./useData";
+import useData from "./UseData";
 import TableGeneration from "@/app/pages/TablePresentation/TableGeneration";
+import { BookTableColumns } from "@/app/pages/TableContents/BookTableColumns";
+import {ColumnUpset } from "@/app/pages/Interfaces/ColumnUpset";
 
+// Tidlig arbeid. Ikke i bruk etter refaktorering
+
+interface TableMainProps<T> {
+    data: T[];
+    columnConfig: ColumnUpset<T>[];
+}
 
 export default function TableMain(){
 
@@ -38,7 +46,7 @@ export default function TableMain(){
     return(
         <>
             <h2>Data presented in table... hopefully:</h2>
-            <TableGeneration />
+            <TableGeneration data={data} columnConfig={BookTableColumns}/>;
         </>
     )
 }

@@ -1,4 +1,4 @@
-import type { Book, Person } from "@/app/types/types.ts";
+import type { Book } from "@/app/types/types.ts";
 import { ColumnUpset } from "@/app/pages/Interfaces/ColumnUpset";
 
 export const BookTableColumns: ColumnUpset<Book>[] = [
@@ -12,10 +12,4 @@ export const BookTableColumns: ColumnUpset<Book>[] = [
     { key: "rating", header: "Rating" },
     { key: "isbn", header: "ISBN" },
     { key: "publisher", header: "Publisher" },
-];
-
-export const PersonTableColumns: ColumnUpset<Person>[] = [
-    { key: "id", header: "ID" },
-    { key: "name", header: "Name" },
-    { key: "age", header: "Age" },
 ];
