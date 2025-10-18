@@ -105,7 +105,7 @@ export default function Header() {
     {
       id: "add",
       label: "Add New Contract",
-      href: "/contracts/new",
+      href: "#",
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none">
           <path d="M12 5v14M5 12h14" />
@@ -228,7 +228,13 @@ export default function Header() {
                 <li key={item.id}>
                   <a
                     href={item.href}
-                    onClick={() => setOpen(false)} // lukker menyen etter klikk
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setOpen(false);
+                      if (item.id === "add") {
+                        window.location.href = "/create"; // sender til CreateContract-siden
+                      }
+                    }}
                     style={{
                       display: "flex",
                       alignItems: "center",

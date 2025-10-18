@@ -1,26 +1,26 @@
 "use client";
 
 import Header from "../../components/Header";
-import TableView from "../tableRelated/InactiveTableView";
-import ParseExcel from "../file_handling/ParseExcel";
-import XLSXToJSONConverter from '../file_handling/XLSXToJSON';
-import TableGeneration from "../tableRelated/table_presentation/TableGeneration";
-import { BookTableColumns } from "../tableRelated/table_column_structure/BookTableColumns";
+import Footer from "../../components/Footer";
+import { useState, useEffect } from "react";
+// Search and detail view moved into Dashboard page
 
-export default function Layout(){
-    return (
-        <>
-        {/* Header vises øverst på siden */}
-        <Header />
+interface SearchItem {
+  id: number;
+  name: string;
+  client: string;
+}
 
-        <section>
-            <h1>Welcome to the Dashboard</h1>
-            <p> Her kommer et komponent som vi dynamisk endrer</p>
-        </section>
+export default function Layout({ children }: { children?: React.ReactNode }) {
+  // Layout no longer contains search state; move search to Dashboard
 
-        <footer>
-            <p>Footer content goes here</p>
-        </footer>
-        </>
-    )
+  return (
+    <div style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "#E5E5E5" }}>
+      <Header />
+      <main style={{ flex: 1, padding: 20 }}>
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
 }
