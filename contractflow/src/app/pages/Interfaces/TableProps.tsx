@@ -6,14 +6,18 @@ import {
 import type { Book } from "@/app/types/types.ts";
 import useData from "@/app/pages/DatabaseExport/useData";
 
-const columnHelper = createColumnHelper<Book>();
 
 
-export interface TableProps<T>{
+interface TableGenerationProps<T>{
     data: T[];
     columnConfig: Array<{
-        key: keyof TailEvent;
+        key: keyof T;
         header: string;
         cellRenderer?: (value: T[keyof T]) => React.ReactNode;
     }>
+}
+
+export default function TableGeneration<T>({ data, columnConfig }: TableGenerationProps<T>) {
+    const columnHelper = createColumnHelper<T>();
+
 }

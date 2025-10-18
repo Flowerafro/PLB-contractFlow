@@ -1,16 +1,21 @@
-import ParseExcel from "./Components/ParseExcel";
 import TableView from "./Components/TableView";
-import XLSXToJSONConverter from './FileHandling/XLSXToJSON';
 import TableMain from './DatabaseExport/TableMain';
+import ParseExcel from "./FileHandling/ParseExcel";
+import XLSXToJSONConverter from './FileHandling/XLSXToJSON';
+import { BookTableColumns } from "./PotTableContents/BookTable";
+import useData from "./DatabaseExport/useData";
 
 export default function Layout(){
+    function FullBookTable(){
+        const { data, loading, error } = useData();
+    }
 
     return (
         <>
             <ParseExcel />
             <TableView />
             <XLSXToJSONConverter />
-            <TableMain />
+            <TableMain data={data} columnConfig={BookTableColumns} />
         </>
     )
 }
