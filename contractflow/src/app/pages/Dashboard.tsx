@@ -8,23 +8,23 @@ interface Shipment {
   id: number;
   contactperson?: string;
   container: string;
-  client: string;
+  customer: string;
   status?: string;
 }
 
 // midlertidig dummy-data for testing av søkefunksjonalitet
 const dummyShipments: Shipment[] = [
-  { id: 1, container: "ABC123", client: "Maverick Foods", status: "In transit", contactperson: "John Doe" },
-  { id: 2, container: "DEF456", client: "Sterling Products", status: "Delivered", contactperson: "Jane Smith" },
-  { id: 3, container: "GHI789", client: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
-  { id: 4, container: "JKL012", client: "Nordic Foods", status: "In transit", contactperson: "Anna Lee" },
-  { id: 5, container: "MNO345", client: "PEace Products", status: "Delayed", contactperson: "Tom Brown" },
-  { id: 6, container: "PQR678", client: "Potato BBoys", status: "In transit", contactperson: "Lisa White" },
-  { id: 7, container: "STU901", client: "Veggie Delights", status: "In transit", contactperson: "Mark Green"},
-  { id: 8, container: "GHI729", client: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
-  { id: 9, container: "JKL112", client: "Nordic Foods", status: "Delivered", contactperson: "Anna Banana" },
-  { id: 10, container: "GHG711", client: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
-  { id: 11, container: "JKE034", client: "Swedish Kjottabulla", status: "Ready", contactperson: "Kong Karl" },
+  { id: 1, container: "ABC123", customer: "Maverick Foods", status: "In transit", contactperson: "John Doe" },
+  { id: 2, container: "DEF456", customer: "Sterling Products", status: "Delivered", contactperson: "Jane Smith" },
+  { id: 3, container: "GHI789", customer: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
+  { id: 4, container: "JKL012", customer: "Nordic Foods", status: "In transit", contactperson: "Anna Lee" },
+  { id: 5, container: "MNO345", customer: "PEace Products", status: "Delayed", contactperson: "Tom Brown" },
+  { id: 6, container: "PQR678", customer: "Potato BBoys", status: "In transit", contactperson: "Lisa White" },
+  { id: 7, container: "STU901", customer: "Veggie Delights", status: "In transit", contactperson: "Mark Green"},
+  { id: 8, container: "GHI729", customer: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
+  { id: 9, container: "JKL112", customer: "Nordic Foods", status: "Delivered", contactperson: "Anna Banana" },
+  { id: 10, container: "GHG711", customer: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
+  { id: 11, container: "JKE034", customer: "Swedish Kjottabulla", status: "Ready", contactperson: "Kong Karl" },
 ];
 
 export default function Dashboard() {
@@ -46,7 +46,7 @@ export default function Dashboard() {
 
     // midlertidig: filtrerer dummy-data frem til vi får backend
     const found = dummyShipments.filter(shipment =>
-      shipment.container.toLowerCase().includes(trimmed) || shipment.client.toLowerCase().includes(trimmed)
+      shipment.container.toLowerCase().includes(trimmed) || shipment.customer.toLowerCase().includes(trimmed)
     );
     setResults(found);
   };
@@ -61,7 +61,7 @@ export default function Dashboard() {
           results.length === 0 ? (
             <div> <p>Ingen treff for "{searchTerm}"</p><a href="/Home"><button>Tilbake</button></a></div>
           ) : (
-            <DetailView filteredItems={results.map(r => ({ id: r.id, name: r.container, client: r.client, contactperson: r.contactperson }))} />
+            <DetailView filteredItems={results.map(r => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
           )
         ) : (
             
@@ -82,7 +82,7 @@ export default function Dashboard() {
                   <tr key={shipment.id}>
                     <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.id}</td>
                     <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.container}</td>
-                    <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.client}</td>
+                    <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.customer}</td>
                     <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.status}</td>
                     <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.contactperson}</td>
                   </tr>

@@ -9,6 +9,7 @@ import Dashboard from "@/app/pages/Dashboard";
 import CreateContract from "@/app/pages/CreateContract";
 import ContractTerms from "@/app/pages/ContractTerms";
 import ContractSuccess from "@/app/pages/ContractSuccess";
+import ClientOverview from "./app/pages/ClientOverview";
 
 
 
@@ -27,8 +28,7 @@ render(Document, [
     route("/create", () => <CreateContract />),
     route("/terms", () => <ContractTerms />), 
     route("/success", () => <ContractSuccess />),
-
-
+    route("/clients", () => <ClientOverview />),
 
   ]),
 ]);
