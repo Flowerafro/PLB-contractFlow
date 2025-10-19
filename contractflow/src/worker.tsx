@@ -23,7 +23,7 @@ export default defineApp([
     ctx;
   },
 render(Document, [
-    route("/", () => <Login />), // default route is now login
+    route("/", () => <Login />), // default rute er login for å simulere beskyttet side
     route("/Home", () => <Home />),
     route("/create", () => <CreateContract />),
     route("/terms", () => <ContractTerms />), 
