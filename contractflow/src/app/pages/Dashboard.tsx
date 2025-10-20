@@ -53,7 +53,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-green-500 p-6 bg-gray-100 rounded-lg">Hovedlisten</h1>
+      <h1 className="text-3xl font-bold p-6">Hovedlisten</h1>
       <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />
 
       <section style={{ marginTop: 16 }}>

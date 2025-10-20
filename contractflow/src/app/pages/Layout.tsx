@@ -1,24 +1,32 @@
 "use client";
 
-import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useState, useEffect } from "react";
-// Search and detail view moved into Dashboard page
+import HeaderComponent from "@/components/HeaderComponent";
+import CreateContract from "./CreateContract";
+import ClientOverview from "./ClientOverview";
+import Dashboard from "./Dashboard";
 
-interface SearchItem {
-  id: number;
-  name: string;
-  client: string;
-}
 
 export default function Layout({ children }: { children?: React.ReactNode }) {
-  // Layout no longer contains search state; move search to Dashboard
+  
+  const [pageView, setPageView] = useState<string>("/Home");
+
+  const handlePageView = () => {
+    switch (pageView) {
+      case "/create":
+        return <CreateContract />;
+      case "/clients":
+        return <ClientOverview  />;
+        default: return children ?? <Dashboard  />;
+    }
+  } 
 
   return (
     <div style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "#E5E5E5" }}>
-      <Header />
+      <HeaderComponent onNavigate={(path: string) => setPageView(path)} />
       <main style={{ flex: 1, padding: 20 }}>
-        {children}
+        {handlePageView()}
       </main>
       <Footer />
     </div>
