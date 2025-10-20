@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import ClientDetailView from "./ClientDetailView";
+import Layout from "./Layout";
 
 interface ClientOverviewProps {
   onClientClick?: (id: string) => void;
@@ -66,6 +67,7 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
   };
 
   return (
+    <Layout>
     <section className="space-y-6">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <h2 style={{ margin: 0, color: "#000" }}>Clients</h2>
@@ -146,5 +148,6 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
         )}
       </section>
     </section>
+    </Layout>
   );
 }

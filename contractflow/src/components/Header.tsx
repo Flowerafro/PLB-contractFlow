@@ -234,6 +234,9 @@ export default function Header() {
                       if (item.id === "add") {
                         window.location.href = "/create"; // sender til CreateContract-siden
                       }
+                      if (item.id === "clients") {
+                        window.location.href = "/clients"; // sender til ClientOverview-siden
+                      }
                     }}
                     style={{
                       display: "flex",
