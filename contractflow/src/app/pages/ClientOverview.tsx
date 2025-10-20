@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import ClientDetailView from "./ClientDetailView";
+import Layout from "./Layout";
 
 interface ClientOverviewProps {
   onClientClick?: (id: string) => void;
@@ -33,10 +34,10 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
     { id: "5", customerCode: "CL-005", customer: "Alpine Wood Co", contactperson: "Jean Dupont", title: "Product Designer", email: "jean@alpinewood.fr", phone: "+33 345678901", country: "France" },
     { id: "6", customerCode: "CL-006", customer: "Nordic Timber Group", contactperson: "Olaf Jansen", title: "Quality Assurance", email: "olaf@nordictimber.fi", phone: "+358 456789012", country: "Finland" },
     { id: "7", customerCode: "CL-007", customer: "Baltic Wood Exports", contactperson: "Anna Kowalski", title: "Sales Representative", email: "anna@balticwood.pl", phone: "+48 234567890", country: "Poland" },
-    { id: "8", customerCode: "CL-008", customer: "Nordic Trading House", contactperson: "Lars Hansen", title: "HR Specialist", email: "lars@nordictrading.no", phone: "+47 87654321", country: "Norway" },
+    { id: "8", customerCode: "CL-008", customer: "Nordic Trading House", contactperson: "Lars Bertilsen", title: "HR Specialist", email: "lars@nordictrading.no", phone: "+47 87654321", country: "Norway" },
   ];
 
-  // search
+// søkefunksjonalitet i klientoversikten
   const handleSearch = (query: string) => {
     setSearchClient(query);
     const trimmedClient = query.trim().toLowerCase();
@@ -49,20 +50,24 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
     const clientResults = dummyClients.filter(client =>
       client.customerCode.toLowerCase().includes(trimmedClient) ||
       client.customer.toLowerCase().includes(trimmedClient) ||
-      client.contactperson.toLowerCase().includes(trimmedClient)
+      client.contactperson.toLowerCase().includes(trimmedClient) ||
+        client.email.toLowerCase().includes(trimmedClient) ||
+        client.phone.toLowerCase().includes(trimmedClient) ||
+        client.country.toLowerCase().includes(trimmedClient)
     );
     setFilteredClients(clientResults);
   };
 
   const clientDisplay = searchClient ? (filteredClients.length > 0 ? filteredClients : []) : dummyClients;
 
-  //
+  // funksjon som tillater klikk på klient
   const handleSelectClient = (client: Client) => {
     setSelectedClient(client);
     onClientClick?.(client.id);
   };
 
   return (
+    <Layout>
     <section className="space-y-6">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <h2 style={{ margin: 0, color: "#000" }}>Clients</h2>
@@ -97,7 +102,7 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
                   <a href="/clients"><button>Back</button></a>
                 </div>
               ) : (
-                <ClientDetailView filteredClients={filteredClients.map(c => ({ id: Number(c.id), name: c.customer, customer: c.customer, contactperson: c.contactperson }))} />
+                <ClientDetailView filteredClients={filteredClients.map(c => ({ id: Number(c.id), name: c.customer, customer: c.customer, contactperson: c.contactperson, title: c.title, email: c.email, phone: c.phone, country: c.country }))} />
               )
             ) : (
               <>
@@ -143,5 +148,6 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
         )}
       </section>
     </section>
+    </Layout>
   );
 }
