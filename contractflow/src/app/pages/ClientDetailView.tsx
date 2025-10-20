@@ -1,8 +1,5 @@
 "use client";
 
-import React from "react";
-import { index } from "rwsdk/router";
-
 interface ClientSearchItem {
   id: number;
   name: string;
@@ -34,7 +31,7 @@ export default function ClientDetailView({ filteredClients }: { filteredClients:
       <div>
          <section style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10}}>
         {filteredClients.map((client) => (
-                <article  style={{ gridColumn:"1 / 2", padding: "8px 0", border: "1px solid grey", display: "flex", flexDirection: "column", alignItems: "left", justifyContent: "space-between", gap: 10 }}>
+                <article key={client.id}  style={{ gridColumn:"1 / 2", padding: "8px 0", border: "1px solid grey", display: "flex", flexDirection: "column", alignItems: "left", justifyContent: "space-between", gap: 10 }}>
                     <h3 style={{ padding: "8px 0", color: "#000" }}>{client.customer}</h3>
                     <p style={{color: "#000"}}>{client.country}</p>
                     <ul>
