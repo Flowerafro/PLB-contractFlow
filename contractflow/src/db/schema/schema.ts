@@ -71,3 +71,37 @@ export const invoices = sqliteTable("invoices", {
   invoicedAmountC: integer("invoiced_amount_c").notNull().default(0),
   createdAt: text("created_at").notNull().default(sql`datetime('now')`)
 });
+
+export const auditLog = sqliteTable("audit_log", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  tableName: text("table_name").notNull(),
+  recordId: integer("record_id").notNull(),
+  action: text("action").notNull(),
+  userId: integer("user_id"),
+  changes: text("changes"),
+  createdAt: text("created_at").notNull().default(sql`datetime('now')`)
+});
+
+// Add indexes for frequently queried fields
+export const contractsClientIdIdx = sql`CREATE INDEX IF NOT EXISTS idx_contracts_client_id ON contracts (client_id)`;
+export const contractsPrincipalIdIdx = sql`CREATE INDEX IF NOT EXISTS idx_contracts_principal_id ON contracts (principal_id)`;
+export const contractsOrderDateIdx = sql`CREATE INDEX IF NOT EXISTS idx_contracts_order_date ON contracts (order_date)`;
+export const shipmentsContainerNumberIdx = sql`CREATE INDEX IF NOT EXISTS idx_shipments_container_number ON shipments (container_number)`;
+export const shipmentsEtaIdx = sql`CREATE INDEX IF NOT EXISTS idx_shipments_eta ON shipments (eta)`;
+
+// Global search view
+export const searchView = sql`
+CREATE VIEW IF NOT EXISTS v_search AS
+SELECT 
+    c.id as contract_id,
+    c.plb_reference,
+    cl.name as client_name,
+    p.name as principal_name,
+    s.container_number,
+    i.principal_invoice_no
+FROM contracts c
+LEFT JOIN clients cl ON c.client_id = cl.id
+LEFT JOIN principals p ON c.principal_id = p.id
+LEFT JOIN shipments s ON s.contract_id = c.id
+LEFT JOIN invoices i ON i.contract_id = c.id
+`;

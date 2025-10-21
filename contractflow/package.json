@@ -19,10 +19,16 @@
     "release": "rw-scripts ensure-deploy-env && npm run clean && npm run build && RWSDK_DEPLOY=1 wrangler deploy",
     "generate": "rw-scripts ensure-env && wrangler types",
     "check": "npm run generate && npm run types",
-    "types": "tsc"
+    "types": "tsc",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx src/db/seed.ts"
   },
   "dependencies": {
-    "better-sqlite3": "^12.4.1",
+    "@libsql/client": "^0.15.15",
+    "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.6",
     "react": "19.2.0-canary-d415fd3e-20250919",
     "react-dom": "19.2.0-canary-d415fd3e-20250919",
@@ -32,10 +38,12 @@
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.13.3",
     "@cloudflare/workers-types": "4.20250921.0",
-    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "~24.5.2",
     "@types/react": "19.1.2",
     "@types/react-dom": "19.1.2",
+    "dotenv": "^17.2.3",
+    "drizzle-kit": "^0.31.5",
+    "tsx": "^4.20.6",
     "typescript": "5.8.3",
     "vite": "7.1.6",
     "wrangler": "4.38.0"
