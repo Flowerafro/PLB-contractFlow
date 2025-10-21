@@ -1,4 +1,4 @@
-export interface ColumnUpset<T> {
+export interface ColumnSetup<T> {
     key: keyof T;
     header: string;
     width?: string;

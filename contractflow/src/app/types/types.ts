@@ -18,3 +18,32 @@ export type Person = {
     name: string;
     age?: number;
 };
+
+// HovedListen
+export type HovedListeItem = {
+    plbReference: Date;
+    plbOrderData: Date;
+    customer: string;
+    product: string;
+    tonn: number;
+    priceUsdMt: number;
+    totalPriceUsd: number;
+    prisgrProv: number;
+    poEta: Date;
+    etd: Date;
+    customerOrderNumber: string;
+    principalContractNumber: number;
+    principalContractDate: Date;
+    principalOrderNumber: number;
+    containerNumber: string;
+    principalInvoiceNumber: number;
+    principalInvoiceDate: Date;
+    invoiceDueDate: Date;
+    tonnesDeliveres: number;
+    invoiceAmount: number;
+    blDate: Date;
+    eta: Date;
+    bookingNumber: string;
+    blNumber: string;
+    aakDelNumber: number;
+}

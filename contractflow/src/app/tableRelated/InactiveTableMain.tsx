@@ -3,13 +3,13 @@
 import useData from "./custom_hooks/useData";
 import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
 import { BookTableColumns } from "@/app/tableRelated/table_column_structure/BookTableColumns";
-import {ColumnUpset } from "@/app/interfaces/ColumnSetup";
+import {ColumnSetup } from "@/app/interfaces/ColumnSetup";
 
 // Tidlig arbeid. Ikke i bruk etter refaktorering
 
 interface TableMainProps<T> {
     data: T[];
-    columnConfig: ColumnUpset<T>[];
+    columnConfig: ColumnSetup<T>[];
 }
 
 export default function TableMain(){
@@ -39,7 +39,7 @@ export default function TableMain(){
         );
     }
 */
-  
+
     if(loading) return <div>Loading books...</div>;
     if(error) return <div>Error: {error}</div>;
 

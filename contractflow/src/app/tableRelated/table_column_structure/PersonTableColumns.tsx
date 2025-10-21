@@ -1,7 +1,7 @@
 import type { Person } from "@/app/types/types.ts";
-import { ColumnUpset } from "@/app/interfaces/ColumnSetup";
+import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
 
-export const PersonTableColumns: ColumnUpset<Person>[] = [
+export const PersonTableColumns: ColumnSetup<Person>[] = [
     { key: "id", header: "ID" },
     { key: "name", header: "Name" },
     { key: "age", header: "Age" },
