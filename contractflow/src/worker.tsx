@@ -1,10 +1,17 @@
 import { render, route } from "rwsdk/router";
 import { defineApp } from "rwsdk/worker";
-
 import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/Home";
 import { Login } from "@/app/pages/Login";
+import Dashboard from "@/app/pages/Dashboard";
+import CreateContract from "@/app/pages/CreateContract";
+import ContractTerms from "@/app/pages/ContractTerms";
+import ContractSuccess from "@/app/pages/ContractSuccess";
+import ClientOverview from "./app/pages/ClientOverview";
+
+
+
 
 export type AppContext = {};
 
@@ -15,7 +22,12 @@ export default defineApp([
     ctx;
   },
 render(Document, [
-    route("/", () => <Login />), // default route is now login
-    route("/Home", () => <Home />)
+    route("/", () => <Login />), // default rute er login for å simulere beskyttet side
+    route("/Home", () => <Home />),
+    route("/create", () => <CreateContract />),
+    route("/terms", () => <ContractTerms />), 
+    route("/success", () => <ContractSuccess />),
+    route("/clients", () => <ClientOverview />),
+
   ]),
 ]);

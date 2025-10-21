@@ -105,7 +105,7 @@ export default function Header() {
     {
       id: "add",
       label: "Add New Contract",
-      href: "/contracts/new",
+      href: "#",
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none">
           <path d="M12 5v14M5 12h14" />
@@ -135,9 +135,9 @@ export default function Header() {
       ),
     },
     {
-      id: "conn",
-      label: "Connections",
-      href: "/connections",
+      id: "clients",
+      label: "Clients",
+      href: "/clients",
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none">
           <circle cx="12" cy="12" r="3" />
@@ -228,7 +228,16 @@ export default function Header() {
                 <li key={item.id}>
                   <a
                     href={item.href}
-                    onClick={() => setOpen(false)} // lukker menyen etter klikk
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setOpen(false);
+                      if (item.id === "add") {
+                        window.location.href = "/create"; // sender til CreateContract-siden
+                      }
+                      if (item.id === "clients") {
+                        window.location.href = "/clients"; // sender til ClientOverview-siden
+                      }
+                    }}
                     style={{
                       display: "flex",
                       alignItems: "center",

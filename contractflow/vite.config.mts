@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import { cloudflare } from "@cloudflare/vite-plugin";
-//import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from "@tailwindcss/vite";
 import { redwood } from "rwsdk/vite";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "url";
@@ -14,16 +14,16 @@ export default defineConfig({
     ssr: {},
   },
   plugins: [
-//    tailwindcss(),
     cloudflare({
       viteEnvironment: { name: "worker" },
     }),
     redwood(),
-/*    react({
-      babel: {
-        plugins: ["babel-plugin-react-compiler"],
-      },
-    }),*/
+    tailwindcss(),
+    /*    react({
+          babel: {
+            plugins: ["babel-plugin-react-compiler"],
+          },
+        }),*/
   ],
   resolve: {
     alias: {

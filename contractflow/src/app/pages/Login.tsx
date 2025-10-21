@@ -30,11 +30,14 @@ export function Login({ onLogin }: LoginProps) {
         setIsLoading(true);
        
         try {
-            const isValid = await checkLogin(username, password);
+          const isValid = true; // midlertidig: alltid godkjent
+
+            /*const isValid = await checkLogin(username, password);
             if (!isValid) {
                 setError("Invalid username or password")
                 return;
             }
+                */
             if (onLogin) {
                 onLogin();
             } else {
@@ -54,6 +57,7 @@ export function Login({ onLogin }: LoginProps) {
     <section style={{ minHeight: '100vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', backgroundColor: '#1D391D' }}>
       <div style={{ position: 'relative', zIndex: 10, background: 'white', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,0.2)', padding: 48, width: '100%', maxWidth: 420 }}>
         <h1 style={{ textAlign: 'center', marginBottom: 32, color: '#1E1E1E' }}>Login</h1>
+        <p>Brukernavn og passord er "admin"</p>
 
         {error ? <div style={{ color: 'red', marginBottom: 16 }}>{error}</div> : null}
         
