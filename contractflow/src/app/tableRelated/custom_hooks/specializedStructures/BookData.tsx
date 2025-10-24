@@ -8,7 +8,7 @@ import { Book } from '@/app/types/types';
 
 export function BookData(){
     return UseData<Book>({
-        path: '@/app/resources/data/books/classicBooks.csv',
+        path: '../../resources/data/books/classicBooks.csv',
         dataPath: '0.data',
         transform: (rawBooks: any[]) => rawBooks.map((book: any) => ({
             title: book["Title"] || 'Unknown',

@@ -15,9 +15,16 @@ export default function Layout({ children }: { children?: React.ReactNode }) {
   // Layout no longer contains search state; move search to Dashboard
 
   return (
-    <div style={{ position: "relative",  width: '100vw', minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "#E5E5E5" }}>
+    <div style={{ 
+      position: "relative",  
+      width: '100%', 
+      minHeight: "100vh", 
+      display: "flex", 
+      flexDirection: "column", 
+      backgroundColor: "#E5E5E5" }}>
       <Header />
-      <main style={{ flex: 1, padding: 20 }}>
+      <main style={{ 
+        flex: 1, padding: 20 }}>
         {children}
       </main>
       <Footer />
