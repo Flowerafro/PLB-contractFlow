@@ -3,19 +3,14 @@ import {
     flexRender,
     getCoreRowModel, 
     useReactTable } from "@tanstack/react-table";
-import type { ColumnUpset } from "@/app/interfaces/ColumnSetup";
-
-interface TableGenerationProps<T>{
-    data: T[];
-    columnConfig: ColumnUpset<T>[];
-}
-
+import type { ColumnSetup } from "@/app/interfaces/ColumnSetup";
+import type {TableGenerationProps} from "@/app/interfaces/TableGenerationProps";
 
 export default function TableGeneration<T>({ data, columnConfig }: TableGenerationProps<T>){
     const columnHelper = createColumnHelper<T>();
 
 //  Gjenbrukbar kolonne-funksjon:
-    const columns = columnConfig.map(config =>
+    const columns = columnConfig.map((config: ColumnSetup<T>) =>
         columnHelper.accessor(config.key as any, {
             id: String(config.key),
             header: () => <span>{config.header}</span>,
@@ -32,7 +27,17 @@ export default function TableGeneration<T>({ data, columnConfig }: TableGenerati
     });
     
     return(
-            <table style={{ borderCollapse: 'collapse' }}>
+        <div style={{ 
+                width: '90vw',
+                margin: '2rem',
+                overflowX: 'auto',
+                border: '1px solid gray',
+                borderRadius: '8px',
+                }}>
+            <table  style={{ 
+                borderCollapse: 'collapse', 
+                }}
+            >
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
@@ -61,6 +66,7 @@ export default function TableGeneration<T>({ data, columnConfig }: TableGenerati
                     ))}
                 </tbody>
             </table>
+        </div>
     )
 }
 
@@ -73,13 +79,13 @@ import {
     getCoreRowModel, 
     useReactTable } from "@tanstack/react-table";
 import type { Book } from "@/app/types/types.ts";
-import useData from "@/app/pages/DatabaseExport/useData";
+import UseData from "@/app/tableRelated/custom_hooks/UseData";
 
 const columnHelper = createColumnHelper<Book>();
 
 
 export default function TableGeneration(){
-    const { data } = useData();
+    const { data } = UseData();
 
 //  Gjenbrukbar kolonne-funksjon:
     const createColumns = (key: keyof Book, header: String) =>

@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-table';
 import type { Person } from '@/app/types/types';
 
-//  TabellEksempel - Enkel tabell-visning for Person-data
+//  TabellEksempel - Enkel tabell-visning for Person-data(Eksperiment fra tidligere arbeid):
 
 // Data etableres med en liste av objekter:
 const data: Person[] = [

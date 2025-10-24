@@ -4,6 +4,13 @@ import React, { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
 
+import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
+
+import { BookTableColumns } from "@/app/tableRelated/table_column_structure/BookTableColumns";
+import { BookData } from "@/app/tableRelated/custom_hooks/specializedStructures/BookData";
+import { HovedListenData } from "@/app/tableRelated/custom_hooks/specializedStructures/HovedListenData";
+import { HovedListenColumns } from "../tableRelated/table_column_structure/HovedListenColumns";
+
 interface Shipment {
   id: number;
   contactperson?: string;
@@ -31,6 +38,13 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [results, setResults] = useState<Shipment[]>([]);
   const [searchTrimmed, setSearchTrimmed] = useState(false);
+  
+  const { data: data, loading, error } = HovedListenData();
+
+  // Basic informasjon relatert til tabell data visningen
+  if (loading) return <div>Table is loading...</div>
+  if (error) return <div>Error: {error}</div>
+
 
   const handleSearch = (query: string) => {
     // fjerner mellomrom og tillater søk med store og små bokstaver
@@ -49,6 +63,9 @@ export default function Dashboard() {
       shipment.container.toLowerCase().includes(trimmed) || shipment.customer.toLowerCase().includes(trimmed)
     );
     setResults(found);
+
+
+
   };
 
   return (
@@ -67,6 +84,9 @@ export default function Dashboard() {
             
           <div>
             <h2>Alle forsendelser</h2>
+{/*  
+    Bevart kode fra tidligere eksempel på tabellvisning:
+
             <table style={{ width: "100%", borderCollapse: "collapse", background: "#fff", borderRadius: 8, overflow: "hidden", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
               <thead style={{ background: "#f7f7f7", borderBottom: "2px solid #ddd", fontSize: 16, color: "#000", fontFamily: "Arial, sans-serif" }}>
                 <tr>
@@ -89,6 +109,8 @@ export default function Dashboard() {
                 ))}
               </tbody>
             </table>
+*/}            
+            <TableGeneration data={data} columnConfig={HovedListenColumns} />
           </div>
         )}
       </section>
