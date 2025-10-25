@@ -3,11 +3,7 @@
 import React, { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
-
 import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
-
-import { BookTableColumns } from "@/app/tableRelated/table_column_structure/BookTableColumns";
-import { BookData } from "@/app/tableRelated/custom_hooks/specializedStructures/BookData";
 import { HovedListenData } from "@/app/tableRelated/custom_hooks/specializedStructures/HovedListenData";
 import { HovedListenColumns } from "../tableRelated/table_column_structure/HovedListenColumns";
 
@@ -109,7 +105,7 @@ export default function Dashboard() {
                 ))}
               </tbody>
             </table>
-*/}            
+*/}
             <TableGeneration data={data} columnConfig={HovedListenColumns} />
           </div>
         )}

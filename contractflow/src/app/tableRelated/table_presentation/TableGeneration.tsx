@@ -38,11 +38,15 @@ export default function TableGeneration<T>({ data, columnConfig }: TableGenerati
                 borderCollapse: 'collapse', 
                 }}
             >
-                <thead>
+                <thead style={{ width: 'fit-content'}}>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
-                                <th key={header.id} style={{ border: '1px solid #ccc', padding: '8px' }}>
+                                <th key={header.id} style={{ 
+                                    border: '1px solid #ccc', 
+                                    padding: '8px',
+                                    minWidth: '150px'
+                                }}>
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
@@ -58,7 +62,11 @@ export default function TableGeneration<T>({ data, columnConfig }: TableGenerati
                     {table.getRowModel().rows.map(row => (
                         <tr key={row.id} >
                             {row.getVisibleCells().map(cell => (
-                                <td key={cell.id} style={{ border: '1px solid #ccc', padding: '8px', margin: '0'}}>
+                                <td key={cell.id} style={{ 
+                                    minWidth: '150px',
+                                    border: '1px solid #ccc', 
+                                    padding: '8px', 
+                                    margin: '0'}}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
                             ))}

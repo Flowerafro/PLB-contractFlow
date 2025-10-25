@@ -8,7 +8,8 @@ import Dashboard from "@/app/pages/Dashboard";
 import CreateContract from "@/app/pages/CreateContract";
 import ContractTerms from "@/app/pages/ContractTerms";
 import ContractSuccess from "@/app/pages/ContractSuccess";
-import ClientOverview from "./app/pages/ClientOverview";
+import ClientOverview from "@/app/pages/ClientOverview";
+import Tables from "@/app/pages/Tables";
 
 
 
@@ -28,6 +29,7 @@ render(Document, [
     route("/terms", () => <ContractTerms />), 
     route("/success", () => <ContractSuccess />),
     route("/clients", () => <ClientOverview />),
+    route("/tables", () => <Tables />),
 
   ]),
 ]);
