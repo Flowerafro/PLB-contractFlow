@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
 import Layout from "@/app/pages/Layout";
-import ParseExcel from "../fileHandling/ParseExcel";
+import ParseExcel from "../fileHandling/potentialLaterImplementations/ParseExcel";
 
 import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
 
@@ -87,7 +87,6 @@ export default function Tables() {
             ) : (
                 
             <div>
-                <ParseExcel />
                 <UploadFile />
 
                 <h2>Noen forsendelser</h2>
