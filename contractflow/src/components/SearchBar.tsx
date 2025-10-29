@@ -27,7 +27,7 @@ export default function SearchBar({ placeholder = "Søk...", onSearch }: SearchB
   }
 
   return (
-    <form onSubmit={handleSubmit} className=" p-8 bg-[var(--search-bg)] rounded-lg">
+    <form onSubmit={handleSubmit} className=" p-8 bg-(--search-bg) rounded-lg">
       <div className="flex flex-row gap-2 items-center">
         <label htmlFor="search" className="sr-only">{placeholder}</label>
         <input
@@ -37,12 +37,12 @@ export default function SearchBar({ placeholder = "Søk...", onSearch }: SearchB
           onChange={handleChange}
           placeholder={placeholder}
           aria-label="Search"
-          className="flex-1 p-2 border-2 border-[var(--search-border)] rounded-md w-full"
+          className="flex-1 p-2 border-2 border-(--search-border) rounded-md w-full"
         />
-        <button type="submit" className="px-3 py-2 rounded-md bg-[var(--btn-bg-1)] text-[var(--btn-color-2)]">
+        <button type="submit" className="px-3 py-2 rounded-md bg-(--btn-bg-1) text-(--btn-color-2)">
           Søk
         </button>
-        <button type="button" onClick={handleClear} className="px-3 py-2 rounded-md bg-[var(--btn-bg-2)] text-[var(--btn-color-1)]">
+        <button type="button" onClick={handleClear} className="px-3 py-2 rounded-md bg-(--btn-bg-2) text-(--btn-color-1)">
           Tøm
         </button>
       </div>
