@@ -33,12 +33,6 @@ export default function ClientDetailView({ filteredClients }: { filteredClients:
                     <p><span style={{ color: "#000" }}>{client.contactperson}</span></p>
                 </article>           
         ))}
-        {dummyContracts.map((contract) => (
-                <article key={contract.orderNo} style={{ gridColumn: "1 / 2", marginTop: 12, padding: 16, border: "1px solid #ccc", borderRadius: 6 }}>
-                    <h4 style={{ margin: 0, marginBottom: 8, color: "#000" }}>Contract No: {contract.contractNumber}</h4>
-                    <p style={{ margin: 0, color: "#000" }}>{contract.details}</p>
-                </article>
-        ))}
 
          </section>
       </div>
