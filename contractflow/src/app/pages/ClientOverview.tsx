@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import ClientList from "@/components/ClientList";
+import ClientProfilePage from "../../components/ClientProfilePage";
 import type { Client } from "@/lib/clientdummydata";
 import { dummyClients } from "@/lib/clientdummydata";
 
@@ -15,8 +16,8 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
   const [searchClient, setSearchClient] = useState("");
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
   const [hoveredClientId, setHoveredClientId] = useState<string | null>(null);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
 
-  // søkefunksjonalitet i klientoversikten
   const handleSearch = (query: string) => {
     setSearchClient(query);
     const trimmedClient = query.trim().toLowerCase();
@@ -32,19 +33,35 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
       (client.contactperson ?? "").toLowerCase().includes(trimmedClient) ||
       (client.email ?? "").toLowerCase().includes(trimmedClient) ||
       (client.phone ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.country ?? "").toLowerCase().includes(trimmedClient)
+      (client.country ?? "").toLowerCase().includes(trimmedClient) ||
+      (client.clientAdded ?? "").toLowerCase().includes(trimmedClient)
     );
     setFilteredClients(clientResults);
   };
 
   const clientDisplay = searchClient ? (filteredClients.length > 0 ? filteredClients : []) : dummyClients;
 
-  // naviger til profil-side ved klikk
   const handleSelectClient = (client: Client) => {
+    setSelectedClient(client);
     onClientClick?.(client.id);
-    // enkel navigasjon — bytt til router/link hvis du bruker en router
-    window.location.href = `/clients/${client.id}`;
   };
+
+  if (selectedClient) {
+    return (
+      <section className="space-y-6">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <h2 style={{ margin: 0, color: "#000" }}>Clients</h2>
+          <button style={{ backgroundColor: "#1D391D", color: "#fff", padding: "8px 16px", borderRadius: "4px" }} onClick={onNewClient}>
+            + New Client
+          </button>
+        </div>
+
+        <section className="bg-white rounded-lg border border-black/10 overflow-hidden p-6">
+          <ClientProfilePage client={selectedClient} onBack={() => setSelectedClient(null)} />
+        </section>
+      </section>
+    );
+  }
 
   return (
     <section className="space-y-6">

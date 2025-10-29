@@ -9,10 +9,11 @@ interface ClientSearchItem {
  name: string;
  customer: string;
  contactperson?: string;
-   title?: string;
+title?: string;
  email?: string;
  phone?: string;
  country?: string;
+ clientAdded?: string;
 }
 
 

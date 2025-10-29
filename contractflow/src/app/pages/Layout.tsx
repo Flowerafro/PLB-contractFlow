@@ -23,12 +23,14 @@ export default function Layout({ children }: { children?: React.ReactNode }) {
   } 
 
   return (
-    <div style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "#E5E5E5" }}>
+    <div className="relative min-h-screen flex flex-col bg-[(var(--bg-color))]">
       <HeaderComponent onNavigate={(path: string) => setPageView(path)} />
-      <main style={{ flex: 1, padding: 20 }}>
+      <main className="flex-1 p-5">
         {handlePageView()}
       </main>
       <Footer />
     </div>
   );
 }
+
+/* <div style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "#E5E5E5" }}> */
