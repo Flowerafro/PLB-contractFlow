@@ -34,7 +34,8 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
       (client.email ?? "").toLowerCase().includes(trimmedClient) ||
       (client.phone ?? "").toLowerCase().includes(trimmedClient) ||
       (client.country ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.clientAdded ?? "").toLowerCase().includes(trimmedClient)
+      (client.clientAdded ?? "").toLowerCase().includes(trimmedClient) ||
+      (client.relation ?? "").toLowerCase().includes(trimmedClient)
     );
     setFilteredClients(clientResults);
   };
