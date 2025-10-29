@@ -9,6 +9,7 @@ import CreateContract from "@/app/pages/CreateContract";
 import ContractTerms from "@/app/pages/ContractTerms";
 import ContractSuccess from "@/app/pages/ContractSuccess";
 import ClientOverview from "@/app/pages/ClientOverview";
+import ClientProfilePage from "@/app/pages/ClientProfilePage";
 import Tables from "@/app/pages/Tables";
 import style from "./app/index.css";
 
@@ -30,6 +31,7 @@ render(Document, [
     route("/terms", () => <ContractTerms />), 
     route("/success", () => <ContractSuccess />),
     route("/clients", () => <ClientOverview />),
+    route("/clients/:id", ({ params }) => <ClientProfilePage clientId={params.id} />),
     route("/tables", () => <Tables />),
 
   ]),

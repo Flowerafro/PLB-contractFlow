@@ -25,7 +25,7 @@ export default function ClientCard({ client }: { client: ClientSearchItem }) {
             <p className="text-sm text-gray-500 dark:text-gray-400">{client.country}</p>
 
             <div className="flex mt-4 md:mt-6">
-                <a href="#" className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-[var(--btn-color-3)] rounded-lg hover:bg-[var(--btn-color-4)] hover:text-black focus:ring-4 focus:outline-none focus:ring-[var(--btn-color-4)] dark:bg-[var(--btn-color-3)] dark:hover:bg-[var(--btn-color-4)] dark:focus:ring-green-800">Open</a>
+                <a href={`/clients/${client.id}`} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-[var(--btn-color-3)] rounded-lg hover:bg-[var(--btn-color-4)] hover:text-black focus:ring-4 focus:outline-none focus:ring-[var(--btn-color-4)] dark:bg-[var(--btn-color-3)] dark:hover:bg-[var(--btn-color-4)] dark:focus:ring-green-800">Open</a>
             </div>
         </div>
 </article>
