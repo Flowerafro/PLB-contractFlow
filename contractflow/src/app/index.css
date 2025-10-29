@@ -14,7 +14,11 @@
   --btn-bg-2: #E5E7EB;
   --btn-color-1: #1F2937;
   --btn-color-2: #f9fafb;
+  --btn-color-3: var(--primary-color);
+  --btn-color-4: var(--secondary-color);
 
   --search-bg: #f9fafb;
   --search-border: #4B5563;
+
+  --border-color: #4B5563;
 }

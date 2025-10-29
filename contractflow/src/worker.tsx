@@ -10,7 +10,6 @@ import ContractTerms from "@/app/pages/ContractTerms";
 import ContractSuccess from "@/app/pages/ContractSuccess";
 import ClientOverview from "@/app/pages/ClientOverview";
 import Tables from "@/app/pages/Tables";
-import ClientOverview from "./app/pages/ClientOverview";
 import style from "./app/index.css";
 
 
