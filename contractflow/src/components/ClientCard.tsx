@@ -1,18 +1,8 @@
 "use client"
 
-interface ClientSearchItem {
-  id: number;
-  name?: string;
-  customer?: string;
-  contactperson?: string;
-  title?: string;
-  email?: string;
-  phone?: string;
-  country?: string;
-    clientAdded?: string;
-}
+import type { ClientSearchItem } from "@/types/clientview";
 
-export default function ClientCard({ client }: { client: ClientSearchItem }) {
+export default function ClientCard({ client, onSelect }: { client: ClientSearchItem; onSelect?: (client: ClientSearchItem) => void }) {
     return (
        <article className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-[--bg-color] dark:border-[--border-color]">
         <div className="flex justify-end px-4 pt-4">
@@ -27,7 +17,9 @@ export default function ClientCard({ client }: { client: ClientSearchItem }) {
             <p className="text-sm text-[var(--text-color-gray)] dark:text-[var(--text-color-gray)]">{client.clientAdded}</p>
 
             <div className="flex mt-4 md:mt-6">
-                <a href={`/clients/${client.id}`} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-[var(--btn-color-3)] rounded-lg hover:bg-[var(--btn-color-4)] hover:text-black focus:ring-4 focus:outline-none focus:ring-[var(--btn-color-4)] dark:bg-[var(--btn-color-3)] dark:hover:bg-[var(--btn-color-4)] dark:focus:ring-green-800">Open</a>
+                       <button onClick={() => onSelect?.(client)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[var(--btn-color-3)] rounded-lg">
+          Open
+        </button>
             </div>
         </div>
 </article>

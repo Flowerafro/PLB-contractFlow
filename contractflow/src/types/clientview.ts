@@ -2,8 +2,6 @@
     -Typer benyttet i client-arbeid-
 
 */
-
-
 export interface ClientSearchItem {
     id: string;
     name?: string;

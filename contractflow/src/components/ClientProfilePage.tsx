@@ -71,9 +71,7 @@ export default function ClientProfilePage({
     {dummyClientInvoices.map((invoice: ClientInvoice, index: number) => (
       <div key={invoice.id}>
         <div className="flex justify-between items-start">
-          {/* Venstre side – informasjon */}
           <div className="space-y-3 flex justify-between align-center gap-4">
-            {/* Øverste del */}
             <div className="space-y-1">
               <p className="text-gray-900 font-medium">
                 Faktura #{invoice.principalInvoiceNo}
@@ -89,7 +87,6 @@ export default function ClientProfilePage({
                 })}
               </p>
 
-              {/* Status */}
               <span
                 className={`inline-block px-2 py-0.5 text-xs font-semibold rounded-full
                   ${
@@ -104,24 +101,22 @@ export default function ClientProfilePage({
               </span>
             </div>
 
-            {/* Nederste del – datoer */}
+  
             <div className="text-sm text-gray-600 space-y-0.5 pt-1 border-t border-gray-100 flex flex-col align-center">
               <p>Fakturadato: {invoice.principalInvoiceDate}</p>
               <p>Forfallsdato: {invoice.invoiceDueDate}</p>
             </div>
           </div>
 
-          {/* Høyre side – knapp */}
           <div>
             <button
-              className="text-sm px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+              className="text-sm px-4 py-2 rounded-md bg-[var(--primary-color)] text-white transition"
             >
               Vis
             </button>
           </div>
         </div>
 
-        {/* Separator mellom kortene */}
         {index < dummyClientInvoices.length - 1 && (
           <div className="border-t border-gray-200 mt-4"></div>
         )}

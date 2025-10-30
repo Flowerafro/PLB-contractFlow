@@ -1,22 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchBar from "../../components/SearchBar";
 import ClientList from "@/components/ClientList";
 import ClientProfilePage from "../../components/ClientProfilePage";
+import NewClient from "@/components/NewClient";
 import type { Client } from "@/lib/clientdummydata";
-import { dummyClients } from "@/lib/clientdummydata";
+import { dummyClients, getClientById, addClient } from "@/lib/clientdummydata";
+import type { ClientSearchItem } from "@/types/clientview";
 
 interface ClientOverviewProps {
   onClientClick?: (id: string) => void;
   onNewClient?: () => void;
+  clientId?: string;
 }
 
-export default function ClientOverview({ onClientClick, onNewClient }: ClientOverviewProps) {
+export default function ClientOverview({ onClientClick, onNewClient, clientId }: ClientOverviewProps) {
   const [searchClient, setSearchClient] = useState("");
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
   const [hoveredClientId, setHoveredClientId] = useState<string | null>(null);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [showNewClientForm, setShowNewClientForm] = useState(false);
+
+  useEffect(() => {
+    if (!clientId) return;
+    const c = getClientById(clientId);
+    if (c) setSelectedClient(c);
+  }, [clientId]);
 
   const handleSearch = (query: string) => {
     setSearchClient(query);
@@ -43,8 +53,18 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
   const clientDisplay = searchClient ? (filteredClients.length > 0 ? filteredClients : []) : dummyClients;
 
   const handleSelectClient = (client: Client) => {
+    if (typeof window !== "undefined") {
+      window.history.pushState({ clientId: client.id }, "", `/clients/${client.id}`);
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    }
     setSelectedClient(client);
     onClientClick?.(client.id);
+  };
+
+  const handleCreateClient = (partial: Omit<Client, "id">) => {
+    const created = addClient(partial);
+    setShowNewClientForm(false);
+    handleSelectClient(created);
   };
 
   if (selectedClient) {
@@ -52,7 +72,10 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
       <section className="space-y-6">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <h2 style={{ margin: 0, color: "#000" }}>Clients</h2>
-          <button style={{ backgroundColor: "#1D391D", color: "#fff", padding: "8px 16px", borderRadius: "4px" }} onClick={onNewClient}>
+          <button
+            style={{ backgroundColor: "#1D391D", color: "#fff", padding: "8px 16px", borderRadius: "4px" }}
+            onClick={() => { setShowNewClientForm(true); onNewClient?.(); }}
+          >
             + New Client
           </button>
         </div>
@@ -60,6 +83,8 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
         <section className="bg-white rounded-lg border border-black/10 overflow-hidden p-6">
           <ClientProfilePage client={selectedClient} onBack={() => setSelectedClient(null)} />
         </section>
+
+        {showNewClientForm && <NewClient onCreate={handleCreateClient} onCancel={() => setShowNewClientForm(false)} />}
       </section>
     );
   }
@@ -68,12 +93,15 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
     <section className="space-y-6">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <h2 style={{ margin: 0, color: "#000" }}>Clients</h2>
-        <button style={{ backgroundColor: "#1D391D", color: "#fff", padding: "8px 16px", borderRadius: "4px" }} onClick={onNewClient}>
+        <button
+          style={{ backgroundColor: "#1D391D", color: "#fff", padding: "8px 16px", borderRadius: "4px" }}
+          onClick={() => { setShowNewClientForm(true); onNewClient?.(); }}
+        >
           + New Client
         </button>
       </div>
 
-      <SearchBar placeholder="Search by Client No, Company Name or Contact Person..." onSearch={handleSearch} />
+      <SearchBar placeholder="Search here..." onSearch={handleSearch} />
 
       <section className="bg-white rounded-lg border border-black/10 overflow-hidden">
         {searchClient ? (
@@ -83,17 +111,22 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
               <a href="/clients"><button>Back</button></a>
             </div>
           ) : (
-            <ClientList
+             <ClientList
               filteredClients={filteredClients.map(c => ({
-                id: Number(c.id),
+                id: String(c.id), 
                 name: c.customer ?? "",
                 customer: c.customer ?? "",
                 contactperson: c.contactperson,
                 title: c.title,
                 email: c.email,
                 phone: c.phone,
-                country: c.country
+                country: c.country,
+                clientAdded: c.clientAdded
               }))}
+              onSelectClient={(item: ClientSearchItem) => { 
+                const full = getClientById(String(item.id)); 
+                if (full) handleSelectClient(full);
+              }}
             />
           )
         ) : (
@@ -135,6 +168,8 @@ export default function ClientOverview({ onClientClick, onNewClient }: ClientOve
           </div>
         )}
       </section>
+
+      {showNewClientForm && <NewClient onCreate={handleCreateClient} onCancel={() => setShowNewClientForm(false)} />}
     </section>
   );
 }

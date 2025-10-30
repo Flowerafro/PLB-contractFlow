@@ -34,6 +34,20 @@ export const dummyClients: Client[] = [
     { id: "20", customerCode: "CL-0020", customer: "Adriatic Shipping SRL", relation: "Shipping", contactperson: "Giulia Rossi", title: "Operations Coordinator", email: "giulia@adriaticshipping.it", phone: "+39 3312345678", country: "Italy", clientAdded: "Mai 2012" },
 ];
 
+export function addClient(partial: Omit<Client, "id">): Client {
+    const id = String(Date.now());
+    const now = new Date().toISOString();
+
+    const client: Client = {
+        id,
+        clientAdded: partial.clientAdded ?? now,
+        ...partial,
+    };
+
+    dummyClients.push(client);
+    return client;
+}
+
 export function getClientById(id: string) {
     return dummyClients.find((c) => c.id === id) ?? null;
 }
@@ -80,3 +94,5 @@ export const dummyClientInvoices: ClientInvoice[] = [
     { id: 996, contractID: 9961, principalInvoiceNo: "INV-1004", principalInvoiceDate: "2024-04-01", invoiceDueDate: "2024-05-01", invoicedAmount: 2200.00, createdAt: "2024-04-01", status: "Paid" },
     { id: 995, contractID: 9951, principalInvoiceNo: "INV-1005", principalInvoiceDate: "2024-05-20", invoiceDueDate: "2024-06-20", invoicedAmount: 3000.00, createdAt: "2024-05-20", status: "Unpaid" },
 ];
+
+
