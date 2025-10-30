@@ -4,6 +4,7 @@ import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/Home";
 import { Login } from "@/app/pages/Login";
+import Archive from "@/app/pages/Archive";
 import Dashboard from "@/app/pages/Dashboard";
 import CreateContract from "@/app/pages/CreateContract";
 import ContractTerms from "@/app/pages/ContractTerms";
@@ -30,7 +31,9 @@ render(Document, [
     route("/terms", () => <ContractTerms />), 
     route("/success", () => <ContractSuccess />),
     route("/clients", () => <ClientOverview />),
+    route("/clients/:id", (({params}) => <ClientOverview clientId={params.id} />)),
     route("/tables", () => <Tables />),
+    route("/archive", () => <Archive />)
 
   ]),
 ]);

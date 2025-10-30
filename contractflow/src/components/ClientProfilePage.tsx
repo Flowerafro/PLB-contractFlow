@@ -4,7 +4,7 @@ import { dummyClientInvoices, type Client } from "@/lib/clientdummydata";
 import type { ClientShipment } from "@/lib/clientdummydata";
 import type { ClientInvoice } from "@/lib/clientdummydata";
 
-export default function ClientProfile({
+export default function ClientProfilePage({
   client,
   onBack,
 }: {
