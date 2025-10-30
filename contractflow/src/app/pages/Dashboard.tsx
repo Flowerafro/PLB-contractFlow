@@ -77,9 +77,9 @@ export default function Dashboard() {
             <DetailView filteredItems={results.map(r => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
           )
         ) : (
-            
-          <div>
-            <h2>Alle forsendelser</h2>
+
+          <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold">Alle forsendelser</h2>
 {/*  
     Bevart kode fra tidligere eksempel på tabellvisning:
 
