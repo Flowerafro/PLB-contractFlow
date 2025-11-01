@@ -1,3 +1,4 @@
+// ...existing code...
 "use client";
 
 import React, { useState } from "react";
@@ -16,63 +17,43 @@ interface Shipment {
   status?: string;
 }
 
-// midlertidig dummy-data for testing av søkefunksjonalitet
-const dummyShipments: Shipment[] = [
-  { id: 1, container: "ABC123", customer: "Maverick Foods", status: "In transit", contactperson: "John Doe" },
-  { id: 2, container: "DEF456", customer: "Sterling Products", status: "Delivered", contactperson: "Jane Smith" },
-  { id: 3, container: "GHI789", customer: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
-  { id: 4, container: "JKL012", customer: "Nordic Foods", status: "In transit", contactperson: "Anna Lee" },
-  { id: 5, container: "MNO345", customer: "PEace Products", status: "Delayed", contactperson: "Tom Brown" },
-  { id: 6, container: "PQR678", customer: "Potato BBoys", status: "In transit", contactperson: "Lisa White" },
-  { id: 7, container: "STU901", customer: "Veggie Delights", status: "In transit", contactperson: "Mark Green"},
-  { id: 8, container: "GHI729", customer: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
-  { id: 9, container: "JKL112", customer: "Nordic Foods", status: "Delivered", contactperson: "Anna Banana" },
-  { id: 10, container: "GHG711", customer: "CH Alimentos", status: "Awaiting pickup", contactperson: "Carlos Ruiz" },
-  { id: 11, container: "JKE034", customer: "Swedish Kjottabulla", status: "Ready", contactperson: "Kong Karl" },
-];
-
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [results, setResults] = useState<any[]>([]);
   const [searchTrimmed, setSearchTrimmed] = useState(false);
-  
-  const { data: data, loading, error } = HovedListenData();
+  const [selectedShipment, setSelectedShipment] = useState<any | null>(null);
+
+  const { data, loading, error } = HovedListenData();
 
   // Basic informasjon relatert til tabell data visningen
-  if (loading) return <div>Table is loading...</div>
-  if (error) return <div>Error: {error}</div>
-
+  if (loading) return <div>Table is loading...</div>;
+  if (error) return <div>Error: {String(error)}</div>;
 
   const handleSearch = (query: string) => {
     const trimmed = query.trim().toLowerCase();
     setSearchTerm(trimmed);
     setSearchTrimmed(true);
 
-    // sjekker etter tomt søk, hvis tomt så skjer ingenting
     if (!trimmed) {
       setResults([]);
       return;
     }
 
-    // midlertidig: filtrerer dummy-data frem til vi får backend
- /*    const found = dummyShipments.filter(shipment =>
-      shipment.container.toLowerCase().includes(trimmed) || shipment.customer.toLowerCase().includes(trimmed)
-    );
+    const source = Array.isArray(data) ? data : [];
+    const found = source.filter((row: any) => {
+      return (
+        String(row.container ?? "").toLowerCase().includes(trimmed) ||
+        String(row.customer ?? "").toLowerCase().includes(trimmed) ||
+        String(row.contactperson ?? "").toLowerCase().includes(trimmed)
+      );
+    });
+
     setResults(found);
-  }; */
+  };
 
-  const source = Array.isArray(data) ? data : dummyShipments;
-
-  const found = source.filter((row: any) => {
-    return (
-      String(row.container ?? "").toLowerCase().includes(trimmed) ||
-      String(row.customer ?? "").toLowerCase().includes(trimmed) ||
-      String(row.contactperson ?? "").toLowerCase().includes(trimmed)
-    )
-  })
-
-  setResults(found);
-};
+  const handleSelectShipment = (row: any) => {
+    setSelectedShipment(row ?? null);
+  };
 
   return (
     <div>
@@ -80,19 +61,33 @@ export default function Dashboard() {
       <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />
 
       <section style={{ marginTop: 16 }}>
-        {searchTrimmed ? (
+        {selectedShipment ? (
+          <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
+            <button className="mb-4 px-3 py-1 rounded bg-gray-200" onClick={() => setSelectedShipment(null)}>Tilbake</button>
+            <DetailView item={{
+              id: selectedShipment.id,
+              name: selectedShipment.container ?? selectedShipment.name,
+              customer: selectedShipment.customer,
+              contactperson: selectedShipment.contactperson
+            }} />
+          </div>
+        ) : searchTrimmed ? (
           results.length === 0 ? (
-            <div> <p>Ingen treff for "{searchTerm}"</p><a href="/Home"><button className="px-4 py-2 rounded text-white bg-[var(--primary-color)]">Tilbake</button></a></div>
+            <div>
+              <p>Ingen treff for "{searchTerm}"</p>
+              <a href="/Home"><button className="px-4 py-2 rounded text-white bg-[var(--primary-color)]">Tilbake</button></a>
+            </div>
           ) : (
             <ShipmentList filteredItems={results.map((r: any) => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
           )
         ) : (
-           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
+          <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold">Alle forsendelser</h2>
-            <TableGeneration data={data} columnConfig={HovedListenColumns} />
+            <TableGeneration data={data} columnConfig={HovedListenColumns} onRowClick={handleSelectShipment} />
           </div>
         )}
       </section>
     </div>
   );
 }
+// ...existing code...
