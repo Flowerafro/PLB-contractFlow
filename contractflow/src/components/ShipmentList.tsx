@@ -12,7 +12,7 @@ interface SearchItem {
 
 export default function ShipmentList({ filteredItems }: { filteredItems: SearchItem[] }) {
   return (
-    <section style={{ background: "#fff", padding: 16, borderRadius: 8, width: "50%" }}>
+    <section style={{ background: "#fff", padding: 16, borderRadius: 8, width: "100%" }}>
       <h2>Søkeresultater:</h2>
       <div >
         {filteredItems.map((item) => (

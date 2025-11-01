@@ -6,6 +6,7 @@ import DetailView from "./DetailView";
 import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
 import { HovedListenData } from "@/app/tableRelated/custom_hooks/specializedStructures/HovedListenData";
 import { HovedListenColumns } from "../tableRelated/table_column_structure/HovedlistenColumns";
+import ShipmentList from "@/components/ShipmentList";
 
 interface Shipment {
   id: number;
@@ -32,7 +33,7 @@ const dummyShipments: Shipment[] = [
 
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [results, setResults] = useState<Shipment[]>([]);
+  const [results, setResults] = useState<any[]>([]);
   const [searchTrimmed, setSearchTrimmed] = useState(false);
   
   const { data: data, loading, error } = HovedListenData();
@@ -43,7 +44,6 @@ export default function Dashboard() {
 
 
   const handleSearch = (query: string) => {
-    // fjerner mellomrom og tillater søk med store og små bokstaver
     const trimmed = query.trim().toLowerCase();
     setSearchTerm(trimmed);
     setSearchTrimmed(true);
@@ -55,11 +55,24 @@ export default function Dashboard() {
     }
 
     // midlertidig: filtrerer dummy-data frem til vi får backend
-    const found = dummyShipments.filter(shipment =>
+ /*    const found = dummyShipments.filter(shipment =>
       shipment.container.toLowerCase().includes(trimmed) || shipment.customer.toLowerCase().includes(trimmed)
     );
     setResults(found);
-  };
+  }; */
+
+  const source = Array.isArray(data) ? data : dummyShipments;
+
+  const found = source.filter((row: any) => {
+    return (
+      String(row.container ?? "").toLowerCase().includes(trimmed) ||
+      String(row.customer ?? "").toLowerCase().includes(trimmed) ||
+      String(row.contactperson ?? "").toLowerCase().includes(trimmed)
+    )
+  })
+
+  setResults(found);
+};
 
   return (
     <div>
@@ -71,38 +84,11 @@ export default function Dashboard() {
           results.length === 0 ? (
             <div> <p>Ingen treff for "{searchTerm}"</p><a href="/Home"><button className="px-4 py-2 rounded text-white bg-[var(--primary-color)]">Tilbake</button></a></div>
           ) : (
-            <DetailView filteredItems={results.map(r => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
+            <ShipmentList filteredItems={results.map((r: any) => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
           )
         ) : (
-
-          <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
+           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold">Alle forsendelser</h2>
-{/*  
-    Bevart kode fra tidligere eksempel på tabellvisning:
-
-            <table style={{ width: "100%", borderCollapse: "collapse", background: "#fff", borderRadius: 8, overflow: "hidden", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
-              <thead style={{ background: "#f7f7f7", borderBottom: "2px solid #ddd", fontSize: 16, color: "#000", fontFamily: "Arial, sans-serif" }}>
-                <tr>
-                <th style={{ textAlign: "left", borderBottom: "1px solid #ddd", padding: 8 }}>PLB-REF</th>
-                  <th style={{ textAlign: "left", borderBottom: "1px solid #ddd", padding: 8 }}>Container</th>
-                  <th style={{ textAlign: "left", borderBottom: "1px solid #ddd", padding: 8 }}>Kunde</th>
-                  <th style={{ textAlign: "left", borderBottom: "1px solid #ddd", padding: 8 }}>Status</th>
-                 <th style={{ textAlign: "left", borderBottom: "1px solid #ddd", padding: 8 }}>Kontaktperson</th>
-                </tr>
-              </thead>
-              <tbody style={{ fontSize: 14, color: "#333", fontFamily: "Arial, sans-serif" }}>
-                {dummyShipments.map(shipment => (
-                  <tr key={shipment.id}>
-                    <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.id}</td>
-                    <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.container}</td>
-                    <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.customer}</td>
-                    <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.status}</td>
-                    <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>{shipment.contactperson}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-*/}
             <TableGeneration data={data} columnConfig={HovedListenColumns} />
           </div>
         )}
