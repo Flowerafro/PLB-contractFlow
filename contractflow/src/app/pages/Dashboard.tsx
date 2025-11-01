@@ -5,7 +5,7 @@ import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
 import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
 import { HovedListenData } from "@/app/tableRelated/custom_hooks/specializedStructures/HovedListenData";
-import { HovedListenColumns } from "../tableRelated/table_column_structure/HovedListenColumns";
+import { HovedListenColumns } from "../tableRelated/table_column_structure/HovedlistenColumns";
 
 interface Shipment {
   id: number;
