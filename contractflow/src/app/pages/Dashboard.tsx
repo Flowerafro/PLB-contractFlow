@@ -59,9 +59,6 @@ export default function Dashboard() {
       shipment.container.toLowerCase().includes(trimmed) || shipment.customer.toLowerCase().includes(trimmed)
     );
     setResults(found);
-
-
-
   };
 
   return (
@@ -72,7 +69,7 @@ export default function Dashboard() {
       <section style={{ marginTop: 16 }}>
         {searchTrimmed ? (
           results.length === 0 ? (
-            <div> <p>Ingen treff for "{searchTerm}"</p><a href="/Home"><button>Tilbake</button></a></div>
+            <div> <p>Ingen treff for "{searchTerm}"</p><a href="/Home"><button className="px-4 py-2 rounded text-white bg-[var(--primary-color)]">Tilbake</button></a></div>
           ) : (
             <DetailView filteredItems={results.map(r => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
           )

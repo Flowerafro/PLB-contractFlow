@@ -6,23 +6,25 @@ interface SearchItem {
   id: number;
   name: string;
   customer: string;
-    contactperson?: string;
+  contactperson?: string;
 }
 
 export default function DetailView({ filteredItems }: { filteredItems: SearchItem[] }) {
   return (
-    <section style={{ background: "#fff", padding: 16, borderRadius: 8, width: "50%" }}>
+    <section style={{ background: "#fff", padding: 16, borderRadius: 8, width: "100%" }}>
       <h2>Søkeresultater:</h2>
-      <ul>
+      <div className="flex flex-col gap-4">
         {filteredItems.map((item) => (
-            <div key={item.id} style={{ padding: "8px 0", borderBottom: "1px solid red", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-              <h3 key={item.id} style={{ padding: "8px 0", borderBottom: "1px solid red" }}>{item.name}</h3>
-              <p><span style={{ color: "#666" }}>{item.customer}</span></p>
-              <p><span style={{ color: "#666" }}>{item.contactperson}</span></p>
-          <a href={`/Home`}><button>back</button></a>
+          <article key={item.id} className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-[--bg-color] dark:border-[--border-color]">
+              <div className="flex flex-col items-left pb-10">
+                <h5 className="mb-1 text-xl font-medium text-[var(--text-color-gray-dark)] dark:text-white">{item.customer}</h5>
+                <p className="text-sm text-[var(--text-color-gray)] dark:text-[var(--text-color-gray)]">{item.name}</p>
+                <p className="text-sm text-[var(--text-color-gray)] dark:text-[var(--text-color-gray)]">{item.contactperson}</p>
             </div>
+        </article>
         ))}
-      </ul>
+      </div>
     </section>
+
   );
 }
