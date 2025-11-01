@@ -1,208 +1,207 @@
 "use client";
-import React, { useState } from "react";
-import Layout from "./Layout";
+import React, { useState, JSX } from "react";
 
 /**
- * CreateContract er en side der brukeren kan opprette en ny kontrakt.
- * Skjemaet inneholder felter for klient, kontraktnavn, e-post, og datoer.
+ * ContractForm – representerer alle feltverdier i kontraktskjemaet.
  */
-export default function CreateContract() {
-  // useState brukes til å lagre alle verdier fra skjemaet i ett objekt.
-  const [form, setForm] = useState({
+type ContractForm = {
+  client: string;
+  contractName: string;
+  clientName: string;
+  clientEmail: string;
+  startDate: string;
+  stopDate: string;
+  terms: string;
+};
+
+/**
+ * CreateContractPage
+ * Viser et skjema for å opprette en ny kontrakt.
+ * Når skjemaet sendes inn, blir data sendt til backend-funksjonen "contracts".
+ */
+export default function CreateContractPage(): JSX.Element {
+  // State for skjemaets felt
+  const [form, setForm] = useState<ContractForm>({
     client: "",
     contractName: "",
     clientName: "",
     clientEmail: "",
     startDate: "",
     stopDate: "",
+    terms: "",
   });
 
-  /**
-   * handleSubmit håndterer innsending av skjemaet.
-   * Stopper standard oppførsel og logger dataene.
-   * Her kan vi senere legge til API-kall via RedwoodSDK for å lagre kontrakten.
-   */
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Submitted:", form);
-    window.location.href = "/terms";
+  // State for lastestatus og tilbakemelding til brukeren
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
+  /**
+   * handleSubmit – håndterer innsending av skjema.
+   * Sender data til backend for lagring i databasen.
+   */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const res = await fetch("/.redwood/functions/contracts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          plbReference: form.contractName || "PLB-" + Date.now(),
+          clientId: 1,
+          principalId: null,
+          productCode: form.client,
+          orderDate: form.startDate,
+          tonnPerFcl: null,
+          priceUsdPerMtC: 0,
+          totalUsdC: 0,
+          commissionGroupBp: null,
+          customerOrderNo: null,
+          principalContractNo: null,
+          principalContractDate: null,
+          principalOrderNo: null,
+          status: "ACTIVE",
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to save contract");
+      setMessage("Contract successfully created");
+      window.location.href = "/success";
+    } catch (error) {
+      console.error(error);
+      setMessage("Error creating contract");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Layout>
-      {/* Seksjon som inneholder hele skjemaet */}
-      <section
-        style={{
-          minHeight: "calc(100vh - 80px)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#E5E5E5",
-          padding: "40px 0",
-        }}
-      >
-        {/* Selve boksen med kontraktskjemaet */}
-        <div
-          style={{
-            background: "white",
-            borderRadius: 12,
-            boxShadow: "0 10px 30px rgba(0,0,0,0.2)", 
-            padding: 48,
-            width: "100%",
-            maxWidth: 480,
-          }}
-        >
-          <h1 style={{ textAlign: "center", marginBottom: 32 }}>
-            Create contract
-          </h1>
+    <section className="min-h-screen flex items-center justify-center bg-gray-300 py-10">
+      {/* Hvit boks som inneholder hele kontraktskjemaet */}
+      <div className="bg-white rounded-xl shadow-md p-12 w-full max-w-md">
+        {/* Overskrift for siden */}
+        <h1 className="text-center text-2xl font-bold mb-8">Create contract</h1>
 
-          {/* Skjemaet */}
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: "grid", gap: 16 }}
-          >
-            {/* Klientvalg dropdown-liste */}
-            <div>
-              <label>Choose client</label>
-              <select
-                value={form.client}
-                onChange={(e) =>
-                  setForm({ ...form, client: e.target.value })
-                }
-                style={{
-                  width: "100%",
-                  padding: 8,
-                  border: "1px solid #ccc",
-                  borderRadius: 4,
-                }}
-              >
-                <option value="">----</option>
-                <option value="plb">PLB Consulting</option>
-                <option value="nordic">Nordic Shipping</option>
-              </select>
-            </div>
+        {/* Skjema for kontraktsinformasjon */}
+        <form onSubmit={handleSubmit} className="grid gap-5">
+          
+          {/* Klientvalg (dropdown) */}
+          <div>
+            <label className="block font-medium mb-1">Choose client</label>
+            <select
+              value={form.client}
+              onChange={(e) => setForm({ ...form, client: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-900"
+            >
+              <option value="">----</option>
+              <option value="plb">PLB Consulting</option>
+              <option value="nordic">Nordic Shipping</option>
+            </select>
+          </div>
 
-            {/* Kontraktnavn */}
-            <div>
-              <label>Contract name</label>
+          {/* Kontraktnavn */}
+          <div>
+            <label className="block font-medium mb-1">Contract name</label>
+            <input
+              type="text"
+              placeholder="Shipping contract with"
+              value={form.contractName}
+              onChange={(e) =>
+                setForm({ ...form, contractName: e.target.value })
+              }
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-900"
+              required
+            />
+          </div>
+
+          {/* Klientens navn */}
+          <div>
+            <label className="block font-medium mb-1">Client name</label>
+            <input
+              type="text"
+              placeholder="John Doe"
+              value={form.clientName}
+              onChange={(e) =>
+                setForm({ ...form, clientName: e.target.value })
+              }
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-900"
+              required
+            />
+          </div>
+
+          {/* Klientens e-postadresse */}
+          <div>
+            <label className="block font-medium mb-1">Client email</label>
+            <input
+              type="email"
+              placeholder="name@email.com"
+              value={form.clientEmail}
+              onChange={(e) =>
+                setForm({ ...form, clientEmail: e.target.value })
+              }
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-900"
+              required
+            />
+          </div>
+
+          {/* Start- og stoppdato */}
+          <div className="flex gap-2">
+            <div className="w-1/2">
+              <label className="block font-medium mb-1">Start date</label>
               <input
                 type="text"
-                placeholder="Shipping contract with"
-                value={form.contractName}
-                onChange={(e) =>
-                  setForm({ ...form, contractName: e.target.value })
-                }
-                style={{
-                  width: "100%",
-                  padding: 8,
-                  border: "1px solid #ccc",
-                  borderRadius: 4,
-                }}
-              />
-            </div>
-
-            {/* Klientnavn */}
-            <div>
-              <label>Client name</label>
-              <input
-                type="text"
-                placeholder="John Doe"
-                value={form.clientName}
-                onChange={(e) =>
-                  setForm({ ...form, clientName: e.target.value })
-                }
-                style={{
-                  width: "100%",
-                  padding: 8,
-                  border: "1px solid #ccc",
-                  borderRadius: 4,
-                }}
-              />
-            </div>
-
-            {/* Klientens e-postadresse */}
-            <div>
-              <label>Client email</label>
-              <input
-                type="email"
-                placeholder="name@email.com"
-                value={form.clientEmail}
-                onChange={(e) =>
-                  setForm({ ...form, clientEmail: e.target.value })
-                }
-                style={{
-                  width: "100%",
-                  padding: 8,
-                  border: "1px solid #ccc",
-                  borderRadius: 4,
-                }}
-              />
-            </div>
-
-            {/* Start- og sluttdatoer for kontrakten */}
-            <div style={{ display: "flex", gap: 8 }}>
-              <input
-                type="text"
-                placeholder="Start date (DD/MM/YY)"
+                placeholder="DD/MM/YY"
                 value={form.startDate}
                 onChange={(e) =>
                   setForm({ ...form, startDate: e.target.value })
                 }
-                style={{
-                  width: "50%",
-                  padding: 8,
-                  border: "1px solid #ccc",
-                  borderRadius: 4,
-                }}
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-900"
               />
+            </div>
+            <div className="w-1/2">
+              <label className="block font-medium mb-1">Stop date</label>
               <input
                 type="text"
-                placeholder="Stop date (DD/MM/YY)"
+                placeholder="DD/MM/YY"
                 value={form.stopDate}
                 onChange={(e) =>
                   setForm({ ...form, stopDate: e.target.value })
                 }
-                style={{
-                  width: "50%",
-                  padding: 8,
-                  border: "1px solid #ccc",
-                  borderRadius: 4,
-                }}
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-900"
               />
             </div>
+          </div>
 
-            {/* Filopplasting (foreløpig bare visuell) */}
-            <div
-              style={{
-                border: "1px dashed #1D391D",
-                borderRadius: 8,
-                padding: 16,
-                textAlign: "center",
-                color: "#1D391D",
-                cursor: "pointer",
-              }}
-            >
-              Upload document
-            </div>
+          {/* Vilkår og betingelser */}
+          <div>
+            <label className="block font-semibold mb-1">
+              Terms and conditions
+            </label>
+            <textarea
+              placeholder="Enter text here.."
+              value={form.terms}
+              onChange={(e) => setForm({ ...form, terms: e.target.value })}
+              className="w-full h-40 p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-green-900"
+            />
+          </div>
 
-            {/* Send-knapp */}
-            <button
-              type="submit"
-              style={{
-                backgroundColor: "#1D391D",
-                color: "white",
-                padding: 10,
-                border: "none",
-                borderRadius: 6,
-                cursor: "pointer",
-              }}
-            >
-              Next
-            </button>
-          </form>
-        </div>
-      </section>
-    </Layout>
+          {/* Send-knapp */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-green-900 text-white py-2 rounded hover:bg-green-800 transition disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-green-900"
+          >
+            {loading ? "Saving..." : "Create contract"}
+          </button>
+
+          {/* Statusmelding som gir brukeren tilbakemelding etter innsending */}
+          {message && (
+            <p className="text-center text-sm text-gray-700 mt-2">{message}</p>
+          )}
+        </form>
+      </div>
+    </section>
   );
 }
