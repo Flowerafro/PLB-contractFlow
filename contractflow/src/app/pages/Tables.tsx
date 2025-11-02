@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
 import Layout from "@/app/pages/Layout";
-import ParseExcel from "../fileHandling/potentialLaterImplementations/ParseExcel";
+import ParseExcel from "../features/fileHandling/potentialLaterImplementations/ParseExcel";
 
-import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
+import TableGeneration from "@/app/features/tables/table_presentation/TableGeneration";
 
-;import { HovedListenData } from "@/app/tableRelated/custom_hooks/specializedStructures/HovedListenData";
-import { HovedListenColumns } from "../tableRelated/table_column_structure/HovedListenColumns";
-import UploadFile from "../fileHandling/UploadFile";
+;import { HovedListenData } from "@/app/features/tables/custom_hooks/specializedStructures/HovedListenData";
+import { HovedListenColumns } from "../features/tables/table_column_structure/HovedListenColumns";
+import UploadFile from "../features/fileHandling/UploadFile";
 
 //  -Tables-siden
 //  Her er dashboard siden lagt over slik at den kan bearbeides videre
@@ -87,7 +87,10 @@ export default function Tables() {
             ) : (
                 
             <div>
-                <UploadFile />
+                <UploadFile 
+                  width='600px'
+                  height='350px'
+                />
 
                 <h2>Noen forsendelser</h2>
     {/*  

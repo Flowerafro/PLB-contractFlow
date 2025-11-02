@@ -1,8 +1,8 @@
 "use client"
 
-import UseData  from "@/app/tableRelated/custom_hooks/UseData";
-import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
-import { BookTableColumns } from "@/app/tableRelated/table_column_structure/BookTableColumns";
+import UseData  from "@/app/features/tables/custom_hooks/UseData";
+import TableGeneration from "@/app/features/tables/table_presentation/TableGeneration";
+import { BookTableColumns } from "@/app/features/tables/table_column_structure/BookTableColumns";
 import {ColumnSetup } from "@/app/interfaces/ColumnSetup";
 
 // Tidlig arbeid. Ikke i bruk etter refaktorering

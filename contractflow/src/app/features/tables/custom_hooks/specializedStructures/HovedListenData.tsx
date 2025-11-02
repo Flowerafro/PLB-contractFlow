@@ -1,4 +1,4 @@
-import UseData from '@/app/tableRelated/custom_hooks/UseData';
+import UseData from '@/app/features/tables/custom_hooks/UseData';
 import { HovedListeItem } from '@/app/types/types';
 
 /*
@@ -10,7 +10,7 @@ import { HovedListeItem } from '@/app/types/types';
 
 export function HovedListenData(){
     return UseData<HovedListeItem>({
-        path: '../../resources/hoved_listen_paaLissom.json',
+        path: '../../../resources/hoved_listen_paaLissom.json',
         transform: (rawData: any[]) => rawData.map((item: any) => ({
             plbReference: item.plbReference || '',
             plbOrderData: item.plbOrderData || '',

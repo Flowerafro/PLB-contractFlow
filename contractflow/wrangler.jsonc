@@ -3,7 +3,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
 
   // Name of your worker
-  "name": "__change_me__",
+  "name": "worker",
 
   // Entry point for your worker
   "main": "src/worker.tsx",
@@ -25,5 +25,15 @@
   // Environment variables
   "vars": {
     // Add your environment variables here
+    "CLOUDFLARE_ACCOUNT_ID": "e5a67190552e6bc9183ec1f7e8457988",
+    "R2_BUCKET_NAME": "contractflow-filestorage",
+  },
+
+  "r2_buckets": [
+  {
+    "bucket_name": "contractflow-filestorage",
+    "binding": "R2",
+    "remote": true,
   }
+]
 }
