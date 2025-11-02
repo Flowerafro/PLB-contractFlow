@@ -5,8 +5,11 @@ import {
     useReactTable } from "@tanstack/react-table";
 import type { ColumnSetup } from "@/app/interfaces/ColumnSetup";
 import type {TableGenerationProps} from "@/app/interfaces/TableGenerationProps";
+import { useState } from "react";
 
-export default function TableGeneration<T>({ data, columnConfig }: TableGenerationProps<T>){
+export default function TableGeneration<T>({ data, columnConfig, onRowClick }: TableGenerationProps<T> & { onRowClick?: (row: T) => void }){
+
+    const [hoveredShipmentId, setHoveredShipmentId] = useState<string | null>(null);
     const columnHelper = createColumnHelper<T>();
 
 //  Gjenbrukbar kolonne-funksjon:
@@ -59,8 +62,14 @@ export default function TableGeneration<T>({ data, columnConfig }: TableGenerati
                     ))}
                 </thead>
                 <tbody>
-                    {table.getRowModel().rows.map(row => (
-                        <tr key={row.id} >
+                   {table.getRowModel().rows.map(row => (
+                        <tr 
+                          key={row.id}
+                          onClick={() => onRowClick?.(row.original as T)}
+                          style={{ cursor: onRowClick ? "pointer" : "default", backgroundColor: hoveredShipmentId === row.id ? "#f0f0f0" : undefined }}
+                          onMouseEnter={() => setHoveredShipmentId(row.id)}
+                          onMouseLeave={() => setHoveredShipmentId(null)}
+                        >
                             {row.getVisibleCells().map(cell => (
                                 <td key={cell.id} style={{ 
                                     minWidth: '150px',
