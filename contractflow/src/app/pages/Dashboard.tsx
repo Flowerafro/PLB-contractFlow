@@ -45,13 +45,13 @@ export default function Dashboard() {
       return (
         String(row.container ?? "").toLowerCase().includes(trimmed) ||
         String(row.customer ?? "").toLowerCase().includes(trimmed) ||
-        String(row.contactperson ?? "").toLowerCase().includes(trimmed) ||
-        String(row.principalOrderNumber ?? "").toLowerCase().includes(trimmed) ||
-        String(row.principalInvoiceNumber ?? "").toLowerCase().includes(trimmed) ||
         String(row.bookingNumber ?? "").toLowerCase().includes(trimmed) ||
         String(row.client ?? "").toLowerCase().includes(trimmed) ||
-        String(row.consignee ?? "").toLowerCase().includes(trimmed) ||
-        String(row.product ?? "").toLowerCase().includes(trimmed)
+        String(row.product ?? "").toLowerCase().includes(trimmed) ||
+        String(row.principalContractNumber ?? "").toLowerCase().includes(trimmed) ||
+        String(row.principalContractDate ?? "").toLowerCase().includes(trimmed) ||
+        String(row.principalOrderNumber ?? "").toLowerCase().includes(trimmed) ||
+        String(row.principalOrderDate ?? "").toLowerCase().includes(trimmed) 
       );
     });
 
@@ -74,6 +74,10 @@ export default function Dashboard() {
       invoiceAmount: row.invoiceAmount ?? null,
       bookingNumber: row.bookingNumber ?? null,
       blNumber: row.blNumber ?? null,
+      principalContractNumber: row.principalContractNumber ?? null,
+      principalContractDate: row.principalContractDate ?? null,
+      principalOrderNumber: row.principalOrderNumber ?? null,
+      principalOrderDate: row.principalOrderDate ?? null,
     };
     console.log("data fra HovedListeData", normalized);
     setSelectedShipment(normalized);
