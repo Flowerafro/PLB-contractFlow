@@ -33,6 +33,7 @@ export default function Dashboard() {
     const trimmed = query.trim().toLowerCase();
     setSearchTerm(trimmed);
     setSearchTrimmed(true);
+    console.log("searched query", results);
 
     if (!trimmed) {
       setResults([]);
@@ -44,32 +45,53 @@ export default function Dashboard() {
       return (
         String(row.container ?? "").toLowerCase().includes(trimmed) ||
         String(row.customer ?? "").toLowerCase().includes(trimmed) ||
-        String(row.contactperson ?? "").toLowerCase().includes(trimmed)
+        String(row.contactperson ?? "").toLowerCase().includes(trimmed) ||
+        String(row.principalOrderNumber ?? "").toLowerCase().includes(trimmed) ||
+        String(row.principalInvoiceNumber ?? "").toLowerCase().includes(trimmed) ||
+        String(row.bookingNumber ?? "").toLowerCase().includes(trimmed) ||
+        String(row.client ?? "").toLowerCase().includes(trimmed) ||
+        String(row.consignee ?? "").toLowerCase().includes(trimmed) ||
+        String(row.product ?? "").toLowerCase().includes(trimmed)
       );
     });
 
     setResults(found);
   };
 
-  const handleSelectShipment = (row: any) => {
-    setSelectedShipment(row ?? null);
+/* const normalized samler alle verdier til de ulike data fra HovedListenData */
+
+    const handleSelectShipment = (row: any) => {
+    console.log("selected row", row);
+    const normalized = {
+      id: row.id ?? null,
+      customerOrderNumber: row.customerOrderNumber?? null,
+      customer: row.customer ?? null,
+      containerNumber: row.containerNumber ?? null,
+      product: row.product ?? null,
+      poEta: row.poEta ?? null,
+      etd: row.etd ?? null,
+      invoiceNumber: row.principalInvoiceNumber ?? null,
+      invoiceAmount: row.invoiceAmount ?? null,
+      bookingNumber: row.bookingNumber ?? null,
+      blNumber: row.blNumber ?? null,
+    };
+    console.log("data fra HovedListeData", normalized);
+    setSelectedShipment(normalized);
   };
+
+  
+
 
   return (
     <div>
-      <h1 className="text-3xl font-bold p-6">Hovedlisten</h1>
+      <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">Hovedlisten</h1>
       <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />
 
       <section style={{ marginTop: 16 }}>
         {selectedShipment ? (
-          <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
+          <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md m-2">
             <button className="mb-4 px-3 py-1 rounded bg-gray-200" onClick={() => setSelectedShipment(null)}>Tilbake</button>
-            <DetailView item={{
-              id: selectedShipment.id,
-              name: selectedShipment.container ?? selectedShipment.name,
-              customer: selectedShipment.customer,
-              contactperson: selectedShipment.contactperson
-            }} />
+            <DetailView item={selectedShipment} />
           </div>
         ) : searchTrimmed ? (
           results.length === 0 ? (
@@ -82,7 +104,7 @@ export default function Dashboard() {
           )
         ) : (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold">Alle forsendelser</h2>
+            <h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">Alle forsendelser</h2>
             <TableGeneration data={data} columnConfig={HovedListenColumns} onRowClick={handleSelectShipment} />
           </div>
         )}
@@ -90,4 +112,3 @@ export default function Dashboard() {
     </div>
   );
 }
-// ...existing code...

@@ -1,4 +1,4 @@
-import UseData from '@/app/tableRelated/custom_hooks/UseData';
+import UseData from '@/app/tableRelated/custom_hooks/useData';
 import { HovedListeItem } from '@/app/types/types';
 
 /*
