@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Hamburger from './Hamburger';
 
 
 type DropdownMenuProps = {
@@ -13,7 +14,9 @@ export default function DropdownMenu({ options, onSelect }: DropdownMenuProps) {
 
     return (
         <nav>
-            <button onClick={() => setIsOpen((prev) => !prev)} className='cursor-pointer'>Hamburger</button>
+            <button onClick={() => setIsOpen((prev) => !prev)} className='cursor-pointer'>
+                <Hamburger />
+            </button>
             {isOpen && (
                 <ul className='bg-(--dropdown-bg) absolute right-0 m-2 p-4 rounded-md shadow-md'>
                     {options.map((option) => (
