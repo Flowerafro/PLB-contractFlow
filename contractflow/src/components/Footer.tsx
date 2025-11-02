@@ -12,7 +12,7 @@ export default function Footer() {
           backgroundColor: "#1D391D"
         }}
       >
-        © 2025 PLB-ContactFlow. All Rights Reserved.
+        © 2025 PLB-ContractFlow. All Rights Reserved.
       </footer>
     );
   }

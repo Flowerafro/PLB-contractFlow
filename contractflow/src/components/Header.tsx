@@ -235,7 +235,10 @@ export default function Header() {
                         window.location.href = "/create"; // sender til CreateContract-siden
                       }
                       if (item.id === "tbl") {
-                        window.location.href = "/tables"; // sender til ClientOverview-siden
+                        window.location.href = "/tables"; // sender til Tables-siden
+                      }
+                      if (item.id === "arch") {
+                        window.location.href = "/archive"; // sender til Archive-siden
                       }
                       if (item.id === "clients") {
                         window.location.href = "/clients"; // sender til ClientOverview-siden

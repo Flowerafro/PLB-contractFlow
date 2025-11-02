@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Layout from "./Layout";
+import UploadFile from "../features/fileHandling/UploadFile";
 
 /**
  * CreateContract er en side der brukeren kan opprette en ny kontrakt.
@@ -173,6 +174,8 @@ export default function CreateContract() {
             </div>
 
             {/* Filopplasting (foreløpig bare visuell) */}
+            <UploadFile />
+{/*
             <div
               style={{
                 border: "1px dashed #1D391D",
@@ -185,7 +188,7 @@ export default function CreateContract() {
             >
               Upload document
             </div>
-
+*/}
             {/* Send-knapp */}
             <button
               type="submit"

@@ -1,4 +1,4 @@
-import UseData from '@/app/tableRelated/custom_hooks/UseData';
+import UseData from '@/app/features/tables/custom_hooks/UseData';
 import { Book } from '@/app/types/types';
 
 /*
