@@ -22,6 +22,7 @@ import style from "./app/index.css";
 
 
 
+import style from "./app/index.css";
 
 export type AppContext = {
   env: Env;
@@ -43,8 +44,10 @@ export default defineApp([
       console.log("file", file);
        
        if (!file) {
+      if (!file) {
          return Response.json({ error: 'No file provided' }, { status: 400 });
        }
+      }
    
        const timestamp = Date.now();
        const fileName = `${timestamp}-${file.name}`;
@@ -83,7 +86,6 @@ export default defineApp([
     route("/tables", () => <Tables />),
     route("/archive", () => <Archive />),
     route("/archive", () => <Archive />)
-
   ]),
   
 ]);
