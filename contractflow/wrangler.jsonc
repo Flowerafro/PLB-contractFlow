@@ -1,29 +1,34 @@
 {
-  // Schema reference for wrangler configuration
-  "$schema": "node_modules/wrangler/config-schema.json",
-
-  // Name of your worker
-  "name": "__change_me__",
-
-  // Entry point for your worker
-  "main": "src/worker.tsx",
-
-  // Compatibility settings
-  "compatibility_date": "2025-08-21",
-  "compatibility_flags": ["nodejs_compat"],
-
-  // Assets configuration
-  "assets": {
-    "binding": "ASSETS"
-  },
-
-  // Observability settings
-  "observability": {
-    "enabled": true
-  },
-
-  // Environment variables
-  "vars": {
-    // Add your environment variables here
-  }
+	// Schema reference for wrangler configuration
+	"$schema": "node_modules/wrangler/config-schema.json",
+	// Name of your worker
+	"name": "plb-contractflow",
+	// Entry point for your worker
+	"main": "src/worker.tsx",
+	// Compatibility settings
+	"compatibility_date": "2025-08-21",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	// Assets configuration
+	"assets": {
+		"directory": "./public",
+		"binding": "ASSETS"
+	},
+	// D1 Database bindings
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "plb-contractflow-db",
+			"database_id": "ff8d2ccd-6228-47d1-a98b-5e3f0ea4d02b"
+		}
+	],
+	// Observability settings
+	"observability": {
+		"enabled": true
+	},
+	// Environment variables
+	"vars": {
+		"NODE_ENV": "production"
+	}
 }
