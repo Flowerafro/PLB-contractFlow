@@ -6,6 +6,8 @@ import HeaderComponent from "@/components/HeaderComponent";
 import CreateContract from "./CreateContract";
 import ClientOverview from "./ClientOverview";
 import Dashboard from "./Dashboard";
+import Tables from "./Tables";
+import Archive from "./Archive";
 
 
 export default function Layout({ children }: { children?: React.ReactNode }) {
@@ -18,6 +20,10 @@ export default function Layout({ children }: { children?: React.ReactNode }) {
         return <CreateContract />;
       case "/clients":
         return <ClientOverview  />;
+      case "/tables":
+        return <Tables  />;
+      case "/archive":
+        return <Archive  />;
         default: return children ?? <Dashboard  />;
     }
   } 

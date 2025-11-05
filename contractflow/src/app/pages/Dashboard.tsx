@@ -4,11 +4,9 @@
 import React, { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
-import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
-import { HovedListenData } from "@/app/tableRelated/custom_hooks/specializedStructures/HovedListenData";
-import { HovedListenColumns } from "../tableRelated/table_column_structure/HovedlistenColumns";
-import TableGeneration from "@/app/features/tables/table_presentation/TableGeneration";import { HovedListenData } from "../features/tables/custom_hooks/specializedStructures/HovedListenData";
-import { HovedListenColumns } from "../features/tables/table_column_structure/HovedListenColumns";
+import TableGeneration from "@/app/features/tables/table_presentation/TableGeneration";
+import { HovedListenData } from "@/app/features/tables/custom_hooks/specializedStructures/HovedListenData";
+import { HovedListenColumns } from "@/app/features/tables/table_column_structure/HovedListenColumns";
 import ShipmentList from "@/components/ShipmentList";
 
 interface Shipment {
@@ -115,7 +113,6 @@ export default function Dashboard() {
           </div>
         )}
       </section>
-    </div>
-    </div>  
+  </div>
   );
 }

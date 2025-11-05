@@ -9,7 +9,7 @@ import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
 
 export const HovedListenColumns: ColumnSetup<HovedListeItem>[] = [
     { key: "plbReference", header: "PLB Reference" },
-    { key: "plbOrderData", header: "PLB Order Date" },
+    { key: "plbOrderDate", header: "PLB Order Date" },
     { key: "customer", header: "Customer" },
     { key: "product", header: "Product" },
     { key: "tonn", header: "Tonn/FCL" },

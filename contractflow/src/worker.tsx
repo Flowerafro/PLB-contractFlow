@@ -12,6 +12,7 @@ import ContractSuccess from "@/app/pages/ContractSuccess";
 import ClientOverview from "@/app/pages/ClientOverview";
 import Tables from "@/app/pages/Tables";
 import {env} from "cloudflare:workers"
+import style from "./app/index.css";
 
 interface Env {
    CLOUDFLARE_ACCOUNT_ID: string;

@@ -31,7 +31,7 @@ export default function CreateContract() {
   };
 
   return (
-    <Layout>
+    <div>
       {/* Seksjon som inneholder hele skjemaet */}
       <section
         style={{
@@ -206,6 +206,6 @@ export default function CreateContract() {
           </form>
         </div>
       </section>
-    </Layout>
+    </div>
   );
 }

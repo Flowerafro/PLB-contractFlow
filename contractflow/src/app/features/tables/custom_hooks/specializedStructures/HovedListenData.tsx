@@ -1,5 +1,6 @@
 import UseData from '@/app/features/tables/custom_hooks/UseData';
 import { HovedListeItem } from '@/app/types/types';
+import formatDate from '@/app/features/tables/functions/DateFormatter';
 
 /*
     -Henter data fra json-fil knyttet til hovedfilen-
@@ -13,60 +14,32 @@ export function HovedListenData(){
         path: '../../../resources/hoved_listen_paaLissom.json',
         transform: (rawData: any[]) => rawData.map((item: any) => ({
             plbReference: item.plbReference || '',
-            plbOrderData: item.plbOrderData || '',
+            plbOrderDate: formatDate(new Date(item.plbOrderDate)) || '',
             customer: item.customer || 'Unknown',
             product: item.product || 'Unknown',
             tonn: Number(item.tonn) || 0,
             priceUsdMt: Number(item.priceUsdMt) || 0,
             totalPriceUsd: Number(item.totalPriceUsd) || 0,
             prisgrProv: Number(item.prisgrProv) || 0,
-            poEta: item.poEta || '',
-            etd: item.etd || '',
+            poEta: formatDate(new Date(item.poEta)) || '',
+            etd: formatDate(new Date(item.etd)) || '',
             customerOrderNumber: item.customerOrderNumber || '',
             principalContractNumber: Number(item.principalContractNumber) || 0,
-            principalContractDate: item.principalContractDate || '',
+            principalContractDate: formatDate(new Date(item.principalContractDate)) || '',
             principalOrderNumber: Number(item.principalOrderNumber) || 0,
             containerNumber: item.containerNumber || '',
             principalInvoiceNumber: Number(item.principalInvoiceNumber) || 0,
-            principalInvoiceDate: item.principalInvoiceDate || '',
-            invoiceDueDate: item.invoiceDueDate || '',
+            principalInvoiceDate: formatDate(new Date(item.principalInvoiceDate)) || '',
+            invoiceDueDate: formatDate(new Date(item.invoiceDueDate)) || '',
             tonnesDeliveres: Number(item.tonnesDeliveres) || 0,
             invoiceAmount: Number(item.invoiceAmount) || 0,
-            blDate: item.blDate || '',
-            eta: item.eta || '',
+            blDate: formatDate(new Date(item.blDate)) || '',
+            eta: formatDate(new Date(item.eta)) || '',
             bookingNumber: item.bookingNumber || '',
             blNumber: item.blNumber || '',
             aakDelNumber: Number(item.aakDelNumber) || 0,
         })),
 
-/*        transform: (rawData: any[]) => rawData.map((item: any) => ({
-            plbReference: new Date(item.plbReference || Date.now()),
-            plbOrderData: new Date(item.plbOrderData || Date.now()),
-            customer: item.customer || 'Unknown',
-            product: item.product || 'Unknown',
-            tonn: Number(item.tonn) || 0,
-            priceUsdMt: Number(item.priceUsdMt) || 0,
-            totalPriceUsd: Number(item.totalPriceUsd) || 0,
-            prisgrProv: Number(item.prisgrProv) || 0,
-            poEta: new Date(item.poEta || Date.now()),
-            etd: new Date(item.etd || Date.now()),
-            customerOrderNumber: item.customerOrderNumber || '',
-            principalContractNumber: Number(item.principalContractNumber) || 0,
-            principalContractDate: new Date(item.principalContractDate || Date.now()),
-            principalOrderNumber: Number(item.principalOrderNumber) || 0,
-            containerNumber: item.containerNumber || '',
-            principalInvoiceNumber: Number(item.principalInvoiceNumber) || 0,
-            principalInvoiceDate: new Date(item.principalInvoiceDate || Date.now()),
-            invoiceDueDate: new Date(item.invoiceDueDate || Date.now()),
-            tonnesDeliveres: Number(item.tonnesDeliveres) || 0,
-            invoiceAmount: Number(item.invoiceAmount) || 0,
-            blDate: new Date(item.blDate || Date.now()),
-            eta: new Date(item.eta || Date.now()),
-            bookingNumber: item.bookingNumber || '',
-            blNumber: item.blNumber || '',
-            aakDelNumber: Number(item.aakDelNumber) || 0,
-        })),
-*/
         errorMessage: 'PLB contract data did not load'
     });
 }

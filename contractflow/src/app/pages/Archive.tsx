@@ -1,6 +1,5 @@
 "use client";
 
-import Layout from "@/app/pages/Layout";
 import TableGeneration from "@/app/features/tables/table_presentation/TableGeneration";
 import UploadFile from "../features/fileHandling/UploadFile";
 
@@ -11,12 +10,11 @@ export default function Archive() {
   const { data: data, loading, error } = HovedListenData();
 
   return (
-    <Layout>
-        <h1 className="text-3xl font-bold text-green-500 p-6 bg-gray-100 rounded-lg">
-          Archive
-        </h1>
+    <div>
+      <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">Archive</h1>
+
         <TableGeneration  data={data} columnConfig={HovedListenColumns}  />
         <UploadFile />
-    </Layout>
+    </div>
   );
 }
