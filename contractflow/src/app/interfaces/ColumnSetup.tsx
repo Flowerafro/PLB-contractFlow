@@ -4,4 +4,4 @@ export interface ColumnSetup<T> {
     width?: string;
     sortable?: boolean;
     formatter?: (value: any) => string;
-}
+} 

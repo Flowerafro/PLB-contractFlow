@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
-
 import TableGeneration from "@/app/features/tables/table_presentation/TableGeneration";
 
 ;import { HovedListenData } from "@/app/features/tables/custom_hooks/specializedStructures/HovedListenData";

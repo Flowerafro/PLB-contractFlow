@@ -3,4 +3,4 @@ export interface DataSource<T>{
     transform: (incomingData: any) => T[];
     errorMessage: string;
     dataPath?: string;
-}
+} 

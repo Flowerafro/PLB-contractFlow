@@ -2,17 +2,23 @@ import {
     createColumnHelper,
     flexRender,
     getCoreRowModel, 
-    useReactTable } from "@tanstack/react-table";
+    getSortedRowModel,
+//    SortingFn,
+    SortingState,
+    useReactTable,
+} from "@tanstack/react-table";
 import type { ColumnSetup } from "@/app/interfaces/ColumnSetup";
 import type {TableGenerationProps} from "@/app/interfaces/TableGenerationProps";
 import { useState } from "react";
 
-export default function TableGeneration<T>({ data, columnConfig, onRowClick }: TableGenerationProps<T> & { onRowClick?: (row: T) => void }){
 
+
+export default function TableGeneration<T>({ data, columnConfig, onRowClick }: TableGenerationProps<T> & { onRowClick?: (row: T) => void }){
     const [hoveredShipmentId, setHoveredShipmentId] = useState<string | null>(null);
+    const [sorting, setSorting] = useState<SortingState>([]);
     const columnHelper = createColumnHelper<T>();
 
-//  Gjenbrukbar kolonne-funksjon:
+    //  Gjenbrukbar kolonne-funksjon:
     const columns = columnConfig.map((config: ColumnSetup<T>) =>
         columnHelper.accessor(config.key as any, {
             id: String(config.key),
@@ -20,15 +26,20 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
             cell: info => {
                 const value = info.getValue();
                 return config.formatter ? config.formatter(value) : String(value || "");
-            }
-    }));
+            },
+            enableSorting: true,
+        })
+    );
 
     const table = useReactTable({
         data,
         columns,
+        state: { sorting },
+        onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
     });
-    
+
     return(
         <div style={{ 
                 width: '90vw',
@@ -41,21 +52,25 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
                 borderCollapse: 'collapse', 
                 }}
             >
-                <thead style={{ width: 'fit-content'}}>
+                <thead style={{ width: 'fit-content' }}>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
                                 <th key={header.id} style={{ 
                                     border: '1px solid #ccc', 
                                     padding: '8px',
-                                    minWidth: '150px'
-                                }}>
+                                    minWidth: '150px',
+                                    cursor: header.column.getCanSort() ? 'pointer' : undefined
+                                }}
+                                    onClick={header.column.getToggleSortingHandler()}
+                                >
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
                                             header.column.columnDef.header,
                                             header.getContext()
                                         )}
+                                    {header.column.getIsSorted() ? (header.column.getIsSorted() === 'asc' ? ' ▲' : ' ▼') : ''}
                                 </th>
                             ))}
                         </tr>
@@ -86,83 +101,3 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
         </div>
     )
 }
-
-/*
-    Tidlig arbeid som inkluderer mer hardkodet løsning:
-
-import { 
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel, 
-    useReactTable } from "@tanstack/react-table";
-import type { Book } from "@/app/types/types.ts";
-import UseData from "@/app/tableRelated/custom_hooks/UseData";
-
-const columnHelper = createColumnHelper<Book>();
-
-
-export default function TableGeneration(){
-    const { data } = UseData();
-
-//  Gjenbrukbar kolonne-funksjon:
-    const createColumns = (key: keyof Book, header: String) =>
-        columnHelper.accessor(key, {
-            id: key,
-            cell: info => info.getValue(),
-            header: () => <span>{header}</span>,
-            footer: props => props.column.id,
-        });
-
-        //  Tabellkolonner instansieres i en liste:        
-    const bookColumns = [
-        createColumns('title', 'Title'),
-        createColumns('author', 'Author'),
-        createColumns('year', 'Year'),
-        createColumns('genre', 'Genre'),
-        createColumns('country', 'Country'),
-        createColumns('language', 'Language'),
-        createColumns('pages', 'Pages'),
-        createColumns('rating', 'Rating'),
-        createColumns('isbn', 'ISBN'),
-        createColumns('publisher', 'Publisher'),
-    ]
-
-    const table = useReactTable({
-        data,
-        columns: bookColumns,
-        getCoreRowModel: getCoreRowModel(),
-    });
-    
-    return(
-            <table style={{ borderCollapse: 'collapse' }}>
-                <thead>
-                    {table.getHeaderGroups().map(headerGroup => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map(header => (
-                                <th key={header.id} style={{ border: '1px solid #ccc', padding: '8px' }}>
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                </thead>
-                <tbody>
-                    {table.getRowModel().rows.map(row => (
-                        <tr key={row.id} >
-                            {row.getVisibleCells().map(cell => (
-                                <td key={cell.id} style={{ border: '1px solid #ccc', padding: '8px', margin: '0'}}>
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-    )
-}
-*/
