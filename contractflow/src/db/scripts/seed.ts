@@ -1,5 +1,5 @@
-import { db } from './config';
-import { principals, clients, contracts } from './schema/schema';
+import { db } from '../core/config';
+import { principals, clients, contracts } from '../schema/schema';
 import { eq } from 'drizzle-orm';
 
 async function seed() {

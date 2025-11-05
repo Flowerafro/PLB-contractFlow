@@ -2,8 +2,16 @@ import { createClient } from '@libsql/client';
 import { drizzle } from 'drizzle-orm/libsql';
 import * as schema from '../schema/schema';
 
+// Safe environment variable access that works in both Node.js and Cloudflare Workers
+function getEnvVar(name: string, defaultValue: string): string {
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[name] ?? defaultValue;
+  }
+  return defaultValue;
+}
+
 export const client = createClient({
-  url: process.env.DATABASE_URL ?? 'file:./local.db',
+  url: getEnvVar('DATABASE_URL', 'file:./local.db'),
 });
 
 // PRAGMA settings for ACID compliance 
