@@ -18,11 +18,6 @@ interface Env {
    R2_BUCKET_NAME: string;
    R2: R2Bucket; 
 }
-import style from "./app/index.css";
-
-
-
-import style from "./app/index.css";
 
 export type AppContext = {
   env: Env;
