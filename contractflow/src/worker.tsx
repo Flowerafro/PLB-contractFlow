@@ -4,11 +4,14 @@ import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/Home";
 import { Login } from "@/app/pages/Login";
+import Archive from "@/app/pages/Archive";
 import Dashboard from "@/app/pages/Dashboard";
 import CreateContract from "@/app/pages/CreateContract";
 import ContractTerms from "@/app/pages/ContractTerms";
 import ContractSuccess from "@/app/pages/ContractSuccess";
-import ClientOverview from "./app/pages/ClientOverview";
+import ClientOverview from "@/app/pages/ClientOverview";
+import Tables from "@/app/pages/Tables";
+import style from "./app/index.css";
 
 
 
@@ -28,6 +31,9 @@ render(Document, [
     route("/terms", () => <ContractTerms />), 
     route("/success", () => <ContractSuccess />),
     route("/clients", () => <ClientOverview />),
+    route("/clients/:id", (({params}) => <ClientOverview clientId={params.id} />)),
+    route("/tables", () => <Tables />),
+    route("/archive", () => <Archive />)
 
   ]),
 ]);

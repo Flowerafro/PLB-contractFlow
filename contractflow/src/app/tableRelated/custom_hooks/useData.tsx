@@ -2,10 +2,56 @@ import {
     useEffect,
     useState 
 } from "react";
-import type { Book } from "@/app/types/types.ts";
+import type { DataSource } from "@/app/interfaces/DataSource";
 
-//  Her bearbeides data for tabell-innleggelse. Denne filen er en av de siste hvor
-//  det bør gjøre arbeid for å få en løs-kodet applikasjon.
+/*
+    -Kode for omdanning av data fra JSON-filer-
+
+    Her bearbeides data for tabell-innleggelse. 
+    Denne skal være ganske anvendelig for forsjellige
+    datakilder, men det må nok ha json struktur.
+    Andre er ikke testet.
+*/
+
+export default function UseData<T>(dataSource: DataSource<T>){
+    const [data, setData] = useState<T[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+//  Henter data fra JSON-filen:    
+    const loadData = async () => { 
+        try {
+            setLoading(true);
+            setError(null);
+
+            const {default: incomingData } = await import(/* @vite-ignore */ dataSource.path);
+    
+            const retrievedData = dataSource.dataPath && dataSource.dataPath.trim()
+                ? dataSource.dataPath.split('.').reduce((obj, key) => obj?.[key], incomingData)
+                : incomingData;
+
+            const transformedData: T[] = dataSource.transform(retrievedData);
+            setData(transformedData);
+        }
+        catch (err) {
+            setError(dataSource.errorMessage);
+            console.error(err);
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    
+
+    useEffect(() => {
+        loadData();
+    }, [dataSource.path, dataSource.dataPath])
+
+    return { data, loading, error };
+}
+
+/*
+    -Tidlig arbeid som inkluderer mer hardkodet løsning-
 
 export default function useData(){
     const [data, setData] = useState<Book[]>([]);
@@ -24,7 +70,7 @@ export default function useData(){
     /*
         Eksempel filen er nestet. Uten dette ville følgende linje se slik ut:
                 const transformedBooks: Book[] = classicBooksData.map((book: any) => ({
-    */
+    
                 const transformedBooks: Book[] = classicBooksData[0].data.map((book: any) => ({
                     title: book["Title"] || 'Unknown',
                     author: book["Author"] || 'Unknown',
@@ -55,3 +101,4 @@ export default function useData(){
     
         return { data, loading, error };
 }
+*/

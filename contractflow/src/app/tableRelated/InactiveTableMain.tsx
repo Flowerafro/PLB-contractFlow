@@ -1,21 +1,28 @@
 "use client"
 
-import useData from "./custom_hooks/useData";
+import UseData  from "@/app/tableRelated/custom_hooks/UseData";
 import TableGeneration from "@/app/tableRelated/table_presentation/TableGeneration";
 import { BookTableColumns } from "@/app/tableRelated/table_column_structure/BookTableColumns";
-import {ColumnUpset } from "@/app/interfaces/ColumnSetup";
+import {ColumnSetup } from "@/app/interfaces/ColumnSetup";
 
 // Tidlig arbeid. Ikke i bruk etter refaktorering
 
 interface TableMainProps<T> {
     data: T[];
-    columnConfig: ColumnUpset<T>[];
+    columnConfig: ColumnSetup<T>[];
 }
 
-export default function TableMain(){
+/*
+    -Samle-komponent for tabell-visning-
+    Denne kan benyttes om vi vil ha overskrift som 
+    samme komponent som tabellvisningen.
 
+    Kan være nyttig med en tittel komponent
+*/
+
+export default function TableMain(){
 //  useData filen benyttes her:    
-    const { data, loading, error } = useData();
+//    const { data, loading, error } = UseData();
 
 /* KI generert funksjon for tilleggelse av knapper:    
     function RowActions({ row }: { row: any}) {
@@ -27,7 +34,7 @@ export default function TableMain(){
                     onClick={() => console.log('Edit:', book.title)}
                     style={{padding: '4px 8px'}}
                 >
-                    Edit
+                        Edit
                 </button>
                 <button
                     onClick={() => console.log('Delete:', book.title)}
@@ -39,7 +46,7 @@ export default function TableMain(){
         );
     }
 */
-  
+
     if(loading) return <div>Loading books...</div>;
     if(error) return <div>Error: {error}</div>;
 

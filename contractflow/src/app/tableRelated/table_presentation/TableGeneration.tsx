@@ -3,19 +3,17 @@ import {
     flexRender,
     getCoreRowModel, 
     useReactTable } from "@tanstack/react-table";
-import type { ColumnUpset } from "@/app/interfaces/ColumnSetup";
+import type { ColumnSetup } from "@/app/interfaces/ColumnSetup";
+import type {TableGenerationProps} from "@/app/interfaces/TableGenerationProps";
+import { useState } from "react";
 
-interface TableGenerationProps<T>{
-    data: T[];
-    columnConfig: ColumnUpset<T>[];
-}
+export default function TableGeneration<T>({ data, columnConfig, onRowClick }: TableGenerationProps<T> & { onRowClick?: (row: T) => void }){
 
-
-export default function TableGeneration<T>({ data, columnConfig }: TableGenerationProps<T>){
+    const [hoveredShipmentId, setHoveredShipmentId] = useState<string | null>(null);
     const columnHelper = createColumnHelper<T>();
 
 //  Gjenbrukbar kolonne-funksjon:
-    const columns = columnConfig.map(config =>
+    const columns = columnConfig.map((config: ColumnSetup<T>) =>
         columnHelper.accessor(config.key as any, {
             id: String(config.key),
             header: () => <span>{config.header}</span>,
@@ -32,12 +30,26 @@ export default function TableGeneration<T>({ data, columnConfig }: TableGenerati
     });
     
     return(
-            <table style={{ borderCollapse: 'collapse' }}>
-                <thead>
+        <div style={{ 
+                width: '90vw',
+                margin: '2rem',
+                overflowX: 'auto',
+                border: '1px solid gray',
+                borderRadius: '8px',
+                }}>
+            <table  style={{ 
+                borderCollapse: 'collapse', 
+                }}
+            >
+                <thead style={{ width: 'fit-content'}}>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
-                                <th key={header.id} style={{ border: '1px solid #ccc', padding: '8px' }}>
+                                <th key={header.id} style={{ 
+                                    border: '1px solid #ccc', 
+                                    padding: '8px',
+                                    minWidth: '150px'
+                                }}>
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
@@ -50,10 +62,20 @@ export default function TableGeneration<T>({ data, columnConfig }: TableGenerati
                     ))}
                 </thead>
                 <tbody>
-                    {table.getRowModel().rows.map(row => (
-                        <tr key={row.id} >
+                   {table.getRowModel().rows.map(row => (
+                        <tr 
+                          key={row.id}
+                          onClick={() => onRowClick?.(row.original as T)}
+                          style={{ cursor: onRowClick ? "pointer" : "default", backgroundColor: hoveredShipmentId === row.id ? "#f0f0f0" : undefined }}
+                          onMouseEnter={() => setHoveredShipmentId(row.id)}
+                          onMouseLeave={() => setHoveredShipmentId(null)}
+                        >
                             {row.getVisibleCells().map(cell => (
-                                <td key={cell.id} style={{ border: '1px solid #ccc', padding: '8px', margin: '0'}}>
+                                <td key={cell.id} style={{ 
+                                    minWidth: '150px',
+                                    border: '1px solid #ccc', 
+                                    padding: '8px', 
+                                    margin: '0'}}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
                             ))}
@@ -61,6 +83,7 @@ export default function TableGeneration<T>({ data, columnConfig }: TableGenerati
                     ))}
                 </tbody>
             </table>
+        </div>
     )
 }
 
@@ -73,13 +96,13 @@ import {
     getCoreRowModel, 
     useReactTable } from "@tanstack/react-table";
 import type { Book } from "@/app/types/types.ts";
-import useData from "@/app/pages/DatabaseExport/useData";
+import UseData from "@/app/tableRelated/custom_hooks/UseData";
 
 const columnHelper = createColumnHelper<Book>();
 
 
 export default function TableGeneration(){
-    const { data } = useData();
+    const { data } = UseData();
 
 //  Gjenbrukbar kolonne-funksjon:
     const createColumns = (key: keyof Book, header: String) =>

@@ -8,6 +8,7 @@ export const Document: React.FC<{ children: React.ReactNode }> = ({
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>@redwoodjs/starter-minimal</title>
+      <link rel="icon" href="../public/tabLogo.png" />
       <link rel="stylesheet" href={styles} />
     </head>
     <body>

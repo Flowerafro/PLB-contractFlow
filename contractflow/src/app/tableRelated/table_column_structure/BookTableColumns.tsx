@@ -1,7 +1,16 @@
 import type { Book } from "@/app/types/types.ts";
-import { ColumnUpset } from "@/app/interfaces/ColumnSetup";
+import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
 
-export const BookTableColumns: ColumnUpset<Book>[] = [
+/*
+    -Kolonnetitler for bøker-
+    Venstre side viser key-verdien i dataobjektet
+    Høyre side viser navnet som presenteres i tabellen 
+
+    Arbeid benyttet i eksperiment. Kan slettes eller 
+    redigeres.
+*/
+
+export const BookTableColumns: ColumnSetup<Book>[] = [
     { key: "title", header: "Title" },
     { key: "author", header: "Author" },
     { key: "year", header: "Year" },
