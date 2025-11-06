@@ -1,6 +1,6 @@
-import UseData from '@/app/features/tables/custom_hooks/UseData';
-import { HovedListeItem } from '@/app/types/types';
-import formatDate from '@/app/features/tables/functions/DateFormatter';
+import UseData from '@/features/tables/custom_hooks/UseData';
+import { HovedListeItem } from '@/types/types';
+import formatDate from '@/features/tables/functions/DateFormatter';
 
 /*
     -Henter data fra json-fil knyttet til hovedfilen-

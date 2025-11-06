@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Layout from "./Layout";
-import UploadFile from "../features/fileHandling/UploadFile";
+import UploadFile from "../../features/file_handling/UploadFile";
 
 /**
  * CreateContract er en side der brukeren kan opprette en ny kontrakt.

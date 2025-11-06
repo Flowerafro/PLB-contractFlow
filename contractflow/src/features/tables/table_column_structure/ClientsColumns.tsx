@@ -1,4 +1,4 @@
-import type { Clients } from "@/app/types/types.ts";
+import type { Clients } from "@/types/types";
 import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
 
 /*

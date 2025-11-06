@@ -1,5 +1,5 @@
-import UseData from '@/app/features/tables/custom_hooks/UseData';
-import { Book } from '@/app/types/types';
+import UseData from '@/features/tables/custom_hooks/UseData';
+import { Book } from '@/types/types';
 
 /*
     -Henter data fra json-fil knyttet til bøker-

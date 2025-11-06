@@ -1,4 +1,4 @@
-import type { ArchiveDocument } from "@/app/types/types.ts";
+import type { ArchiveDocument } from "@/types/types";
 import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
 
 /*

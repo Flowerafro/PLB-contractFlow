@@ -35,7 +35,6 @@ interface UploadProps {
     maxSize?: number
     acceptedFileTypes?: string[]
     fileTypeLabels?: string
-    uploadToR2?: boolean
 }
 
 interface XLSXData {

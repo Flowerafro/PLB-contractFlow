@@ -1,4 +1,4 @@
-import type { HovedListeItem } from "@/app/types/types.ts";
+import type { HovedListeItem } from "@/types/types";
 import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
 
 /*

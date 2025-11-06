@@ -4,10 +4,10 @@ import React, { useState } from "react";
 
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
-import TableGeneration from "@/app/features/tables/table_presentation/TableGeneration";
+import TableGeneration from "@/features/tables/table_presentation/TableGeneration";
 
-;import { HovedListenData } from "@/app/features/tables/custom_hooks/specializedStructures/HovedListenData";
-import { HovedListenColumns } from "../features/tables/table_column_structure/HovedListenColumns";
+;import { HovedListenData } from "@/features/tables/custom_hooks/specializedStructures/HovedListenData";
+import { HovedListenColumns } from "../../features/tables/table_column_structure/HovedListenColumns";
 
 //  -Tables-siden
 //  Her er dashboard siden lagt over slik at den kan bearbeides videre
@@ -19,8 +19,6 @@ interface Shipment {
   customer: string;
   status?: string;
 }
-
-
 
 export default function Tables() {
   const [searchTerm, setSearchTerm] = useState<string>("");
