@@ -1,6 +1,6 @@
 "use client"
 
-import type { ClientSearchItem } from "@/types/clientview";
+import type { ClientSearchItem } from "@/app/types/clientSearch"
 
 export default function ClientCard({ client, onSelect }: { client: ClientSearchItem; onSelect?: (client: ClientSearchItem) => void }) {
     return (

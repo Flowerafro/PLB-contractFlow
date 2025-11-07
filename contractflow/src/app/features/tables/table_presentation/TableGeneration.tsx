@@ -43,7 +43,7 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
     return(
         <div style={{ 
                 width: '90vw',
-                margin: '2rem',
+                margin: '1rem',
                 overflowX: 'auto',
                 border: '1px solid gray',
                 borderRadius: '8px',

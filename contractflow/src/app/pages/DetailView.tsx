@@ -1,23 +1,8 @@
 "use client";
 
 import React from "react";
+import type { SearchItem } from "@/app/types/searchItem"
 
-interface SearchItem {
-  id?: number;
-  customer?: string;
-  customerOrderNumber?: string;
-  containerNumber?: string;
-  product?: string;
-  poEta?: string;
-  etd?: string;
-  invoiceNumber?: string;
-  invoiceAmount?: string;
-  bookingNumber?: string;
-  blNumber?: string;
-  principalContractNumber?: string;
-  principalContractDate?: string;
-  principalOrderNumber?: string;
-}
 
 export default function DetailView({ item }: { item: SearchItem }) {
 

@@ -1,3 +1,12 @@
+/* 
+
+Alt er dummy data ment for å fylle opp client sidene med relevant informasjon.
+
+Når databasen er satt opp, skal denne fjernes og byttes ut med en datahenting
+
+*/
+
+
 export interface Client {
     id: string;
     customerCode?: string;

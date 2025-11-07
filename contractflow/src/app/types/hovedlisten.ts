@@ -1,32 +1,4 @@
-//    -Typer benyttet i tabell-arbeid-
-
-// Archive typen - Benyttes på sikt i tilknytning av dokumenter i arkivet:
-
-export type ArchiveDocument = {
-    date: Date | string;
-    containerNumber: string;
-    customer: string;
-    documentName: string;
-}
-
-/* Denne blir erstattet med Client i client.ts */
-export type Clients = {
-    clientNumber: string;
-    customer: string;
-    contactPerson: string;
-    email: string;
-    phoneNumber: string;
-    country: string;
-}
-
-//  Person typen - Brukt i eksperiment med etablering av tabell(Benyttet i Parseexcel):
-export type Person = {
-    id: number;
-    name: string;
-    age?: number;
-};
-
-// HovedListen typen - laget en egen fil for denne typen i hovedlisten.ts, så den kan slettes på sikt. 
+// HovedListen typen 
 
 export type HovedListeItem = {
     plbReference: string;

@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import type { SearchBarProps } from "@/app/types/searchItem";
 
-interface SearchBarProps {
+/* interface SearchBarProps {
   placeholder?: string;
   onSearch?: (query: string) => void;
 }
-
+ */
 export default function SearchBar({ placeholder = "Søk...", onSearch }: SearchBarProps) {
   const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -49,11 +50,3 @@ export default function SearchBar({ placeholder = "Søk...", onSearch }: SearchB
     </form>
   );
 }
-
-/** style={{ display: "flex", gap: 8, alignItems: "center", maxWidth: 720 }} 
- * style={{ flex: 1, padding: "8px 12px", border: "1px solid #ccc", borderRadius: 6 }}
- * 
- *  style={{ padding: 16  bg-gray-100 rounded-lg}}
- * 
- * 
-*/
