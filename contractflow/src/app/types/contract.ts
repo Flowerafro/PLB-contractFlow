@@ -1,7 +1,7 @@
 /*
 
 Contract type ikke bruk nå før DB er satt opp. 
-Strukturert opp etter clients tabell fra DB i schema.ts
+Strukturert opp etter contract tabell fra DB i schema.ts
 
 */
 

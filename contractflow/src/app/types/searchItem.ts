@@ -15,6 +15,7 @@ export interface SearchItem {
     principalOrderNumber?: string;
 }
 
+
 export interface SearchBarProps {
     placeholder?: string;
     onSearch?: (query: string) => void;

@@ -171,4 +171,4 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
       {showNewClientForm && <NewClient onCreate={handleCreateClient} onCancel={() => setShowNewClientForm(false)} />}
     </section>
   );
-}
+} 
