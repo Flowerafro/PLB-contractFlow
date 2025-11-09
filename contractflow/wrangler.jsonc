@@ -1,39 +1,41 @@
 {
-  // Schema reference for wrangler configuration
-  "$schema": "node_modules/wrangler/config-schema.json",
+	// Schema reference for wrangler configuration
+	"$schema": "node_modules/wrangler/config-schema.json",
 
-  // Name of your worker
-  "name": "worker",
+	// Name of your worker
+	"name": "plb-contractflow",
 
-  // Entry point for your worker
-  "main": "src/worker.tsx",
+	// Entry point for your worker
+	"main": "src/worker.tsx",
 
-  // Compatibility settings
-  "compatibility_date": "2025-08-21",
-  "compatibility_flags": ["nodejs_compat"],
+	// Compatibility settings
+	"compatibility_date": "2025-08-21",
+	"compatibility_flags": ["nodejs_compat"],
 
-  // Assets configuration
-  "assets": {
-    "binding": "ASSETS"
+	// Assets configuration
+	"assets": {
+		"directory": "./public",
+		"binding": "ASSETS"
+	},
+
+	// D1 Database bindings
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "plb-contractflow-db",
+			"database_id": "ff8d2ccd-6228-47d1-a98b-5e3f0ea4d02b"
+		}
+	],
+
+	// Observability settings
+	"observability": {
+		"enabled": true
+	},
+
+	// Environment variables
+	"vars": {
+		"NODE_ENV": "production",
+		"CLOUDFLARE_ACCOUNT_ID": "e5a67190552e6bc9183ec1f7e8457988",
+    	"R2_BUCKET_NAME": "contractflow-filestorage",
   },
-
-  // Observability settings
-  "observability": {
-    "enabled": true
-  },
-
-  // Environment variables
-  "vars": {
-    // Add your environment variables here
-    "CLOUDFLARE_ACCOUNT_ID": "e5a67190552e6bc9183ec1f7e8457988",
-    "R2_BUCKET_NAME": "contractflow-filestorage",
-  },
-
-  "r2_buckets": [
-  {
-    "bucket_name": "contractflow-filestorage",
-    "binding": "R2",
-    "remote": true,
-  }
-]
 }

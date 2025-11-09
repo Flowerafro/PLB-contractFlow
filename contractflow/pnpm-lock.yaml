@@ -22,7 +22,7 @@ importers:
         specifier: ^17.2.3
         version: 17.2.3
       drizzle-orm:
-        specifier: ^0.44.6
+        specifier: ^0.44.7
         version: 0.44.7(@cloudflare/workers-types@4.20250921.0)(@libsql/client@0.15.15)(kysely@0.28.8)
       react:
         specifier: 19.2.0
@@ -67,7 +67,7 @@ importers:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.6)
       drizzle-kit:
-        specifier: ^0.31.5
+        specifier: ^0.31.6
         version: 0.31.6
       postcss:
         specifier: ^8.5.6

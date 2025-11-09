@@ -3,9 +3,9 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export default {
-  schema: './src/db/tables/*',
+  schema: './src/db/schema/schema.ts',
   out: './src/db/migrations',
-  dialect: 'sqlite',  // Keep as sqlite since we're using local SQLite file
+  dialect: 'sqlite', // LibSQL is SQLite-compatible
   dbCredentials: {
     url: process.env.DATABASE_URL ?? 'file:./local.db'
   },
