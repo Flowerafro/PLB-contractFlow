@@ -7,7 +7,6 @@ import { Login } from "@/app/pages/Login";
 import Archive from "@/app/pages/Archive";
 import Dashboard from "@/app/pages/Dashboard";
 import CreateContract from "@/app/pages/CreateContract";
-import ContractTerms from "@/app/pages/ContractTerms";
 import ContractSuccess from "@/app/pages/ContractSuccess";
 import ClientOverview from "@/app/pages/ClientOverview";
 import Tables from "@/app/pages/Tables";
@@ -75,7 +74,6 @@ export default defineApp([
     route("/", () => <Login />), // default rute er login for å simulere beskyttet side
     route("/Home", () => <Home />),
     route("/create", () => <CreateContract />),
-    route("/terms", () => <ContractTerms />), 
     route("/success", () => <ContractSuccess />),
     route("/clients", () => <ClientOverview />),
     route("/clients/:id", (({params}) => <ClientOverview clientId={params.id} />)),
