@@ -6,13 +6,13 @@ declare namespace Cloudflare {
 		mainModule: typeof import("./src/worker");
 	}
 	interface Env {
-		CLOUDFLARE_ACCOUNT_ID: "e5a67190552e6bc9183ec1f7e8457988";
+		CLOUDFLARE_ACCOUNT_ID: "73bedcb5d46a3f368e92d733b4564d2d";
 		VITE_CLOUDFLARE_ACCOUNT_ID: string;
 		VITE_R2_ACCESS_KEY_ID: string;
 		VITE_R2_SECRET_ACCESS_KEY: string;
 		VITE_R2_BUCKET_NAME: string;
 		VITE_R2_PUBLIC_URL: string;
-		DATABASE_URL: string;
+		DATABASE_URL: "libsql://plb-contractflow-db.mathias.jarbekk1@hotmail.com.d1.sqlite.io?authToken=mBJbEafyspFhAf6hOQ1nyfXyWAd6yI6clAjWH4GC";
 		NODE_ENV: string;
 		R2: R2Bucket;
 		ASSETS: Fetcher;
@@ -22,6 +22,7 @@ interface Env extends Cloudflare.Env {}
 type StringifyValues<EnvType extends Record<string, unknown>> = {
 	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
 };
+
 declare namespace NodeJS {
 	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "CLOUDFLARE_ACCOUNT_ID" | "VITE_CLOUDFLARE_ACCOUNT_ID" | "VITE_R2_ACCESS_KEY_ID" | "VITE_R2_SECRET_ACCESS_KEY" | "VITE_R2_BUCKET_NAME" | "VITE_R2_PUBLIC_URL" | "DATABASE_URL" | "NODE_ENV">> {}
 }

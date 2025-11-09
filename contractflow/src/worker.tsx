@@ -18,11 +18,14 @@ interface Env {
    CLOUDFLARE_ACCOUNT_ID: string;
    R2_BUCKET_NAME: string;
    R2: R2Bucket; 
+   DB: D1Database
 }
 
 export type AppContext = {
   env: Env;
 };
+
+
 
 export default defineApp([
 

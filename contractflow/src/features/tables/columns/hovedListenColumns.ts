@@ -1,5 +1,5 @@
 import type { HovedListeItem } from "@/app/types/types.ts";
-import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
+import { columnSetup } from "@/features/tables/interfaces/columnSetup";
 
 /*
     -Kolonnetitler for hovedlisten-
@@ -7,7 +7,7 @@ import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
     Høyre side viser navnet som presenteres i tabellen 
 */
 
-export const HovedListenColumns: ColumnSetup<HovedListeItem>[] = [
+export const hovedListenColumns: columnSetup<HovedListeItem>[] = [
     { key: "plbReference", header: "PLB Reference" },
     { key: "plbOrderDate", header: "PLB Order Date" },
     { key: "customer", header: "Customer" },

@@ -7,19 +7,19 @@ import {
     SortingState,
     useReactTable,
 } from "@tanstack/react-table";
-import type { ColumnSetup } from "@/app/interfaces/ColumnSetup";
-import type {TableGenerationProps} from "@/app/interfaces/TableGenerationProps";
+import type { columnSetup } from "@/features/tables/interfaces/columnSetup";
+import type {tableGenerationProps} from "@/features/tables/interfaces/tableGenerationProps";
 import { useState } from "react";
 
 
 
-export default function TableGeneration<T>({ data, columnConfig, onRowClick }: TableGenerationProps<T> & { onRowClick?: (row: T) => void }){
+export default function TableGeneration<T>({ data, columnConfig, onRowClick }: tableGenerationProps<T> & { onRowClick?: (row: T) => void }){
     const [hoveredShipmentId, setHoveredShipmentId] = useState<string | null>(null);
     const [sorting, setSorting] = useState<SortingState>([]);
     const columnHelper = createColumnHelper<T>();
 
     //  Gjenbrukbar kolonne-funksjon:
-    const columns = columnConfig.map((config: ColumnSetup<T>) =>
+    const columns = columnConfig.map((config: columnSetup<T>) =>
         columnHelper.accessor(config.key as any, {
             id: String(config.key),
             header: () => <span>{config.header}</span>,
