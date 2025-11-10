@@ -3,7 +3,7 @@ import { principals, clients, contracts, shipments, invoices } from './schema/sc
 
 async function testDatabaseSetup() {
   try {
-    console.log('🧪 Testing database setup...');
+    console.log('Testing database setup...');
 
     // Test creating a principal
     console.log('Creating principal...');
@@ -11,7 +11,7 @@ async function testDatabaseSetup() {
       name: 'AAK'
     }).returning();
     
-    console.log('✅ Principal created:', principal);
+    console.log('Principal created:', principal);
 
     // Test creating a client
     console.log('Creating client...');
@@ -22,7 +22,7 @@ async function testDatabaseSetup() {
       country: 'Norway'
     }).returning();
     
-    console.log('✅ Client created:', client);
+    console.log('Client created:', client);
 
     // Test creating a contract
     console.log('Creating contract...');
@@ -36,20 +36,20 @@ async function testDatabaseSetup() {
       totalUsdC: 812500
     }).returning();
     
-    console.log('✅ Contract created:', contract);
+    console.log('Contract created:', contract);
 
     // Test reading data back
     console.log('Testing data retrieval...');
     const allClients = await db.select().from(clients);
     const allContracts = await db.select().from(contracts);
     
-    console.log('✅ Found', allClients.length, 'clients');
-    console.log('✅ Found', allContracts.length, 'contracts');
+    console.log('Found', allClients.length, 'clients');
+    console.log('Found', allContracts.length, 'contracts');
 
-    console.log('🎉 Database test completed successfully!');
+    console.log('Database test completed successfully!');
 
   } catch (error) {
-    console.error('❌ Database test failed:', error);
+    console.error('Database test failed:', error);
     throw error;
   }
 }

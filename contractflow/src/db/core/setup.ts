@@ -5,7 +5,7 @@ const client = createClient({
 });
 
 async function createDatabase() {
-  console.log('🔧 Creating PLB ContractFlow database...');
+  console.log('Creating PLB ContractFlow database...');
 
   try {
     // Enable foreign keys and set PRAGMA
@@ -20,7 +20,7 @@ async function createDatabase() {
         created_at TEXT DEFAULT (datetime('now')) NOT NULL
       )
     `);
-    console.log('✅ Principals table created');
+    console.log('Principals table created');
 
     // Create clients table  
     await client.execute(`
@@ -35,7 +35,7 @@ async function createDatabase() {
         created_at TEXT DEFAULT (datetime('now')) NOT NULL
       )
     `);
-    console.log('✅ Clients table created');
+    console.log('Clients table created');
 
     // Create contracts table
     await client.execute(`
@@ -60,7 +60,7 @@ async function createDatabase() {
         FOREIGN KEY (principal_id) REFERENCES principals(id) ON UPDATE CASCADE ON DELETE SET NULL
       )
     `);
-    console.log('✅ Contracts table created');
+    console.log('Contracts table created');
 
     // Create shipments table
     await client.execute(`
@@ -81,7 +81,7 @@ async function createDatabase() {
         FOREIGN KEY (contract_id) REFERENCES contracts(id) ON UPDATE CASCADE ON DELETE CASCADE
       )
     `);
-    console.log('✅ Shipments table created');
+    console.log('Shipments table created');
 
     // Create invoices table
     await client.execute(`
@@ -97,7 +97,7 @@ async function createDatabase() {
         FOREIGN KEY (contract_id) REFERENCES contracts(id) ON UPDATE CASCADE ON DELETE CASCADE
       )
     `);
-    console.log('✅ Invoices table created');
+    console.log('Invoices table created');
 
     // Create audit log table
     await client.execute(`
@@ -112,7 +112,7 @@ async function createDatabase() {
         new_data TEXT
       )
     `);
-    console.log('✅ Audit log table created');
+    console.log('Audit log table created');
 
     // Create search view
     await client.execute(`
@@ -141,12 +141,12 @@ async function createDatabase() {
       LEFT JOIN shipments s ON s.contract_id = c.id
       LEFT JOIN invoices i ON i.contract_id = c.id
     `);
-    console.log('✅ Search view created');
+    console.log('Search view created');
 
-    console.log('🎉 Database schema created successfully!');
+    console.log('Database schema created successfully!');
 
   } catch (error) {
-    console.error('❌ Database creation failed:', error);
+    console.error('Database creation failed:', error);
     throw error;
   }
 }

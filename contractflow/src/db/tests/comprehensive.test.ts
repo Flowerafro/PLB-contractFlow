@@ -3,29 +3,29 @@ import { principals, clients, contracts, shipments, invoices, auditLog } from '.
 import { eq, desc, like } from 'drizzle-orm';
 
 async function testDatabase() {
-  console.log('🧪 Starting comprehensive database test...\n');
+  console.log('Starting comprehensive database test...\n');
 
   try {
     // Test 1: Check if all tables exist and can be queried
-    console.log('📋 Test 1: Table existence and basic queries');
+    console.log('Test 1: Table existence and basic queries');
     
     const principalsCount = await db.select().from(principals);
-    console.log(`✅ Principals table: ${principalsCount.length} records`);
+    console.log(`Principals table: ${principalsCount.length} records`);
     
     const clientsCount = await db.select().from(clients);
-    console.log(`✅ Clients table: ${clientsCount.length} records`);
+    console.log(`Clients table: ${clientsCount.length} records`);
     
     const contractsCount = await db.select().from(contracts);
-    console.log(`✅ Contracts table: ${contractsCount.length} records`);
+    console.log(`Contracts table: ${contractsCount.length} records`);
     
     const shipmentsCount = await db.select().from(shipments);
-    console.log(`✅ Shipments table: ${shipmentsCount.length} records`);
+    console.log(`Shipments table: ${shipmentsCount.length} records`);
     
     const invoicesCount = await db.select().from(invoices);
-    console.log(`✅ Invoices table: ${invoicesCount.length} records\n`);
+    console.log(`Invoices table: ${invoicesCount.length} records\n`);
 
     // Test 2: Insert operations with proper relationships
-    console.log('📝 Test 2: Data insertion with relationships');
+    console.log('Test 2: Data insertion with relationships');
     
     // Insert a new principal if needed
     let testPrincipal;
@@ -34,10 +34,10 @@ async function testDatabase() {
       [testPrincipal] = await db.insert(principals).values({
         name: 'Test Principal'
       }).returning();
-      console.log(`✅ Created principal: ${testPrincipal.name}`);
+      console.log(`Created principal: ${testPrincipal.name}`);
     } else {
       testPrincipal = existingPrincipal[0];
-      console.log(`✅ Using existing principal: ${testPrincipal.name}`);
+      console.log(`Using existing principal: ${testPrincipal.name}`);
     }
 
     // Insert a new client
@@ -51,10 +51,10 @@ async function testDatabase() {
         phone: '+47 12345678',
         country: 'Norway'
       }).returning();
-      console.log(`✅ Created client: ${testClient.name}`);
+      console.log(`Created client: ${testClient.name}`);
     } else {
       testClient = existingClient[0];
-      console.log(`✅ Using existing client: ${testClient.name}`);
+      console.log(`Using existing client: ${testClient.name}`);
     }
 
     // Insert a new contract
@@ -70,7 +70,7 @@ async function testDatabase() {
       commissionGroupBp: 150, // 1.5%
       customerOrderNo: 'TC-2025-001'
     }).returning();
-    console.log(`✅ Created contract: ${testContract.plbReference}\n`);
+    console.log(`Created contract: ${testContract.plbReference}\n`);
 
     // Test 3: Foreign key relationships
     console.log('🔗 Test 3: Foreign key relationships');
@@ -85,7 +85,7 @@ async function testDatabase() {
       tonnesDelivered: 25.5,
       status: 'IN_TRANSIT'
     }).returning();
-    console.log(`✅ Created shipment: ${testShipment.containerNumber}`);
+    console.log(`Created shipment: ${testShipment.containerNumber}`);
 
     // Insert invoice linked to contract
     const [testInvoice] = await db.insert(invoices).values({
@@ -96,10 +96,10 @@ async function testDatabase() {
       invoicedAmountC: 892500, // $8,925.00 in cents
       status: 'SENT'
     }).returning();
-    console.log(`✅ Created invoice: ${testInvoice.principalInvoiceNo}\n`);
+    console.log(`Created invoice: ${testInvoice.principalInvoiceNo}\n`);
 
     // Test 4: Complex queries with JOINs
-    console.log('🔍 Test 4: Complex queries and relationships');
+    console.log('Test 4: Complex queries and relationships');
     
     const contractWithRelations = await db
       .select({
@@ -114,7 +114,7 @@ async function testDatabase() {
       .leftJoin(principals, eq(contracts.principalId, principals.id))
       .where(eq(contracts.id, testContract.id));
 
-    console.log('✅ Contract with relations:', contractWithRelations[0]);
+    console.log('Contract with relations:', contractWithRelations[0]);
 
     // Test 5: Search functionality
     console.log('\n🔎 Test 5: Search functionality');
@@ -125,7 +125,7 @@ async function testDatabase() {
       .where(like(clients.name, '%Test%'))
       .limit(5);
     
-    console.log(`✅ Search found ${searchResults.length} contracts with 'Test' in client name`);
+    console.log(`Search found ${searchResults.length} contracts with 'Test' in client name`);
 
     // Test 6: Audit logging capability
     console.log('\n📊 Test 6: Audit logging');
@@ -137,7 +137,7 @@ async function testDatabase() {
       userId: 1,
       newData: JSON.stringify(testContract)
     }).returning();
-    console.log(`✅ Created audit entry: ${auditEntry.id}`);
+    console.log(`Created audit entry: ${auditEntry.id}`);
 
     // Test 7: Data validation (currency in cents)
     console.log('\n💰 Test 7: Currency handling (cents validation)');
@@ -145,11 +145,11 @@ async function testDatabase() {
     const priceInDollars = testContract.priceUsdPerMtC / 100;
     const totalInDollars = testContract.totalUsdC / 100;
     
-    console.log(`✅ Price per MT: $${priceInDollars.toFixed(2)}`);
-    console.log(`✅ Total contract value: $${totalInDollars.toFixed(2)}`);
+    console.log(`Price per MT: $${priceInDollars.toFixed(2)}`);
+    console.log(`Total contract value: $${totalInDollars.toFixed(2)}`);
 
     // Test 8: Pagination simulation
-    console.log('\n📄 Test 8: Pagination capability');
+    console.log('\nTest 8: Pagination capability');
     
     const recentContracts = await db.select()
       .from(contracts)

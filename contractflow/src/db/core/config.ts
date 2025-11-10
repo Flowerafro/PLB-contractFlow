@@ -8,7 +8,7 @@ export const client = createClient({
 
 // PRAGMA settings for ACID compliance 
 async function initDb() {
-  console.log('🔧 Configuring database PRAGMA settings...');
+  console.log('Configuring database PRAGMA settings...');
   
   // Enable foreign key constraints (critical for referential integrity)
   await client.execute('PRAGMA foreign_keys = ON');
@@ -23,7 +23,7 @@ async function initDb() {
   await client.execute('PRAGMA temp_store = memory');
   await client.execute('PRAGMA mmap_size = 268435456'); // 256MB mmap
   
-  console.log('✅ Database PRAGMA settings configured');
+  console.log('Database PRAGMA settings configured');
 }
 
 export const db = drizzle(client, { schema });

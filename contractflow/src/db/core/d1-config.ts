@@ -12,11 +12,11 @@ function isCloudflareWorkers(): boolean {
 function createDbClient() {
   if (isCloudflareWorkers()) {
     // In Cloudflare Workers, use the D1 binding
-    console.log('🔧 Using Cloudflare D1 database...');
+    console.log('Using Cloudflare D1 database...');
     return d1Drizzle((globalThis as any).DB, { schema });
   } else {
     // Local development - use LibSQL client
-    console.log('🔧 Using local LibSQL database...');
+    console.log('Using local LibSQL database...');
     const client = createClient({
       url: process.env.DATABASE_URL ?? 'file:./local.db',
     });
@@ -27,7 +27,7 @@ function createDbClient() {
 // PRAGMA settings for local development only
 async function initLocalDb() {
   if (!isCloudflareWorkers()) {
-    console.log('🔧 Configuring local database PRAGMA settings...');
+    console.log('Configuring local database PRAGMA settings...');
     
     const client = createClient({
       url: process.env.DATABASE_URL ?? 'file:./local.db',
@@ -46,9 +46,9 @@ async function initLocalDb() {
     await client.execute('PRAGMA temp_store = memory');
     await client.execute('PRAGMA mmap_size = 268435456'); // 256MB mmap
     
-    console.log('✅ Local database PRAGMA settings configured');
+    console.log('Local database PRAGMA settings configured');
   } else {
-    console.log('✅ Cloudflare D1 database ready (PRAGMA settings managed by D1)');
+    console.log('Cloudflare D1 database ready (PRAGMA settings managed by D1)');
   }
 }
 

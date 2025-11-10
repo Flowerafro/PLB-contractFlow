@@ -1,10 +1,10 @@
-import { db } from './config';
-import { principals, clients, contracts } from './schema/schema';
+import { db } from '../core/d1-config';
+import { principals, clients, contracts } from '../schema/schema';
 import { eq } from 'drizzle-orm';
 
 async function seed() {
   try {
-    console.log('🌱 Seeding database...');
+    console.log('Seeding database...');
 
     // Insert default principal (use upsert pattern)
     let principal;
@@ -12,12 +12,12 @@ async function seed() {
       [principal] = await db.insert(principals).values({
         name: 'AAK'
       }).returning();
-      console.log('✓ Created default principal:', principal.name);
+      console.log('Created default principal:', principal.name);
     } catch (error: any) {
       if (error.message.includes('UNIQUE constraint')) {
         const existing = await db.select().from(principals).where(eq(principals.name, 'AAK'));
         principal = existing[0];
-        console.log('✓ Using existing principal:', principal.name);
+        console.log('Using existing principal:', principal.name);
       } else {
         throw error;
       }
@@ -42,7 +42,7 @@ async function seed() {
     ];
 
     const insertedClients = await db.insert(clients).values(sampleClients).returning();
-    console.log(`✓ Created ${insertedClients.length} sample clients`);
+    console.log(`Created ${insertedClients.length} sample clients`);
 
     // Insert sample contract
     const [contract] = await db.insert(contracts).values({
@@ -58,12 +58,12 @@ async function seed() {
       customerOrderNo: 'ACME-PO-2025-001'
     }).returning();
 
-    console.log('✓ Created sample contract:', contract.plbReference);
+    console.log('Created sample contract:', contract.plbReference);
 
-    console.log('🎉 Seeding completed successfully!');
+    console.log('Seeding completed successfully!');
 
   } catch (error) {
-    console.error('❌ Seeding failed:', error);
+    console.error('Seeding failed:', error);
     process.exit(1);
   }
 }
