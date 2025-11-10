@@ -4,8 +4,6 @@ import Layout from "./Layout"
 
 export default function ContractSuccess() {
   const handleBack = () => (window.location.href = "/create")
-  const handleDownload = () => alert("Downloading contract...")
-
   return (
     <Layout>
       <main className="min-h-screen flex items-center justify-center bg-gray-300">
@@ -44,12 +42,6 @@ export default function ContractSuccess() {
               className="bg-green-900 text-white py-2 px-6 rounded-md hover:bg-green-800 transition-colors focus:outline-none focus:ring-2 focus:ring-green-900"
             >
               Go back
-            </button>
-            <button
-              onClick={handleDownload}
-              className="border border-dashed border-green-900 text-green-900 rounded-md px-4 py-2 text-sm font-medium hover:bg-green-50 transition"
-            >
-              Download contract
             </button>
           </div>
         </article>
