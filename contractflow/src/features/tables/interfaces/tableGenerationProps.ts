@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 
 // Interface for props brukt i generering av tabell-struktur
-export interface tableGenerationProps<T>{
+export interface TableGenerationProps<T>{
     data: T[];
     columnConfig: Array<{
         key: keyof T;
@@ -10,6 +10,6 @@ export interface tableGenerationProps<T>{
     }>
 }
 
-export default function TableGeneration<T>({ data, columnConfig }: tableGenerationProps<T>) {
+export default function TableGeneration<T>({ data, columnConfig }: TableGenerationProps<T>) {
     const columnHelper = createColumnHelper<T>();
 }

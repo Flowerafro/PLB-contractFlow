@@ -24,35 +24,43 @@ export type AppContext = {
   env: Env;
 };
 
-
-
 export default defineApp([
 
   setCommonHeaders(),
   ({ ctx }) => {
-    // setup ctx here
-    ctx;
+    // Make DB available globally for Drizzle (only if env and DB exist)
+    if (ctx && ctx.env && ctx.env.DB) {
+      globalThis.DB = ctx.env.DB;
+    }
   },
-  route("/upload/", async ({ request }) => {
+  route("/upload/", async ({ request, ctx }) => {
     try {
       
        const formData = await request.formData();
-       const data = new FormData();
+//       const data = new FormData();
        const file = formData.get('file') as File;
       console.log("file", file);
        
-       if (!file) {
       if (!file) {
-         return Response.json({ error: 'No file provided' }, { status: 400 });
-       }
+        return Response.json({ error: 'No file provided' }, { status: 400 });
+      }
+      
+      if (!ctx || !ctx.env || !ctx.env.R2) {
+        console.log('R2 not available in development mode. Use "pnpm wrangler dev --remote" or deploy to test uploads.');
+        return Response.json({ 
+          success: true,
+          fileName: file.name,
+          url: `/storage/dev-${Date.now()}-${file.name}`,
+          message: 'Upload simulated (development mode). Deploy to Cloudflare or use "wrangler dev --remote" for real uploads.'
+         });
       }
    
-       const timestamp = Date.now();
-       const fileName = `${timestamp}-${file.name}`;
-       //const fileBuffer = await file.arrayBuffer();
-           const r2ObjectKey = `/storage/${file.name}`;
+      const timestamp = Date.now();
+      const fileName = `${timestamp}-${file.name}`;
+      //const fileBuffer = await file.arrayBuffer();
+          const r2ObjectKey = `/storage/${file.name}`;
    
-        await env.R2.put(r2ObjectKey, file.stream(), {
+        await ctx.env.R2.put(r2ObjectKey, file.stream(), {
          httpMetadata: {
            contentType: file.type,
          },
@@ -81,7 +89,6 @@ export default defineApp([
     route("/clients", () => <ClientOverview />),
     route("/clients/:id", (({params}) => <ClientOverview clientId={params.id} />)),
     route("/tables", () => <Tables />),
-    route("/archive", () => <Archive />),
     route("/archive", () => <Archive />)
   ]),
   

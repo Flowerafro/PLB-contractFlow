@@ -1,5 +1,5 @@
 // Props for UploadFile komponenten   
-export interface uploadProps {
+export interface UploadProps {
     onUploadComplete?: (files: File[], uploadData?: any) => void
     width?: string | number
     height?: string | number

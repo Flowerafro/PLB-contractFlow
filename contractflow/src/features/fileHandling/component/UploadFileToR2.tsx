@@ -4,10 +4,11 @@ import React, {
     useState
 } from "react";
 
-import { uploadProps } from '../interfaces/uploadProps';
+import { UploadProps } from '../interfaces/uploadProps';
 import { uploadToR2 } from "../services/uploadToR2";
 import { processExcelFile, shouldProcessAsExcel } from "../services/fileProcessingService";
 import { validateFileSize, validateFileType } from "../utils/validateFile";
+import { useDragAndDrop } from "../hooks/useDragAndDrop";
 
 // - Upload felt for opplasting til R2 bucket -
 
@@ -18,10 +19,19 @@ export default function UploadFileToR2({
   height = 'auto',
   acceptedFileTypes = ['.xlsx', '.xls'],
   fileTypeLabels = '.xlsx, .xls'
-}: uploadProps) {
+}: UploadProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+
+  // Use the custom drag and drop hook
+  const handleFileDrop = async (droppedFiles: File[]) => {
+    if (droppedFiles.length > 0) {
+      await fileProcesser(droppedFiles[0]);
+    }
+  };
+
+  const { isDragOver, handleDragOver, handleDragLeave, handleDrop } = useDragAndDrop(handleFileDrop);
   
   const fileProcesser = async (file: File) => {
     const sizeValidation = validateFileSize(file, maxSize);
@@ -58,7 +68,6 @@ export default function UploadFileToR2({
         });
     }
 
-    setUploadError(null);
     setFiles([file]);
     console.log("File uploaded successfully.");
     }
@@ -81,38 +90,6 @@ export default function UploadFileToR2({
     const file = event.target.files?.[0];
     if (!file) return;
     await fileProcesser(file);
-  };
-    const [isDragOver, setIsDragOver] = useState<boolean>(false);
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-  };
-
-  const handleDrop = async (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    
-    const files = Array.from(e.dataTransfer.files);
-    if (files.length > 0) {
-      setFiles(files);
-      await fileProcesser(files[0]);
-    }
-  };
-
-  const handleUpload = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const fileInput = event.currentTarget.elements.namedItem("file") as HTMLInputElement;
-    if (!fileInput.files?.length) return;
-    const formData = new FormData();
-    formData.append("file", fileInput.files[0]);
-    const res = await fetch("/upload", { method: "POST", body: formData });
-    const data = await res.json();
   };
 
   return (
@@ -148,16 +125,14 @@ export default function UploadFileToR2({
           </div>
         )}
       </div>
-      <form onSubmit={handleUpload}>
-        <input
-          id="file-upload"
-          type="file"
-          accept={acceptedFileTypes.join(',')}
-          onChange={handleFileUpload}
-          disabled={isLoading}
-          style={{ display: 'none' }}
-        />
-      </form> 
+      <input
+        id="file-upload"
+        type="file"
+        accept={acceptedFileTypes.join(',')}
+        onChange={handleFileUpload}
+        disabled={isLoading}
+        style={{ display: 'none' }}
+      /> 
       {uploadError && (
         <div 
           className="error-message" 

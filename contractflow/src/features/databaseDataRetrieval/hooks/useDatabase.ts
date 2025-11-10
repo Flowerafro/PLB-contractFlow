@@ -37,7 +37,7 @@ export default function useDatabase<T>(
         finally {
             setLoading(false);
         }
-    }, [queryFunction, ...dependencies]);
+    }, []);
 
     useEffect(() => {
         fetchData();

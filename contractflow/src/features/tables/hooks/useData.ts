@@ -2,7 +2,7 @@ import {
     useEffect,
     useState 
 } from "react";
-import type { dataSource } from "@/features/tables/interfaces/dataSource";
+import type { DataSource } from "@/features/tables/interfaces/dataSource";
 
 /*
     -Kode for omdanning av data fra JSON-filer-
@@ -13,7 +13,7 @@ import type { dataSource } from "@/features/tables/interfaces/dataSource";
     Andre er ikke testet.
 */
 
-export function useData<T>(dataSource: dataSource<T>){
+export function useData<T>(dataSource: DataSource<T>){
     const [data, setData] = useState<T[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -45,7 +45,7 @@ export function useData<T>(dataSource: dataSource<T>){
 
     useEffect(() => {
         loadData();
-    }, [dataSource.path, dataSource.dataPath])
+    }, []) // Remove dependencies to prevent infinite loop
 
     return { data, loading, error };
 }

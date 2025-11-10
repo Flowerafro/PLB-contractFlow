@@ -1,0 +1,17 @@
+
+# Cloudflare R2 Configuration
+CLOUDFLARE_API_TOKEN=HbutfX-g85K2ZQ_JqG0lha3C_Xw4FtrVEZwIKllE
+CLOUDFLARE_ACCOUNT_ID=73bedcb5d46a3f368e92d733b4564d2d
+CLOUDFLARE_DATABASE_ID=ff8d2ccd-6228-47d1-a98b-5e3f0ea4d02b
+CLOUDFLARE_D1_TOKEN=__change_me__
+R2_ACCESS_KEY_ID=426746880dd31006625d59c1ffd7b499
+R2_SECRET_ACCESS_KEY=57b32b59d539165e094ff6637ef2cec30e6c58a18efed70aff6fd32c52d0f731
+R2_BUCKET_NAME=plb-contractflow-r2
+R2_PUBLIC_URL=https://pub-c8e93b36ec6c4574b110245b392afaea.r2.dev
+
+
+# Database Configuration (if needed)
+DATABASE_URL=libsql://plb-contractflow-db.mathias.jarbekk1@hotmail.com.d1.sqlite.io?authToken=mBJbEafyspFhAf6hOQ1nyfXyWAd6yI6clAjWH4GC
+
+# Other environment variables
+NODE_ENV=development
