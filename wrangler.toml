@@ -1,5 +1,10 @@
+[[d1_databases]]
+binding = 'DB'
+database_name = 'plb-contractflow-db'
+database_id = 'ff8d2ccd-6228-47d1-a98b-5e3f0ea4d02b'
+
 [[r2_buckets]]
-binding = 'R2' # <~ valid JavaScript variable name
+binding = 'R2' 
 bucket_name = 'contractflow-filestorage'
 [vars]
 remote = true

@@ -4,10 +4,11 @@ import React, { useState } from "react";
 
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
-import TableGeneration from "@/app/features/tables/table_presentation/TableGeneration";
+import TableGeneration from "@/features/tables/component/TableGeneration";
+import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
+import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
 
-;import { HovedListenData } from "@/app/features/tables/custom_hooks/specializedStructures/HovedListenData";
-import { HovedListenColumns } from "../features/tables/table_column_structure/HovedListenColumns";
+
 
 //  -Tables-siden
 //  Her er dashboard siden lagt over slik at den kan bearbeides videre
@@ -20,14 +21,12 @@ interface Shipment {
   status?: string;
 }
 
-
-
 export default function Tables() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [results, setResults] = useState<Shipment[]>([]);
   const [searchTrimmed, setSearchTrimmed] = useState(false);
   
-  const { data: data, loading, error } = HovedListenData();
+  const { data: data, loading, error } = hovedListenData();
 
   // Basic informasjon relatert til tabell data visningen
   if (loading) return <div>Table is loading...</div>
@@ -45,7 +44,6 @@ export default function Tables() {
       setResults([]);
       return;
     }
-
   };
 
   return (
@@ -66,7 +64,7 @@ export default function Tables() {
             ) : (
                 
             <div>   
-                <TableGeneration data={data} columnConfig={HovedListenColumns} />
+                <TableGeneration data={data} columnConfig={hovedListenColumns} />
             </div>
             )}
         </section>

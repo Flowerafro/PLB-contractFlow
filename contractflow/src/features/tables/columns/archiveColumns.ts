@@ -1,5 +1,5 @@
 import type { ArchiveDocument } from "@/app/types/types.ts";
-import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
+import { ColumnSetup } from "@/features/tables/interfaces/ColumnSetup";
 
 /*
     -Kolonnetitler for bøker-
@@ -10,7 +10,7 @@ import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
     redigeres.
 */
 
-export const ArchiveColumns: ColumnSetup<ArchiveDocument>[] = [
+export const archiveColumns: ColumnSetup<ArchiveDocument>[] = [
     { key: "date", header: "Date" },
     { key: "containerNumber", header: "Container no." },
     { key: "customer", header: "Customer" },

@@ -1,5 +1,5 @@
 import type { Clients } from "@/app/types/types.ts";
-import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
+import { columnSetup } from "@/features/tables/interfaces/columnSetup";
 
 /*
     -Kolonnetitler for kontakt-info-
@@ -13,7 +13,7 @@ import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
     i å ha to tabeller for dette
 */
 
-export const ClientsColumns: ColumnSetup<Clients>[] = [
+export const clientsColumns: columnSetup<Clients>[] = [
     { key: "clientNumber", header: "Client no." },
     { key: "customer", header: "Customer" },
     { key: "contactPerson", header: "Contact Person" },

@@ -1,6 +1,6 @@
-import UseData from '@/app/features/tables/custom_hooks/UseData';
+import { useData } from '@/features/tables/hooks/useData';
 import { HovedListeItem } from '@/app/types/types';
-import formatDate from '@/app/features/tables/functions/DateFormatter';
+import formatDate from '@/features/tables/functions/formatDate';
 
 /*
     -Henter data fra json-fil knyttet til hovedfilen-
@@ -9,8 +9,8 @@ import formatDate from '@/app/features/tables/functions/DateFormatter';
     formatet.
 */
 
-export function HovedListenData(){
-    return UseData<HovedListeItem>({
+export function hovedListenData(){
+    return useData<HovedListeItem>({
         path: '../../../resources/hoved_listen_paaLissom.json',
         transform: (rawData: any[]) => rawData.map((item: any) => ({
             plbReference: item.plbReference || '',
