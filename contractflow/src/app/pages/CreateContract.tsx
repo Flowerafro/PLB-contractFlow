@@ -62,13 +62,7 @@ export default function CreateContractPage() {
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-200 py-10">
       <div className="bg-white rounded-lg shadow-md p-10 w-full max-w-md">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold text-black m-0">Create Contract</h2>
-          <button className="bg-green-900 text-white px-4 py-2 rounded hover:bg-green-800 transition">
-            + New
-          </button>
-        </div>
-
+      <h2 className="text-2xl font-bold text-black mb-8">Create Contract</h2>
         <form onSubmit={handleSubmit} className="grid gap-4">
           <div>
             <label className="block font-medium mb-1">Choose client</label>
