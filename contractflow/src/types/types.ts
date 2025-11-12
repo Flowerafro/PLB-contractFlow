@@ -9,6 +9,7 @@ export type ArchiveDocument = {
     documentName: string;
 }
 
+/* Denne blir erstattet med Client i client.ts */
 export type Clients = {
     clientNumber: string;
     customer: string;
@@ -25,7 +26,7 @@ export type Person = {
     age?: number;
 };
 
-// HovedListen typen 
+// HovedListen typen - laget en egen fil for denne typen i hovedlisten.ts, så den kan slettes på sikt. 
 
 export type HovedListeItem = {
     plbReference: string;

@@ -7,7 +7,6 @@ import { Login } from "@/app/pages/Login";
 import Archive from "@/app/pages/Archive";
 import Dashboard from "@/app/pages/Dashboard";
 import CreateContract from "@/app/pages/CreateContract";
-import ContractTerms from "@/app/pages/ContractTerms";
 import ContractSuccess from "@/app/pages/ContractSuccess";
 import ClientOverview from "@/app/pages/ClientOverview";
 import Tables from "@/app/pages/Tables";
@@ -18,6 +17,7 @@ interface Env {
    CLOUDFLARE_ACCOUNT_ID: string;
    R2_BUCKET_NAME: string;
    R2: R2Bucket; 
+   DB: D1Database
 }
 
 export type AppContext = {
@@ -28,29 +28,39 @@ export default defineApp([
 
   setCommonHeaders(),
   ({ ctx }) => {
-    // setup ctx here
-    ctx;
+    // Make DB available globally for Drizzle (only if env and DB exist)
+    if (ctx && ctx.env && ctx.env.DB) {
+      globalThis.DB = ctx.env.DB;
+    }
   },
-  route("/upload/", async ({ request }) => {
+  route("/upload/", async ({ request, ctx }) => {
     try {
       
        const formData = await request.formData();
-       const data = new FormData();
+//       const data = new FormData();
        const file = formData.get('file') as File;
       console.log("file", file);
        
-       if (!file) {
       if (!file) {
-         return Response.json({ error: 'No file provided' }, { status: 400 });
-       }
+        return Response.json({ error: 'No file provided' }, { status: 400 });
+      }
+      
+      if (!ctx || !ctx.env || !ctx.env.R2) {
+        console.log('R2 not available in development mode. Use "pnpm wrangler dev --remote" or deploy to test uploads.');
+        return Response.json({ 
+          success: true,
+          fileName: file.name,
+          url: `/storage/dev-${Date.now()}-${file.name}`,
+          message: 'Upload simulated (development mode). Deploy to Cloudflare or use "wrangler dev --remote" for real uploads.'
+         });
       }
    
-       const timestamp = Date.now();
-       const fileName = `${timestamp}-${file.name}`;
-       //const fileBuffer = await file.arrayBuffer();
-           const r2ObjectKey = `/storage/${file.name}`;
+      const timestamp = Date.now();
+      const fileName = `${timestamp}-${file.name}`;
+      //const fileBuffer = await file.arrayBuffer();
+          const r2ObjectKey = `/storage/${file.name}`;
    
-        await env.R2.put(r2ObjectKey, file.stream(), {
+        await ctx.env.R2.put(r2ObjectKey, file.stream(), {
          httpMetadata: {
            contentType: file.type,
          },
@@ -75,12 +85,10 @@ export default defineApp([
     route("/", () => <Login />), // default rute er login for å simulere beskyttet side
     route("/Home", () => <Home />),
     route("/create", () => <CreateContract />),
-    route("/terms", () => <ContractTerms />), 
     route("/success", () => <ContractSuccess />),
     route("/clients", () => <ClientOverview />),
     route("/clients/:id", (({params}) => <ClientOverview clientId={params.id} />)),
     route("/tables", () => <Tables />),
-    route("/archive", () => <Archive />),
     route("/archive", () => <Archive />)
   ]),
   

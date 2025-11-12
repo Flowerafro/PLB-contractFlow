@@ -4,10 +4,10 @@
 import React, { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
-import TableGeneration from "@/features/tables/table_presentation/TableGeneration";
-import { HovedListenData } from "@/features/tables/custom_hooks/specializedStructures/HovedListenData";
-import { HovedListenColumns } from "@/features/tables/table_column_structure/HovedListenColumns";
+import TableGeneration from "@/features/tables/component/TableGeneration";
 import ShipmentList from "@/components/ShipmentList";
+import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
+import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
 
 interface Shipment {
   id: number;
@@ -23,7 +23,7 @@ export default function Dashboard() {
   const [searchTrimmed, setSearchTrimmed] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<any | null>(null);
 
-  const { data, loading, error } = HovedListenData();
+  const { data, loading, error } = hovedListenData();
 
   // Basic informasjon relatert til tabell data visningen
   if (loading) return <div>Table is loading...</div>;
@@ -106,7 +106,7 @@ export default function Dashboard() {
         ) : (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
             <h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">Alle forsendelser</h2>
-            <TableGeneration data={data} columnConfig={HovedListenColumns} onRowClick={handleSelectShipment} />
+            <TableGeneration data={data} columnConfig={hovedListenColumns} onRowClick={handleSelectShipment} />
           </div>
         )}
       </section>

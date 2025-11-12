@@ -5,15 +5,14 @@ import SearchBar from "../../components/SearchBar";
 import ClientList from "@/components/ClientList";
 import ClientProfilePage from "../../components/ClientProfilePage";
 import NewClient from "@/components/NewClient";
+
+import type { ClientSearchItem } from "@/app/types/clientSearch";
+import type { ClientOverviewProps } from "@/app/types/client"
+
 import type { Client } from "@/lib/clientdummydata";
 import { dummyClients, getClientById, addClient } from "@/lib/clientdummydata";
-import type { ClientSearchItem } from "@/types/clientview";
 
-interface ClientOverviewProps {
-  onClientClick?: (id: string) => void;
-  onNewClient?: () => void;
-  clientId?: string;
-}
+
 
 export default function ClientOverview({ onClientClick, onNewClient, clientId }: ClientOverviewProps) {
   const [searchClient, setSearchClient] = useState("");
@@ -172,4 +171,4 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
       {showNewClientForm && <NewClient onCreate={handleCreateClient} onCancel={() => setShowNewClientForm(false)} />}
     </section>
   );
-}
+} 

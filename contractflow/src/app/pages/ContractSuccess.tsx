@@ -1,58 +1,27 @@
-"use client";
-import React from "react";
-import Layout from "./Layout";
+"use client"
+import React from "react"
+import Layout from "./Layout"
 
-/**
- * ContractSuccess er trinn 3 i kontraktflyten.
- * Denne siden vises etter at en kontrakt er opprettet.
- * Den gir brukeren bekreftelse og tre handlingsvalg: View, New, Export.
- */
 export default function ContractSuccess() {
+  const handleBack = () => (window.location.href = "/create")
   return (
     <Layout>
-      <main
-        style={{
-          minHeight: "720px", 
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#D9D9D9",
-        }}
-      >
-        {/* <article> representerer kontraktbekreftelsen */}
+      <main className="min-h-screen flex items-center justify-center bg-gray-300">
         <article
-          style={{
-            background: "white",
-            borderRadius: 12,
-            boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-            padding: 48,
-            width: "100%",
-            maxWidth: 400,
-            textAlign: "center",
-          }}
+          className="bg-white rounded-xl shadow-lg p-10 w-full max-w-sm text-center border border-blue-400"
           aria-labelledby="contract-success-heading"
         >
-          {/* Grønt check-ikon i en rund bakgrunn som symboliserer suksess */}
           <figure
-            style={{
-              backgroundColor: "#6DA76D",
-              borderRadius: "50%",
-              width: 80,
-              height: 80,
-              margin: "0 auto 24px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            className="bg-[#6DA76D] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center shadow-md"
             aria-hidden="true"
           >
             <svg
-              width="48"
-              height="48"
-              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-12 h-12 text-white"
               fill="none"
-              stroke="white"
-              strokeWidth="3"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={3}
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -60,59 +29,23 @@ export default function ContractSuccess() {
             </svg>
           </figure>
 
-          {/* Overskrift for siden */}
-          <h1 id="contract-success-heading" style={{ marginBottom: 24 }}>
+          <h1
+            id="contract-success-heading"
+            className="text-lg font-medium text-gray-800 mb-8"
+          >
             Contract added successfully!
           </h1>
 
-          <nav
-            aria-label="Contract actions"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: 12,
-              marginTop: 16,
-            }}
-          >
-            {/* Knapp for å vise eksisterende kontraktoversikt */}
+          <div className="flex flex-col gap-4 items-center">
             <button
-              style={buttonStyle}
-              onClick={() => (window.location.href = "/Home")}
+              onClick={handleBack}
+              className="bg-green-900 text-white py-2 px-6 rounded-md hover:bg-green-800 transition-colors focus:outline-none focus:ring-2 focus:ring-green-900"
             >
-              View
+              Go back
             </button>
-
-            {/* Knapp for å starte en ny kontrakt */}
-            <button
-              style={buttonStyle}
-              onClick={() => (window.location.href = "/create")}
-            >
-              New
-            </button>
-
-            {/* Knapp for eksport foreløpig bare alert */}
-            <button
-              style={buttonStyle}
-              onClick={() => alert("Exporting contract...")}
-            >
-              Export
-            </button>
-          </nav>
+          </div>
         </article>
       </main>
     </Layout>
-  );
+  )
 }
-
-/**
- * buttonStyle – felles stil for knappene nederst på siden.
- * Gjenbrukes av alle tre knappene for konsistent design.
- */
-const buttonStyle: React.CSSProperties = {
-  backgroundColor: "#1D391D",
-  color: "white",
-  padding: "10px 18px",
-  border: "none",
-  borderRadius: 6,
-  cursor: "pointer",
-};
