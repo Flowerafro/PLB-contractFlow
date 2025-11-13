@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from "react"
+import CreateContractButton from "../../components/CreateContractButton"
 
 type ContractForm = {
   client: string
@@ -24,12 +25,13 @@ export default function CreateContractPage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setMessage("")
+  
     try {
-      const res = await fetch("/.redwood/functions/contracts", {
+      const res = await fetch("/contracts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -58,7 +60,7 @@ export default function CreateContractPage() {
       setLoading(false)
     }
   }
-
+  
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-200 py-10">
       <div className="bg-white rounded-lg shadow-md p-10 w-full max-w-md">
@@ -146,13 +148,7 @@ export default function CreateContractPage() {
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-green-900 text-white py-2 rounded hover:bg-green-800 transition disabled:opacity-60"
-          >
-            {loading ? "Saving..." : "Create contract"}
-          </button>
+          <CreateContractButton onClick={handleSubmit} loading={loading} />
 
           {message && <p className="text-center text-sm text-gray-700 mt-2">{message}</p>}
         </form>
