@@ -1,29 +1,39 @@
 {
-  // Schema reference for wrangler configuration
   "$schema": "node_modules/wrangler/config-schema.json",
-
-  // Name of your worker
-  "name": "__change_me__",
-
-  // Entry point for your worker
+  "name": "worker",
   "main": "src/worker.tsx",
-
-  // Compatibility settings
   "compatibility_date": "2025-08-21",
   "compatibility_flags": ["nodejs_compat"],
 
-  // Assets configuration
   "assets": {
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    "directory": "public"
   },
 
-  // Observability settings
   "observability": {
     "enabled": true
   },
 
-  // Environment variables
   "vars": {
-    // Add your environment variables here
+    "cc": "73bedcb5d46a3f368e92d733b4564d2d",
+    "R2_BUCKET_NAME": "plb-contractflow-r2",
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "plb-contractflow-db", 
+      "database_id": "ff8d2ccd-6228-47d1-a98b-5e3f0ea4d02b",
+      "migrations_dir": "drizzle",
+      "remote": true,
+    }
+  ],
+
+  "r2_buckets": [
+  {
+    "bucket_name": "plb-contractflow-r2",
+    "binding": "R2",
+    "preview_bucket_name": "plb-contractflow-r2"
   }
+]
 }

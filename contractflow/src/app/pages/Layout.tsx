@@ -1,27 +1,40 @@
+"use client";
+
+import Footer from "../../components/Footer";
+import { useState, useEffect } from "react";
+import HeaderComponent from "@/components/HeaderComponent";
+import CreateContract from "./CreateContract";
+import ClientOverview from "./ClientOverview";
+import Dashboard from "./Dashboard";
+import Tables from "./Tables";
+import Archive from "./Archive";
 
 
-export default function Layout(){
-    return (
-        <>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
+export default function Layout({ children }: { children?: React.ReactNode }) {
+  
+  const [pageView, setPageView] = useState<string>("/Home");
 
-        <section>
-            <h1>Welcome to the Dashboard</h1>
-            <p> Her kommer et komponent som vi dynamisk endrer</p>
-        </section>
+  const handlePageView = () => {
+    switch (pageView) {
+      case "/create":
+        return <CreateContract />;
+      case "/clients":
+        return <ClientOverview  />;
+      case "/tables":
+        return <Tables  />;
+      case "/archive":
+        return <Archive  />;
+        default: return children ?? <Dashboard  />;
+    }
+  } 
 
-        <footer>
-            <p>Footer content goes here</p>
-        </footer>
-        </>
-        
-    )
+  return (
+    <div className="relative min-h-full flex flex-col bg-[var(--bg-color)]">
+      <HeaderComponent onNavigate={(path: string) => setPageView(path)} />
+      <main className="flex-1 p-5">
+        {handlePageView()}
+      </main>
+      <Footer />
+    </div>
+  );
 }

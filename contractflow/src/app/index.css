@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import "tailwindcss";
+
+:root{
+  --primary-color: #244724;
+  --dark-color: #1a1a1a;
+  --secondary-color: #dced9a;
+
+  --red-color: #ff4d4f;
+  --indigo-color: #4f46e5;
+
+  --dropdown-bg: #1e1e1e;
+  --dropdown-border: #333;
+  --dropdown-hover: #2c2c2c;
+
+  --text-color-main: #ffffff;
+  --text-color-light-gray: #E5E5E5;
+  --text-color-gray:#333;
+  --text-color-black:#000;
+
+  --bg-color: #E5E5E5;
+  --bg-white: #fff;
+
+  --btn-bg-1: #4B5563;
+  --btn-bg-2: #E5E7EB;
+  --btn-color-1: #1F2937;
+  --btn-color-2: #f9fafb;
+
+  --search-bg: #f9fafb;
+  --search-border: #4B5563;
+
+
+  /* CSS from tempStyle.css */
+  --color-baige: #f4eedf;
+  --color-orange: #f47238;
+  --color-orange-light: #ffad48;
+  --font-playfair: "Playfair Display", serif;
+  --font-noto: "Noto Sans", sans-serif;
+  --text-color: #1a1a1a;
+  --code-bg: #1b1b1b;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--bg-color);
+
+}
+/* td{
+    border: 1rem solid black;
+} */
