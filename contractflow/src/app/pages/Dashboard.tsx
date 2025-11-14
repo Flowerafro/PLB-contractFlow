@@ -6,9 +6,8 @@ import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
 import TableGeneration from "@/features/tables/component/TableGeneration";
 import ShipmentList from "@/components/ShipmentList";
-import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
+import { hovedListenData } from "@/features/tables/custom_hooks/specializedStructures/HovedListenData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
-
 interface Shipment {
   id: number;
   contactperson?: string;

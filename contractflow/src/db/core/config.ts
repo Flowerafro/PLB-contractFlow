@@ -3,7 +3,8 @@ import { drizzle } from 'drizzle-orm/libsql';
 import * as schema from '../schema/schema';
 
 export const client = createClient({
-  url: process.env.DATABASE_URL ?? 'file:./local.db',
+    url: process.env.DATABASE_URL ?? 'libsql://plb-contractflow-db.d1.sqlite.io',
+    authToken: process.env.DATABASE_AUTH_TOKEN ?? 'mBJbEafyspFhAf6hOQ1nyfXyWAd6yI6clAjWH4GC'
 });
 
 // PRAGMA settings for ACID compliance 

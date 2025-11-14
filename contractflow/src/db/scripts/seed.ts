@@ -1,4 +1,5 @@
 import { db } from '../core/d1-config';
+import { drizzle } from 'drizzle-orm/d1';
 import { principals, clients, contracts } from '../schema/schema';
 import { eq } from 'drizzle-orm';
 

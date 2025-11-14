@@ -1,4 +1,4 @@
-import { render, route } from "rwsdk/router";
+import { render, route, prefix } from "rwsdk/router";
 import { defineApp } from "rwsdk/worker";
 import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
@@ -10,8 +10,15 @@ import CreateContract from "@/app/pages/CreateContract";
 import ContractSuccess from "@/app/pages/ContractSuccess";
 import ClientOverview from "@/app/pages/ClientOverview";
 import Tables from "@/app/pages/Tables";
-import {env} from "cloudflare:workers"
 import style from "./app/index.css";
+import { hovedListenRoutes } from "@/features/databaseDataRetrieval/hovedListenRoutes";
+
+
+declare global {
+  var DB: D1Database | undefined;
+  var R2: R2Bucket | undefined;
+}
+
 
 interface Env {
    CLOUDFLARE_ACCOUNT_ID: string;
@@ -22,6 +29,7 @@ interface Env {
 
 export type AppContext = {
   env: Env;
+  user?: any;
 };
 
 export default defineApp([
@@ -33,6 +41,25 @@ export default defineApp([
       globalThis.DB = ctx.env.DB;
     }
   },
+
+  // API  for database access
+  prefix("/api/v1/hovedlisten", hovedListenRoutes),
+
+  // Seed route(testing)
+  route("/seed", async ({ ctx }) => {
+    try {
+      const { seedData } = await import("@/db/seedHovedlisten");
+      await seedData(ctx?.env);
+      return Response.json({ success: true, message: "Database seeded successfully" });
+    } catch (error) {
+      console.error("Error seeding database:", error);
+      return Response.json({
+        success: false,
+        error: "Failed to seed database",
+      }, { status: 500 });
+    }
+  }),
+
   route("/upload/", async ({ request, ctx }) => {
     try {
       

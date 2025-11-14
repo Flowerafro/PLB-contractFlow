@@ -5,7 +5,6 @@ Strukturert opp etter clients tabell fra DB i schema.ts
 
 */
 
-
 export interface Client {
     id: number;
     name: string;

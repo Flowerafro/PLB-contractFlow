@@ -25,6 +25,11 @@ export default defineConfig({
           },
         }),*/
   ],
+  build: {
+    rollupOptions: {
+      external: ["tailwindcss"]
+    }
+  },
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),

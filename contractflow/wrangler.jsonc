@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "worker",
+  "name": "contractflow",
   "main": "src/worker.tsx",
   "compatibility_date": "2025-08-21",
   "compatibility_flags": ["nodejs_compat"],
@@ -24,7 +24,7 @@
       "binding": "DB",
       "database_name": "plb-contractflow-db", 
       "database_id": "ff8d2ccd-6228-47d1-a98b-5e3f0ea4d02b",
-      "migrations_dir": "drizzle",
+      "migrations_dir": "drizzle/migrations",
       "remote": true,
     }
   ],
