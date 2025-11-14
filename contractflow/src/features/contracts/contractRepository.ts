@@ -1,29 +1,15 @@
-import { getDB } from "../../db/client"
+import { drizzle } from "drizzle-orm/d1"
 import { contracts } from "../../db/schema/schema"
 import { eq } from "drizzle-orm"
-
-export type ContractInput = {
-  plbReference: string
-  clientId: number
-  principalId?: number
-  productCode?: string
-  orderDate?: string
-  tonnPerFcl?: number
-  priceUsdPerMtC?: number
-  totalUsdC?: number
-  commissionGroupBp?: number
-  customerOrderNo?: string
-  principalContractNo?: string
-  principalContractDate?: string
-  principalOrderNo?: string
-  status?: string
-}
+import type { CreateContractInput } from "../fileHandling/interfaces/CreateContractInput"
 
 export const createContractRepository = (env: Env) => {
-  const db = getDB(env)
+  const db = drizzle(env.DB)
 
   return {
-    async create(data: ContractInput) {
+
+    // Opprett kontrakt
+    async create(data: CreateContractInput) {
       try {
         const result = await db.insert(contracts).values(data).returning()
         return { data: result[0] }
@@ -32,6 +18,7 @@ export const createContractRepository = (env: Env) => {
       }
     },
 
+    // Hent alle kontrakter
     async list() {
       try {
         const result = await db.select().from(contracts)
@@ -41,28 +28,15 @@ export const createContractRepository = (env: Env) => {
       }
     },
 
+    // Finn kontrakt etter id
     async find(id: number) {
       try {
-        const result = await db.select().from(contracts).where(eq(contracts.id, id))
+        const result = await db
+          .select()
+          .from(contracts)
+          .where(eq(contracts.id, id))
+
         return { data: result[0] || null }
-      } catch (error) {
-        return { error }
-      }
-    },
-
-    async update(id: number, patch: Partial<ContractInput>) {
-      try {
-        await db.update(contracts).set(patch).where(eq(contracts.id, id))
-        return { data: { id } }
-      } catch (error) {
-        return { error }
-      }
-    },
-
-    async remove(id: number) {
-      try {
-        await db.delete(contracts).where(eq(contracts.id, id))
-        return { data: { id } }
       } catch (error) {
         return { error }
       }
