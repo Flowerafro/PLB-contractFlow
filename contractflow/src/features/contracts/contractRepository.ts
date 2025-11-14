@@ -1,4 +1,4 @@
-import { getDB } from "../../db/client"
+import { getDB } from "../../db/schema/client"
 import { contracts } from "../../db/schema/schema"
 import { eq } from "drizzle-orm"
 
