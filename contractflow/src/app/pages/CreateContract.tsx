@@ -148,7 +148,7 @@ export default function CreateContractPage() {
             />
           </div>
 
-          <CreateContractButton onClick={() => {}} loading={loading} label="Create Contract" />
+          <CreateContractButton loading={loading} label="Create Contract" />
 
           {message && <p className="text-center text-sm text-gray-700 mt-2">{message}</p>}
         </form>
