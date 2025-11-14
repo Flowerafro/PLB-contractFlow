@@ -33,7 +33,7 @@
   "include": [
     "src",
     "types"
-, "api/functions"  ],
+, "api/functions", "functions"  ],
   "exclude": [
     "node_modules",
     ".tmp"

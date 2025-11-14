@@ -7,8 +7,6 @@ export const createContractRepository = (env: Env) => {
   const db = drizzle(env.DB)
 
   return {
-
-    // Opprett kontrakt
     async create(data: CreateContractInput) {
       try {
         const result = await db.insert(contracts).values(data).returning()
@@ -18,7 +16,6 @@ export const createContractRepository = (env: Env) => {
       }
     },
 
-    // Hent alle kontrakter
     async list() {
       try {
         const result = await db.select().from(contracts)
@@ -28,7 +25,6 @@ export const createContractRepository = (env: Env) => {
       }
     },
 
-    // Finn kontrakt etter id
     async find(id: number) {
       try {
         const result = await db
@@ -37,6 +33,32 @@ export const createContractRepository = (env: Env) => {
           .where(eq(contracts.id, id))
 
         return { data: result[0] || null }
+      } catch (error) {
+        return { error }
+      }
+    },
+
+    async update(id: number, updates: Partial<CreateContractInput>) {
+      try {
+        const result = await db
+          .update(contracts)
+          .set(updates)
+          .where(eq(contracts.id, id))
+          .returning()
+
+        return { data: result[0] }
+      } catch (error) {
+        return { error }
+      }
+    },
+    async remove(id: number) {
+      try {
+        const result = await db
+          .delete(contracts)
+          .where(eq(contracts.id, id))
+          .returning()
+
+        return { data: result[0] }
       } catch (error) {
         return { error }
       }
