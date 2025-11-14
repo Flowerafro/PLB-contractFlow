@@ -14,6 +14,7 @@ import style from "./app/index.css";
 import { hovedListenRoutes } from "@/features/databaseDataRetrieval/hovedListenRoutes";
 
 
+
 declare global {
   var DB: D1Database | undefined;
   var R2: R2Bucket | undefined;
@@ -44,6 +45,7 @@ export default defineApp([
 
   // API  for database access
   prefix("/api/v1/hovedlisten", hovedListenRoutes),
+
 
   // Seed route(testing)
   route("/seed", async ({ ctx }) => {
