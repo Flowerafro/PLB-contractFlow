@@ -128,7 +128,7 @@ async function testDatabase() {
     console.log(`Search found ${searchResults.length} contracts with 'Test' in client name`);
 
     // Test 6: Audit logging capability
-    console.log('\n📊 Test 6: Audit logging');
+    console.log('\nTest 6: Audit logging');
     
     const [auditEntry] = await db.insert(auditLog).values({
       tableName: 'contracts',
@@ -156,7 +156,7 @@ async function testDatabase() {
       .orderBy(desc(contracts.createdAt))
       .limit(5);
     
-    console.log(`✅ Retrieved ${recentContracts.length} recent contracts`);
+    console.log(`Retrieved ${recentContracts.length} recent contracts`);
 
     // Test 9: Status filtering
     console.log('\n📈 Test 9: Status-based filtering');
@@ -165,30 +165,30 @@ async function testDatabase() {
       .from(contracts)
       .where(eq(contracts.status, 'ACTIVE'));
     
-    console.log(`✅ Found ${activeContracts.length} active contracts`);
+    console.log(`Found ${activeContracts.length} active contracts`);
 
     const inTransitShipments = await db.select()
       .from(shipments)
       .where(eq(shipments.status, 'IN_TRANSIT'));
     
-    console.log(`✅ Found ${inTransitShipments.length} shipments in transit`);
+    console.log(`Found ${inTransitShipments.length} shipments in transit`);
 
     // Final summary
-    console.log('\n🎉 DATABASE TEST COMPLETED SUCCESSFULLY!');
+    console.log('\nDATABASE TEST COMPLETED SUCCESSFULLY!');
     console.log('==========================================');
-    console.log('✅ All tables accessible');
-    console.log('✅ CRUD operations working');
-    console.log('✅ Foreign key relationships functioning');
-    console.log('✅ Complex queries with JOINs working');
-    console.log('✅ Search functionality operational');
-    console.log('✅ Audit logging capability confirmed');
-    console.log('✅ Currency handling (cents) validated');
-    console.log('✅ Pagination ready');
-    console.log('✅ Status filtering working');
-    console.log('\n🚀 Database is production-ready!');
+    console.log('All tables accessible');
+    console.log('CRUD operations working');
+    console.log('Foreign key relationships functioning');
+    console.log('Complex queries with JOINs working');
+    console.log('Search functionality operational');
+    console.log('Audit logging capability confirmed');
+    console.log('Currency handling (cents) validated');
+    console.log('Pagination ready');
+    console.log('Status filtering working');
+    console.log('\nDatabase is production-ready!');
 
   } catch (error) {
-    console.error('❌ Database test failed:', error);
+    console.error('Database test failed:', error);
     throw error;
   }
 }
