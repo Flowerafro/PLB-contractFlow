@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import type { Client } from "@/lib/clientdummydata";
 import { CreateClientInput } from "@/features/fileHandling/interfaces/createClientInput";
-import { on } from "events";
 
 interface NewClientProps {
   onCreate?: (client: Client) => void;
@@ -25,16 +24,16 @@ const [name, setName] = useState("");
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-/* 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim()) {
-        setError("Navn og epost er påkrevd for lagring av klient.");
+    if (!name.trim()) {
+        setError("klientnavn er påkrevd for lagring av klient.");
         return;
     } 
     setError(null);
     setLoading(true);
-  }
+  
 
   const clientData: CreateClientInput = {
     name: name.trim(),
@@ -69,9 +68,11 @@ const [name, setName] = useState("");
     onCancel?.();
   } catch (error: any) {
     console.error("Error creating client:", error);
-    setError("Det skjedde en feil ved lagring av klient.");
+    setError(error?.message || "Det skjedde en feil ved lagring av klient.");
   } finally {
-    setLoading(false); */
+    setLoading(false);
+  }
+}
 
  /*  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,60 +97,43 @@ const [name, setName] = useState("");
 
     onCreate?.(partialClient as Client);
   } */
+  
 
-
-  return (   <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-{/*       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow max-w-lg w-full"> */}
+  return (   
+  
+  <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
         <h3 className="text-lg font-medium mb-4">New Client</h3>
 
         {error && <div className="text-red-600 mb-2">{error}</div>}
-
-        {/* <div className="grid grid-cols-1 gap-3">
-          <fieldset>
-            <label htmlFor="name">Klientnavn: </label>
-          <input id="name" type="text"  value={name} onChange={e => setName(e.target.value)} className="border p-2 rounded" /></fieldset>
-          
-
-        </div>
-
-        <div className="flex justify-end gap-3 mt-4">
-          <button type="button" onClick={onCancel} className="px-4 py-2 bg-gray-200 rounded">Cancel</button>
-          <button type="submit" className="px-4 py-2 bg-[var(--primary-color)] text-white rounded">Create</button>
-        </div> */}
-
         <form className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
 
           <fieldset className="relative z-0 w-full mb-5 group">
-                <input type="text" name="company" id="company" className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " required />
+                <input value={name} type="text" name="company" id="company" onChange={e => setName(e.target.value)} className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " required />
                 <label htmlFor="company" className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Company name</label>
             </fieldset>
 
             <fieldset className="relative z-0 w-full mb-5 group">
-                <input type="text" name="customercode" id="customercode" className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " required />
+                <input value={customerCode} type="text" name="customercode" id="customercode" onChange={e => setCustomerCode(e.target.value)} className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " />
                 <label htmlFor="customercode" className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Customer code</label>
             </fieldset>
 
             <div className="grid md:grid-cols-2 md:gap-6">
               <fieldset className="relative z-0 w-full mb-5 group">
-                <input type="email" name="floating_email" id="floating_email" className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " required />
+                <input value={email} type="email" name="floating_email" id="floating_email" onChange={e => setEmail(e.target.value)} className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " />
                 <label htmlFor="floating_email" className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Email address</label>
               </fieldset>
               <fieldset className="relative z-0 w-full mb-5 group">
-                <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="floating_phone" id="floating_phone" className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " required />
+                <input value={phone} type="tel" pattern="^\+?[0-9\s\-()]{7,20}$" name="floating_phone" id="floating_phone" onChange={e => setPhone(e.target.value)} className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " />
                 <label htmlFor="floating_phone" className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Phone number</label>
               </fieldset>
             </div>
 
             <fieldset className="relative z-0 w-full mb-5 group">
-              <input type="text" name="country" id="country" className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " required />
+              <input value={country} type="text" name="country" id="country" onChange={e => setCountry(e.target.value)} className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " />
               <label htmlFor="country" className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Country</label>
             </fieldset>
-      
-
         <button type="submit" className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Submit</button>
       </form>
-     {/*  </form> */}
-    </div>)
-
- 
+    </div>
+    )
 }
