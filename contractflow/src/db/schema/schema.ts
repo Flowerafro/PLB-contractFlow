@@ -13,8 +13,9 @@ export const clients = sqliteTable("clients", {
   createdAt: text("created_at").notNull().default(sql`datetime('now')`)
 });
 
-/* export type DBClient = typeof clients.$inferSelect;
-export type DBClientInsert = typeof clients.$inferInsert; */
+// til klienthåndtering i repo/service (features/clients) 
+export type DBClient = typeof clients.$inferSelect;
+export type DBClientInsert = typeof clients.$inferInsert;
 
 
 export const principals = sqliteTable("principals", {
