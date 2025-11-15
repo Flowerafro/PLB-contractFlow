@@ -11,7 +11,7 @@ interface NewClientProps {
 
 export default function NewClient({ onCreate, onCancel }: NewClientProps) {
 
-
+/*
 const [name, setName] = useState("");
 const [customerCode, setCustomerCode] = useState("");
 const [contactperson, setContactperson] = useState("");
@@ -32,7 +32,7 @@ const [loading, setLoading] = useState(false);
     setLoading(true);
   
 
-/*   
+ 
 
 kommentert ut mens jeg jobber med klientservice/repo/routes/service
 

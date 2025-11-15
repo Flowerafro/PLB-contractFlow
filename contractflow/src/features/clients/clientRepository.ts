@@ -4,15 +4,14 @@ import { getDb } from '../../db/index'
 import { clients } from '../../db/schema/schema'
 import { eq, or, like, sql } from 'drizzle-orm'
 
-import type { Client } from '@/app/types/client'
 import type { CreateClientInput } from '../fileHandling/interfaces/createClientInput'
-
+import type { DBClient, DBClientInsert } from "../../db/schema/schema";
 
 
 export interface ClientRepository {
-    create(data: CreateClientInput): Promise<{ data?: Client; error?: any }>;
-    findMany(search?: string): Promise<{ data?: Client[]; error?: any }>;
-    find(id: number): Promise<{ data?: Client; error?: any }>;
+    create(data: DBClientInsert): Promise<{ data?: DBClient; error?: any }>;
+    findMany(search?: string): Promise<{ data?: DBClient[]; error?: any }>;
+    find(id: number): Promise<{ data?: DBClient; error?: any }>;
     update(id: number, patch: Partial<CreateClientInput>): Promise<{ data?: { id: number }; error?: any }>;
     remove(id: number): Promise<{ data?: { id: number }; error?: any }>;
 }

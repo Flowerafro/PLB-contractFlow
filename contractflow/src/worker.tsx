@@ -47,7 +47,7 @@ export default defineApp([
   // API  for database access
   prefix("/api/v1/hovedlisten", hovedListenRoutes),
 
-  prefix("/api/v1/clients", clientRoutes),
+  //prefix("/api/v1/clients", clientRoutes),
 
 
   // Seed route(testing)
