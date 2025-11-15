@@ -1,16 +1,18 @@
 import { createClientRepository } from "./clientRepository";
 import type { clientServiceResult } from "../fileHandling/interfaces/clientResult";
 import type { CreateClientInput } from "../fileHandling/interfaces/createClientInput";
-import type { Client } from "@/app/types/client";
-import type { ClientSearchItem } from "@/app/types/clientSearch";
+/* import type { Client } from "@/app/types/client";
+import type { ClientSearchItem } from "@/app/types/clientSearch"; */
+
+import type { DBClient, DBClientInsert } from "../../db/schema/schema";
 
 export interface ClientService {
-    create(data: CreateClientInput): Promise<clientServiceResult<Client>>;
-    list(query?: string): Promise<clientServiceResult<Client[]>>;
-    get(id: number): Promise<clientServiceResult<Client>>;
+    create(data: CreateClientInput): Promise<clientServiceResult<DBClient>>;
+    list(query?: string): Promise<clientServiceResult<DBClient[]>>;
+    get(id: number): Promise<clientServiceResult<DBClient>>;
     update(id: number, patch: Partial<CreateClientInput>): Promise<clientServiceResult<{ id: number }>>;
     delete(id: number): Promise<clientServiceResult<{ id: number }>>;
-    search(query: string): Promise<clientServiceResult<Client[]>>;
+    search(query: string): Promise<clientServiceResult<DBClient[]>>;
 }
 
 export function createClientService(

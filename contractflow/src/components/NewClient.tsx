@@ -7,6 +7,7 @@ import type { CreateClientInput } from "../features/fileHandling/interfaces/crea
 import type { Client } from "../app/types/client";
 import { clientAPI } from "../lib/clientAPI";
 import { InputWithLabel } from "./InputWithLabel";
+import type { InputNewClient } from "../app/types/InputNewClient";
 
 
 interface NewClientProps {
@@ -146,47 +147,47 @@ const clientData: CreateClientInput = {
         <form className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
 
           <InputWithLabel
-  value={name}
-  onChange={(e) => setName(e.target.value)}
-  label="Company name"
-  name="company"
-  id="company"
-  required
-/>
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            label="Company name"
+            name="company"
+            id="company"
+            required
+          />
 
-<InputWithLabel
-  value={customerCode}
-  onChange={(e) => setCustomerCode(e.target.value)}
-  label="Customer code"
-  name="customerCode"
-  id="customerCode"
-/>
+          <InputWithLabel
+            value={customerCode}
+            onChange={(e) => setCustomerCode(e.target.value)}
+            label="Customer code"
+            name="customerCode"
+            id="customerCode"
+          />
 
-<InputWithLabel
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  label="Email address"
-  type="email"
-  name="email"
-  id="email"
-/>
+          <InputWithLabel
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            label="Email address"
+            type="email"
+            name="email"
+            id="email"
+          />
 
-<InputWithLabel
-  value={phone}
-  onChange={(e) => setPhone(e.target.value)}
-  label="Phone number"
-  type="tel"
-  name="phone"
-  id="phone"
-/>
+          <InputWithLabel
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            label="Phone number"
+            type="tel"
+            name="phone"
+            id="phone"
+          />
 
-<InputWithLabel
-  value={country}
-  onChange={(e) => setCountry(e.target.value)}
-  label="Country"
-  name="country"
-  id="country"
-/>
+          <InputWithLabel
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            label="Country"
+            name="country"
+            id="country"
+          />
      {/*      <fieldset className="relative z-0 w-full mb-5 group">
                 <input value={name} type="text" name="company" id="company" onChange={e => setName(e.target.value)} className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " required />
                 <label htmlFor="company" className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Company name</label>

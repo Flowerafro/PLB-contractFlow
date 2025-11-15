@@ -9,7 +9,7 @@ export default function ClientProfilePage({
   onBack?: () => void;
 }) {
 
-  const initials = client.name.split().map(n => n[0]).join("");
+  const initials = client.name.split(" ").map(n => n[0]).join("");
 
   return (
     <section className="min-h-screen bg-gray-50">
