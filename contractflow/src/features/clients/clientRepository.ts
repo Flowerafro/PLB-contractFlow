@@ -1,16 +1,24 @@
-
+// kode inspirert fra https://github.com/mariuswallin/hiof-2025-webapp-demo/blob/main/src/features/tasks/tasksRepository.ts
 
 import { getDb } from '../../db/index'
 import { clients } from '../../db/schema/schema'
 import { eq } from 'drizzle-orm'
+import type { Client } from '@/app/types/client'
 import type { CreateClientInput } from '../fileHandling/interfaces/createClientInput'
 
 
 
+export interface clientRepository {
+    create(data: CreateClientInput): Promise<{ data: Client }>;
+    list(): Promise<{ data: Client[] }>;
+    find(id: number): Promise<{ data: Client | null }>;
+    update(id: number, patch: Partial<CreateClientInput>): Promise<{ data: { id: number } }>;
+    remove(id: number): Promise<{ data: { id: number } }>;
+}
+
 
 export const createClientRepository = () => {
     const db = getDb()
-
     return {
         async create(data: CreateClientInput) {
             try {
