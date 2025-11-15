@@ -12,7 +12,7 @@ import formatDate from '@/features/tables/functions/formatDate';
 
 export function hovedListenData(){
     return useData<HovedListeItem>({
-        path: '../../../resources/hoved_listen_paaLissom.json',
+        path: '/src/features/tables/dummyData/hoved_listen_paaLissom.json',
         transform: (rawData: any[]) => rawData.map((item: any) => ({
             plbReference: item.plbReference || '',
             plbOrderDate: formatDate(new Date(item.plbOrderDate)) || '',

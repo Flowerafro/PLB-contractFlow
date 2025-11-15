@@ -1,7 +1,7 @@
 [
   {
     "plbReference": "PLB-2025-001",
-    "plbOrderData": "2025-01-15",
+    "plbOrderDate": "2025-01-15",
     "customer": "Nordic Metals AS",
     "product": "Aluminum Ingot 99.7%",
     "tonn": 250,
@@ -28,7 +28,7 @@
   },
   {
     "plbReference": "PLB-2025-002",
-    "plbOrderData": "2025-01-28",
+    "plbOrderDate": "2025-01-28",
     "customer": "Baltic Steel OÜ",
     "product": "Galvanized Steel Coil",
     "tonn": 180,
@@ -55,7 +55,7 @@
   },
   {
     "plbReference": "PLB-2025-003",
-    "plbOrderData": "2025-02-05",
+    "plbOrderDate": "2025-02-05",
     "customer": "ScandiCopper AB",
     "product": "Copper Cathode Grade A",
     "tonn": 300,
@@ -82,7 +82,7 @@
   },
   {
     "plbReference": "PLB-2025-004",
-    "plbOrderData": "2025-02-12",
+    "plbOrderDate": "2025-02-12",
     "customer": "Oslo Marine Supplies",
     "product": "Zinc Alloy ZAMAK-3",
     "tonn": 120,
@@ -109,7 +109,7 @@
   },
   {
     "plbReference": "PLB-2025-005",
-    "plbOrderData": "2025-02-18",
+    "plbOrderDate": "2025-02-18",
     "customer": "GreenEnergy Finland Oy",
     "product": "Lithium Carbonate Battery Grade",
     "tonn": 50,
@@ -136,7 +136,7 @@
   },
   {
     "plbReference": "PLB-2025-006",
-    "plbOrderData": "2025-02-20",
+    "plbOrderDate": "2025-02-20",
     "customer": "EuroAlloys GmbH",
     "product": "Silicon Metal 553",
     "tonn": 180,
@@ -163,7 +163,7 @@
   },
   {
     "plbReference": "PLB-2025-007",
-    "plbOrderData": "2025-02-25",
+    "plbOrderDate": "2025-02-25",
     "customer": "DanMet Trading ApS",
     "product": "Ferrosilicon 75%",
     "tonn": 220,
@@ -190,7 +190,7 @@
   },
   {
     "plbReference": "PLB-2025-008",
-    "plbOrderData": "2025-03-01",
+    "plbOrderDate": "2025-03-01",
     "customer": "PolarChem AS",
     "product": "Caustic Soda Flakes 99%",
     "tonn": 150,
@@ -217,7 +217,7 @@
   },
   {
     "plbReference": "PLB-2025-009",
-    "plbOrderData": "2025-03-05",
+    "plbOrderDate": "2025-03-05",
     "customer": "SwedNickel AB",
     "product": "Nickel Briquettes 99.8%",
     "tonn": 75,
@@ -244,7 +244,7 @@
   },
   {
     "plbReference": "PLB-2025-010",
-    "plbOrderData": "2025-03-08",
+    "plbOrderDate": "2025-03-08",
     "customer": "NorFerro AS",
     "product": "Ferrochrome HC",
     "tonn": 200,
@@ -271,7 +271,7 @@
   },
   {
     "plbReference": "PLB-2025-011",
-    "plbOrderData": "2025-03-10",
+    "plbOrderDate": "2025-03-10",
     "customer": "Iceland Minerals hf",
     "product": "Magnesium Ingot 99.9%",
     "tonn": 90,
@@ -298,7 +298,7 @@
   },
   {
     "plbReference": "PLB-2025-012",
-    "plbOrderData": "2025-03-12",
+    "plbOrderDate": "2025-03-12",
     "customer": "Baltic Minerals AS",
     "product": "Manganese Ore 44%",
     "tonn": 350,
@@ -325,7 +325,7 @@
   },
   {
     "plbReference": "PLB-2025-013",
-    "plbOrderData": "2025-03-15",
+    "plbOrderDate": "2025-03-15",
     "customer": "NorthSea Alloy Ltd",
     "product": "Ferro Molybdenum 60%",
     "tonn": 40,
@@ -352,7 +352,7 @@
   },
   {
     "plbReference": "PLB-2025-014",
-    "plbOrderData": "2025-03-20",
+    "plbOrderDate": "2025-03-20",
     "customer": "ScandiChem AB",
     "product": "Soda Ash Dense 99.2%",
     "tonn": 500,
@@ -379,7 +379,7 @@
   },
   {
     "plbReference": "PLB-2025-015",
-    "plbOrderData": "2025-03-25",
+    "plbOrderDate": "2025-03-25",
     "customer": "MetNord AS",
     "product": "Silicon Carbide 98%",
     "tonn": 110,
@@ -406,7 +406,7 @@
   },
   {
     "plbReference": "PLB-2025-016",
-    "plbOrderData": "2025-03-28",
+    "plbOrderDate": "2025-03-28",
     "customer": "Aurora Minerals AS",
     "product": "Titanium Dioxide Rutile",
     "tonn": 90,
@@ -433,7 +433,7 @@
   },
   {
     "plbReference": "PLB-2025-017",
-    "plbOrderData": "2025-04-02",
+    "plbOrderDate": "2025-04-02",
     "customer": "NordKjemi AS",
     "product": "Ammonium Nitrate Prilled",
     "tonn": 300,
@@ -460,7 +460,7 @@
   },
   {
     "plbReference": "PLB-2025-018",
-    "plbOrderData": "2025-04-06",
+    "plbOrderDate": "2025-04-06",
     "customer": "FinnSteel Oy",
     "product": "Steel Billet 3SP",
     "tonn": 400,
@@ -487,7 +487,7 @@
   },
   {
     "plbReference": "PLB-2025-019",
-    "plbOrderData": "2025-04-10",
+    "plbOrderDate": "2025-04-10",
     "customer": "Arctic Resources Ltd",
     "product": "Copper Concentrate 25%",
     "tonn": 500,
@@ -514,7 +514,7 @@
   },
   {
     "plbReference": "PLB-2025-020",
-    "plbOrderData": "2025-04-15",
+    "plbOrderDate": "2025-04-15",
     "customer": "OceanMetals BV",
     "product": "Lead Ingot 99.97%",
     "tonn": 275,
