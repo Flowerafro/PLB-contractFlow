@@ -11,19 +11,16 @@ interface NewClientProps {
 
 export default function NewClient({ onCreate, onCancel }: NewClientProps) {
 
-/* const [customer, setCustomer] = useState(""); */
 
 const [name, setName] = useState("");
-  const [customerCode, setCustomerCode] = useState("");
-  const [contactperson, setContactperson] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [country, setCountry] = useState("");
-/*   const [title, setTitle] = useState("");
-  const [relation, setRelation] = useState(""); */
+const [customerCode, setCustomerCode] = useState("");
+const [contactperson, setContactperson] = useState("");
+const [email, setEmail] = useState("");
+const [phone, setPhone] = useState("");
+const [country, setCountry] = useState("");
 
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+const [error, setError] = useState<string | null>(null);
+const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +32,12 @@ const [name, setName] = useState("");
     setLoading(true);
   
 
-  const clientData: CreateClientInput = {
+/*   
+
+kommentert ut mens jeg jobber med klientservice/repo/routes/service
+
+
+const clientData: CreateClientInput = {
     name: name.trim(),
     customerCode: customerCode.trim() || undefined,
     email: email.trim() || undefined,
@@ -72,7 +74,7 @@ const [name, setName] = useState("");
   } finally {
     setLoading(false);
   }
-}
+} */
 
  /*  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

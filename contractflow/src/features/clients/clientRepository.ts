@@ -2,67 +2,87 @@
 
 import { getDb } from '../../db/index'
 import { clients } from '../../db/schema/schema'
-import { eq } from 'drizzle-orm'
+import { eq, or, like, sql } from 'drizzle-orm'
+
 import type { Client } from '@/app/types/client'
 import type { CreateClientInput } from '../fileHandling/interfaces/createClientInput'
 
 
 
-export interface clientRepository {
-    create(data: CreateClientInput): Promise<{ data: Client }>;
-    list(): Promise<{ data: Client[] }>;
-    find(id: number): Promise<{ data: Client | null }>;
-    update(id: number, patch: Partial<CreateClientInput>): Promise<{ data: { id: number } }>;
-    remove(id: number): Promise<{ data: { id: number } }>;
+export interface ClientRepository {
+    create(data: CreateClientInput): Promise<{ data?: Client; error?: any }>;
+    findMany(search?: string): Promise<{ data?: Client[]; error?: any }>;
+    find(id: number): Promise<{ data?: Client; error?: any }>;
+    update(id: number, patch: Partial<CreateClientInput>): Promise<{ data?: { id: number }; error?: any }>;
+    remove(id: number): Promise<{ data?: { id: number }; error?: any }>;
 }
 
+export function createClientRepository(): ClientRepository {
+    const db = getDb();
 
-export const createClientRepository = () => {
-    const db = getDb()
     return {
-        async create(data: CreateClientInput) {
+        async create(data) {
             try {
-                const result = await db.insert(clients).values(data).returning()
-                return { data: result[0] }
+                const result = await db.insert(clients).values(data).returning();
+                return { data: result[0] };
             } catch (error) {
-                return { error }
+                return { error };
             }
         },
 
-        async list() {
+        async findMany(search) {
             try {
-                const result = await db.select().from(clients)
-                return { data: result }
+                if (!search || search.trim() === "") {
+                    const result = await db.select().from(clients);
+                    return { data: result };
+                }
+
+                const value = `%${search.toLowerCase()}%`;
+
+                const result = await db
+                    .select()
+                    .from(clients)
+                    .where(
+                        or(
+                            like(clients.name, value),
+                            like(clients.email, value),
+                            like(clients.phone, value),
+                            like(clients.country, value),
+                            like(clients.customerCode, value)
+                        )
+                    );
+
+                return { data: result };
             } catch (error) {
-                return { error }
+                return { error };
             }
         },
 
-        async find(id: number) {
+        async find(id) {
             try {
-                const result = await db.select().from(clients).where(eq(clients.id, id))
-                return { data: result[0] || null }
+                const result = await db.select().from(clients).where(eq(clients.id, id));
+                return { data: result[0] ?? null };
             } catch (error) {
-                return { error }
+                return { error };
             }
         },
 
-        async update(id: number, patch: Partial<CreateClientInput>) {
+        async update(id, patch) {
             try {
-                await db.update(clients).set(patch).where(eq(clients.id, id))
-                return { data: { id } }
+                await db.update(clients).set(patch).where(eq(clients.id, id));
+                return { data: { id } };
             } catch (error) {
-                return { error }
+                return { error };
             }
         },
 
-        async remove(id: number) {
+        async remove(id) {
             try {
-                await db.delete(clients).where(eq(clients.id, id))
-                return { data: { id } }
+                await db.delete(clients).where(eq(clients.id, id));
+                return { data: { id } };
             } catch (error) {
-                return { error }
+                return { error };
             }
-        }
-    }
-} 
+        },
+    };
+}

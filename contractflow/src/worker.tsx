@@ -12,6 +12,7 @@ import ClientOverview from "@/app/pages/ClientOverview";
 import Tables from "@/app/pages/Tables";
 import style from "./app/index.css";
 import { hovedListenRoutes } from "@/features/databaseDataRetrieval/hovedListenRoutes";
+import { clientRoutes } from "./features/clients/clientRoutes";
 
 
 
@@ -45,6 +46,8 @@ export default defineApp([
 
   // API  for database access
   prefix("/api/v1/hovedlisten", hovedListenRoutes),
+
+  prefix("/api/v1/clients", clientRoutes),
 
 
   // Seed route(testing)
