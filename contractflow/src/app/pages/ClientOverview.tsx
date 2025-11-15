@@ -91,9 +91,16 @@ const handleSelectClient = async (item: ClientSearchItem | Client) => {
       console.error("Feil ved henting av klient:", error);
     }
   };
+
+
 // opprette ny klient via clientAPI
 
- const handleCreateClient = async (data: CreateClientInput) => {
+const handleCreateClient = async (created: Client) => {
+  setShowNewClientForm(false);
+  handleSelectClient(created);
+};
+
+/*  const handleCreateClient = async (data: CreateClientInput) => {
     try {
       const created = await clientAPI.create(data);
       setShowNewClientForm(false);
@@ -101,7 +108,7 @@ const handleSelectClient = async (item: ClientSearchItem | Client) => {
     } catch (err) {
       console.error("Feil ved opprettelse av klient:", err);
     }
-  };
+  }; */
 
   // Logikk om hva som skjer når man klikker på en klient/kuunde
 

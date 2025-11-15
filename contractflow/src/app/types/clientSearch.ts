@@ -1,6 +1,7 @@
 export interface ClientSearchItem {
     id: number;
     name?: string;
+    customerCode?: string;
     customer?: string;
     contactperson?: string;
     title?: string;

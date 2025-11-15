@@ -7,10 +7,21 @@ import type { CreateClientInput } from "../features/fileHandling/interfaces/crea
 
 const BASE_URL = "/api/clients";
 
+type ApiError = {
+    error?: string | { message?: string };
+    data?: unknown;
+}
+
 async function handleResponse<T>(response: Response): Promise<T> {
-    const data = await response.json().catch(() => null);
+    const data = (await response.json().catch(() => null)) as ApiError | null;
+
     if (!response.ok) {
-        const message = data?.error?.message || data?.error || "Noe gikk galt med forespørselen.";
+        const message =
+            data?.error && typeof data.error === "object"
+                ? data.error.message
+                : typeof data?.error === "string"
+                    ? data.error
+                    : "Noe gikk galt med forespørselen.";
 
         throw new Error(message);
     }
