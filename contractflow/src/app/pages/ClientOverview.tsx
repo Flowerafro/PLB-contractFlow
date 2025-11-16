@@ -22,6 +22,8 @@ export default function ClientOverview({ clientId }: ClientOverviewProps) {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [showNewClientForm, setShowNewClientForm] = useState(false);
 
+/* DB ikke helt på plass - så klienter vises ikke */
+
   // henter klientliste når siden laster inn
  useEffect(() => {
     async function loadClients() {

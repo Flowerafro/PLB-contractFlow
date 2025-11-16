@@ -89,7 +89,7 @@ export default function Dashboard() {
       <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">Hovedlisten</h1>
       <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />
 
-      <section style={{ marginTop: 16 }}>
+      <section className="mt-8">
         {selectedShipment ? (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md m-2">
             <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear>

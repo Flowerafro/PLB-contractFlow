@@ -1,4 +1,25 @@
+
 "use client";
+
+import Footer from "../../components/Footer";
+import HeaderComponent from "../../components/HeaderComponent";
+
+export default function Layout({ children }: { children?: React.ReactNode }) {
+  return (
+    <div className="relative min-h-full flex flex-col bg-[var(--bg-color)]">
+      <HeaderComponent />
+
+      <main className="flex-1 p-5">
+        {children}
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
+
+
+/* "use client";
 
 import Footer from "../../components/Footer";
 import { useState, useEffect } from "react";
@@ -37,4 +58,4 @@ export default function Layout({ children }: { children?: React.ReactNode }) {
       <Footer />
     </div>
   );
-}
+} */
