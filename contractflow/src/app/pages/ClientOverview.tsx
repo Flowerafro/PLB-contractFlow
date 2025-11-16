@@ -101,15 +101,6 @@ const handleCreateClient = async (created: Client) => {
   handleSelectClient(created);
 };
 
-/*  const handleCreateClient = async (data: CreateClientInput) => {
-    try {
-      const created = await clientAPI.create(data);
-      setShowNewClientForm(false);
-      handleSelectClient(created);
-    } catch (err) {
-      console.error("Feil ved opprettelse av klient:", err);
-    }
-  }; */
 
   // Logikk om hva som skjer når man klikker på en klient/kuunde
 

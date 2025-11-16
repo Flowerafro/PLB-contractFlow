@@ -7,7 +7,9 @@ import type { CreateClientInput } from "../features/fileHandling/interfaces/crea
 import type { Client } from "../app/types/client";
 import { clientAPI } from "../lib/clientAPI";
 import type { InputNewClient } from "../app/types/InputNewClient";
-import { InputWLabelClient } from "./InputWLabelClient";
+import { InputWithLabelSubmitForm } from "./InputWithLabelSubmitForm";
+import ButtonClear from "./ButtonClear";
+/* import { InputWLabelClient } from "./InputWLabelClient"; */
 
 
 interface NewClientProps {
@@ -61,98 +63,23 @@ const handleSubmit = async (e: React.FormEvent) => {
   }
 } 
 
-
-
-/*   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) {
-        setError("klientnavn er påkrevd for lagring av klient.");
-        return;
-    } 
-    setError(null);
-    setLoading(true);
-  
-
-
-const clientData: CreateClientInput = {
-    name: name.trim(),
-    customerCode: customerCode.trim() || undefined,
-    email: email.trim() || undefined,
-    phone: phone.trim() || undefined,
-    country: country.trim() || undefined,
-  } 
-
-  try {
-    const response = await fetch("/api/clients/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(clientData),
-    })
-
-    const body = await response.json().catch(() => null);
-
-    if (!response.ok) {
-      setError(body?.error || "Det skjedde en feil ved lagring av klient.");
-    }
-
-    const createdClient = body?.data;
-    onCreate?.(createdClient as Client); 
-    setName("");
-    setCustomerCode("");
-    setEmail("");
-    setPhone("");
-    setCountry("");
-    onCancel?.();
-  } catch (error: any) {
-    console.error("Error creating client:", error);
-    setError(error?.message || "Det skjedde en feil ved lagring av klient.");
-  } finally {
-    setLoading(false);
-  }
-} 
- */
- /*  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!customer.trim() || !customerCode.trim()) {
-        setError("Customer and Customer Code are required.");
-        return;
-    } 
-    setError(null);
-
-    const partialClient: Omit<Client, "id"> = {
-      customer,
-      customerCode,
-      contactperson,
-      email,
-      phone,
-      country,
-      title,
-      relation,
-    };
-
-    console.log("Creating client:", partialClient);
-
-    onCreate?.(partialClient as Client);
-  } */
-  
-
   return (   
   
   <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
         {error && <div className="text-red-600 mb-2">{error}</div>}
         <form className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md w-3xl">
-          <h3 className="text-lg font-medium mb-4 pb-4">New Client</h3>
-          <InputWLabelClient value={name} onChange={(e) => setName(e.target.value)} label="Company name" name="company" id="company" required/>
-          <InputWLabelClient value={customerCode} onChange={(e) => setCustomerCode(e.target.value)} label="Customer code" name="customerCode" id="customerCode"/>
+          <ButtonClear onClick={onCancel} className="mb-4">X</ButtonClear>
+          <h3 className="text-lg font-medium mb-4 p-4">New Client</h3>
+          <InputWithLabelSubmitForm value={name} onChange={(e) => setName(e.target.value)} label="Company name" name="company" id="company" required/>
+          <InputWithLabelSubmitForm value={customerCode} onChange={(e) => setCustomerCode(e.target.value)} label="Customer code" name="customerCode" id="customerCode"/>
           <div className="grid md:grid-cols-2 md:gap-6">
-            <InputWLabelClient value={email} onChange={(e) => setEmail(e.target.value)} label="Email address" type="email" name="email" id="email"/>
-            <InputWLabelClient value={phone} onChange={(e) => setPhone(e.target.value)} label="Phone number" type="tel" name="phone" id="phone"/>
+            <InputWithLabelSubmitForm value={email} onChange={(e) => setEmail(e.target.value)} label="Email address" type="email" name="email" id="email"/>
+            <InputWithLabelSubmitForm value={phone} onChange={(e) => setPhone(e.target.value)} label="Phone number" type="tel" name="phone" id="phone"/>
           </div>
-          <InputWLabelClient value={country} onChange={(e) => setCountry(e.target.value)} label="Country" name="country" id="country"/>
+          <InputWithLabelSubmitForm value={country} onChange={(e) => setCountry(e.target.value)} label="Country" name="country" id="country"/>
         <button type="submit" className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Submit</button>
       </form>
     </div>
     )
   }
+
