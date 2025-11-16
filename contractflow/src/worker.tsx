@@ -7,6 +7,7 @@ import { Login } from "./app/pages/Login";
 import Archive from "./app/pages/Archive";
 import Dashboard from "./app/pages/Dashboard";
 import CreateContract from "./app/pages/CreateContract";
+import Layout from "./app/pages/Layout";
 import ContractSuccess from "./app/pages/ContractSuccess";
 import ClientOverview from "./app/pages/ClientOverview";
 import Tables from "./app/pages/Tables";
@@ -115,14 +116,14 @@ export default defineApp([
   }),
  
   render(Document, [
-    route("/", () => <Login />), // default rute er login for å simulere beskyttet side
+   route("/", () => <Login />), // default rute er login for å simulere beskyttet side
     route("/Home", () => <Home />),
-    route("/create", () => <CreateContract />),
-    route("/success", () => <ContractSuccess />),
-    route("/clients", () => <ClientOverview />),
-    route("/clients/:id", (({params}) => <ClientOverview clientId={params.id} />)),
-    route("/tables", () => <Tables />),
-    route("/archive", () => <Archive />)
+    route("/create", () => <Layout><CreateContract /></Layout>),
+    route("/success", () => <Layout><ContractSuccess /></Layout>),
+    route("/clients", () => <Layout><ClientOverview /></Layout>),
+    route("/clients/:id", (({params}) => <Layout><ClientOverview clientId={params.id} /></Layout>)),
+    route("/tables", () => <Layout><Tables /></Layout>),
+    route("/archive", () => <Layout><Archive /></Layout>)
   ]),
   
 ]);
