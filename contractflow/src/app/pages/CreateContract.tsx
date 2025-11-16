@@ -1,6 +1,8 @@
 "use client"
 import React, { useState } from "react"
 import CreateContractButton from "../../components/CreateContractButton"
+import { contractAPI } from "../../lib/contractAPI";
+
 
 type ContractForm = {
   client: string
@@ -26,40 +28,27 @@ export default function CreateContractPage() {
   const [message, setMessage] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setMessage("")
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
   
     try {
-      const res = await fetch("/api/contracts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          plbReference: form.contractName || "PLB-" + Date.now(),
-          clientId: 1,
-          principalId: null,
-          productCode: form.client,
-          orderDate: form.startDate,
-          tonnPerFcl: null,
-          priceUsdPerMtC: 0,
-          totalUsdC: 0,
-          commissionGroupBp: null,
-          customerOrderNo: null,
-          principalContractNo: null,
-          principalContractDate: null,
-          principalOrderNo: null,
-          status: "ACTIVE"
-        })
-      })
-      if (!res.ok) throw new Error("Failed to save contract")
-      setMessage("Contract successfully created")
-      window.location.href = "/success"
-    } catch {
-      setMessage("Error creating contract")
+      await contractAPI.create({
+        plbReference: form.contractName || "PLB-" + Date.now(),
+        clientId: 1,
+        principalId: null,
+        productCode: form.client,
+        orderDate: form.startDate,
+        status: "ACTIVE"
+      });
+  
+      window.location.href = "/success";
+    } catch (err) {
+      setMessage("Error creating contract");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
   
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-200 py-10">

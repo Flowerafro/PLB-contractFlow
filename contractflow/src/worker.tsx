@@ -1,17 +1,16 @@
 import { render, route, prefix } from "rwsdk/router";
 import { defineApp } from "rwsdk/worker";
-import { Document } from "@/app/Document";
-import { setCommonHeaders } from "@/app/headers";
-import { Home } from "@/app/pages/Home";
-import { Login } from "@/app/pages/Login";
-import Archive from "@/app/pages/Archive";
-import Dashboard from "@/app/pages/Dashboard";
-import CreateContract from "@/app/pages/CreateContract";
-import ContractSuccess from "@/app/pages/ContractSuccess";
-import ClientOverview from "@/app/pages/ClientOverview";
-import Tables from "@/app/pages/Tables";
-import style from "./app/index.css";
-import { hovedListenRoutes } from "@/features/databaseDataRetrieval/hovedListenRoutes";
+import { Document } from "./app/Document";
+import { setCommonHeaders } from "./app/headers";
+import { Home } from "./app/pages/Home";
+import { Login } from "./app/pages/Login";
+import Archive from "./app/pages/Archive";
+import Dashboard from "./app/pages/Dashboard";
+import CreateContract from "./app/pages/CreateContract";
+import ContractSuccess from "./app/pages/ContractSuccess";
+import ClientOverview from "./app/pages/ClientOverview";
+import Tables from "./app/pages/Tables";
+import { hovedListenRoutes } from "./features/databaseDataRetrieval/hovedListenRoutes";
 import { clientRoutes } from "./features/clients/clientRoutes";
 
 
@@ -48,12 +47,14 @@ export default defineApp([
   prefix("/api/v1/hovedlisten", hovedListenRoutes),
 
   //prefix("/api/v1/clients", clientRoutes),
+  //prefix("/api/v1/contracts", contractRoutes),
+
 
 
   // Seed route(testing)
   route("/seed", async ({ ctx }) => {
     try {
-      const { seedData } = await import("@/db/seedHovedlisten");
+      const { seedData } = await import("./db/seedHovedlisten");
       await seedData(ctx?.env);
       return Response.json({ success: true, message: "Database seeded successfully" });
     } catch (error) {
@@ -112,7 +113,7 @@ export default defineApp([
        }, { status: 500 });
      }
   }),
-
+ 
   render(Document, [
     route("/", () => <Login />), // default rute er login for å simulere beskyttet side
     route("/Home", () => <Home />),
