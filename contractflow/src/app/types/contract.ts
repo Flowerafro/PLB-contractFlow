@@ -12,15 +12,15 @@ export interface Contract {
     clientId: number;
     principalId?: number | null;
     productCode?: string | null;
-    orderDate?: string | null;
+    orderDate?: string | null;    
     tonnPerFcl?: number | null;
-    priceUsdPerMtC: number;
-    totalUsdC: number;
-    commissionGroupBp?: number | null;
+    priceUsdPerMtC: number;                 
+    totalUsdC: number;                    
+    commissionGroupBp?: number | null;     
     customerOrderNo?: string | null;
     principalContractNo?: string | null;
-    principalContractDate?: string | null;
+    principalContractDate?: string | null; 
     principalOrderNo?: string | null;
-    status: string;
-    createdAt: string;
+    status: "ACTIVE" | "COMPLETED" | "CANCELLED" | string;
+    createdAt: string;                      
 }
