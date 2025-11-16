@@ -46,8 +46,9 @@ body{
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background-color: var(--bg-color);
-
+    min-height: 100vh;
 }
+
 /* td{
     border: 1rem solid black;
 } */
