@@ -1,6 +1,7 @@
 "use client";
 
 import type { Client } from "../app/types/client";
+import ButtonClear from "./ButtonClear";
 
 export default function ClientProfilePage({
   client, onBack,
@@ -76,12 +77,13 @@ export default function ClientProfilePage({
           </article>
 
           <div className="flex items-center gap-3">
-            <button
+          {/*   <button
               onClick={onBack}
               className="px-4 py-2 rounded text-white bg-green-700"
             >
               Tilbake
-            </button>
+            </button> */}
+            <ButtonClear onClick={onBack}>Tilbake</ButtonClear>
           </div>
         </section>
 

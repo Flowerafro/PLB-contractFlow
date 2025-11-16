@@ -8,6 +8,7 @@ import TableGeneration from "@/features/tables/component/TableGeneration";
 import ShipmentList from "@/components/ShipmentList";
 import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
+import ButtonClear from "../../components/ButtonClear";
 
 interface Shipment {
   id: number;
@@ -91,14 +92,16 @@ export default function Dashboard() {
       <section style={{ marginTop: 16 }}>
         {selectedShipment ? (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md m-2">
-            <button className="mb-4 px-3 py-1 rounded bg-gray-200" onClick={() => setSelectedShipment(null)}>Tilbake</button>
+            <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear>
             <DetailView item={selectedShipment} />
           </div>
         ) : searchTrimmed ? (
           results.length === 0 ? (
-            <div>
+            <div className="bg-white p-2">
               <p>Ingen treff for "{searchTerm}"</p>
-              <a href="/Home"><button className="px-4 py-2 rounded text-white bg-[var(--primary-color)]">Tilbake</button></a>
+              <a href="/Home">
+              <ButtonClear>Tilbake</ButtonClear>
+              </a>
             </div>
           ) : (
             <ShipmentList filteredItems={results.map((r: any) => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
