@@ -12,6 +12,7 @@ import type { Client } from "../types/client";
 import type { ClientSearchItem } from "../types/clientSearch";
 import type { ClientOverviewProps } from "../types/client";
 import type { CreateClientInput } from "../../features/fileHandling/interfaces/createClientInput";
+import Button from "../../components/Button";
 
 
 export default function ClientOverview({ clientId }: ClientOverviewProps) {
@@ -117,12 +118,9 @@ const handleCreateClient = async (created: Client) => {
       <section className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-black">Clients</h2>
-          <button
-            className="bg-[#1D391D] text-white px-4 py-2 rounded"
-            onClick={() => setShowNewClientForm(true)}
-          >
+          <Button onClick={() => setShowNewClientForm(true)}>
             + New Client
-          </button>
+          </Button>
         </div>
 
         <section className="bg-white rounded-lg border p-6">
@@ -141,12 +139,9 @@ const handleCreateClient = async (created: Client) => {
     <section className="space-y-6">
        <div className="flex justify-between items-center">
         <h2 className="m-0 text-black">Clients</h2>
-        <button
-          className="bg-[var(--primary-color)] text-white px-4 py-2 rounded"
-          onClick={() => setShowNewClientForm(true)}
-        >
-          + New Client
-        </button>
+         <Button onClick={() => setShowNewClientForm(true)}>
+            + New Client
+          </Button>
       </div>
       <SearchBar placeholder="Search here..." onSearch={handleSearch} />
       <section className="bg-white rounded-lg border border-black/10 overflow-hidden p-4">
