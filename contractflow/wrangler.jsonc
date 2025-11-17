@@ -3,7 +3,9 @@
   "name": "contractflow",
 	"main": "src/worker.tsx",
 	"compatibility_date": "2025-08-21",
-	"compatibility_flags": ["nodejs_compat"],
+	"compatibility_flags": [
+    "nodejs_compat"
+  ],
 
 	"assets": {
     "binding": "ASSETS",
@@ -16,7 +18,7 @@
 
   "vars": {
     "cc": "73bedcb5d46a3f368e92d733b4564d2d",
-    "R2_BUCKET_NAME": "plb-contractflow-r2",
+    "R2_BUCKET_NAME": "plb-contractflow-r2"
   },
 
 	"d1_databases": [
@@ -25,15 +27,15 @@
 			"database_name": "plb-contractflow-db",
       "database_id": "ff8d2ccd-6228-47d1-a98b-5e3f0ea4d02b",
       "migrations_dir": "drizzle/migrations",
-      "remote": true,
+      "remote": true
     }
   ],
 
   "r2_buckets": [
-  {
-    "bucket_name": "plb-contractflow-r2",
-    "binding": "R2",
-    "preview_bucket_name": "plb-contractflow-r2"
+    {
+      "bucket_name": "plb-contractflow-r2",
+      "binding": "R2",
+      "preview_bucket_name": "plb-contractflow-r2"
+    }
+  ]
   }
-]
-}

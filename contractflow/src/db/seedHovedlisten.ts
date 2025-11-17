@@ -1,11 +1,14 @@
 import { defineScript } from "rwsdk/worker";
 import { drizzle } from "drizzle-orm/d1";
 import { contracts, clients, principals } from "@/db/schema/schema";
-import { env as WorkerEnv } from "cloudflare:workers";
 
 export const seedData = async (env?: { DB: D1Database }) => {
   try {
-    const db = drizzle(env?.DB ?? WorkerEnv.DB);
+    if (!env?.DB) {
+      throw new Error('Database not available');
+    }
+    
+    const db = drizzle(env.DB);
     
     // Clear existing data
     await db.delete(contracts);

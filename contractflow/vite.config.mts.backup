@@ -20,6 +20,9 @@ export default defineConfig({
     optimizeDeps: {
       include: ["drizzle-orm", "drizzle-orm/d1", "drizzle-orm/sqlite-core"],
     },
+    resolve: {
+      conditions: ["react-server"],
+    },
   },
   plugins: [
     cloudflare({
@@ -29,7 +32,7 @@ export default defineConfig({
     tailwindcss(),
     react(),
   ],
-    build: {
+  build: {
     rollupOptions: {
       external: ["tailwindcss"]
     }
@@ -38,6 +41,7 @@ export default defineConfig({
     alias: {
       "@": resolve(__dirname, "src"),
     },
+    conditions: ["react-server"],
   },
   server: {
     host: "0.0.0.0",
