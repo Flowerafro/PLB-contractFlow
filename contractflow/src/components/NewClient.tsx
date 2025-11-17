@@ -67,7 +67,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   
   <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
         {error && <div className="text-red-600 mb-2">{error}</div>}
-        <form className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md w-3xl">
+        <form className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md w-3xl" onSubmit={handleSubmit}>
           <ButtonClear onClick={onCancel} className="mb-4">X</ButtonClear>
           <h3 className="text-lg font-medium mb-4 p-4">New Client</h3>
           <InputWithLabelSubmitForm value={name} onChange={(e) => setName(e.target.value)} label="Company name" name="company" id="company" required/>

@@ -74,20 +74,19 @@ export function Login({ onLogin }: LoginProps) {
 
           <div className='pt-4 flex justify-center'>
             <Button type='submit' disabled={isLoading} >Login</Button>
-            {/* <button type="submit" disabled={isLoading} style={{ width: '100%', backgroundColor: '#D6E897', color: '#1E1E1E', padding: 10, border: 'none', borderRadius: 6, cursor: isLoading ? 'not-allowed' : 'pointer', opacity: isLoading ? 0.8 : 1 }}> {isLoading ? 'Logging in..' : 'Login' }</button> */}
           </div>
         </form>
 
       </div>
       <Footer />
-   {/*    <div className="absolute bottom-6 left-0 right-0 text-center text-white/60">
-        © 2025 PLB-ContractFlow. All Rights Reserved.
-      </div> */}
     </section>
   );
 } 
 
 /* 
+
+kodestyling inspirert av dette: https://flowbite.com/docs/components/forms/
+
 Line kommenterer:
 
 Koden over:

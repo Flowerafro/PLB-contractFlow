@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { SearchItem } from "@/app/types/searchItem"
+import type { SearchItem } from "../../app/types/searchItem"
 
 
 export default function DetailView({ item }: { item: SearchItem }) {
