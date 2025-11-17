@@ -32,15 +32,3 @@ export default function DropdownMenu({ options }: DropdownMenuProps) {
     </nav>
   );
 }
-
-
-/*   render(Document, [
-    route("/", () => <Login />), // default rute er login for å simulere beskyttet side
-    route("/Home", () => <Home />),
-    route("/create", () => <Layout><CreateContract /></Layout>),
-    route("/success", () => <Layout><ContractSuccess /></Layout>),
-    route("/clients", () => <Layout><ClientOverview /></Layout>),
-    route("/clients/:id", (({params}) => <Layout><ClientOverview clientId={params.id} /></Layout>)),
-    route("/tables", () => <Layout><Tables /></Layout>),
-    route("/archive", () => <Layout><Archive /></Layout>)
-  ]),*/
