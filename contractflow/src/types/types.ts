@@ -1,13 +1,6 @@
 //    -Typer benyttet i tabell-arbeid-
 
-// Archive typen - Benyttes på sikt i tilknytning av dokumenter i arkivet:
 
-export type ArchiveDocument = {
-    date: Date | string;
-    containerNumber: string;
-    customer: string;
-    documentName: string;
-}
 
 /* Denne blir erstattet med Client i client.ts */
 export type Clients = {

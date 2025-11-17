@@ -1,10 +1,5 @@
-<<<<<<<< HEAD:contractflow/src/features/tables/table_column_structure/HovedListenColumns.tsx
-import type { HovedListeItem } from "@/types/types";
-import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
-========
 import type { HovedListeItem } from "@/app/types/hovedlisten";
 import { ColumnSetup } from "@/features/tables/interfaces/columnSetup";
->>>>>>>> develop-cleanup:contractflow/src/features/tables/columns/hovedListenColumns.ts
 
 /*
     -Kolonnetitler for hovedlisten-

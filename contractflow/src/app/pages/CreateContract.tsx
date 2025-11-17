@@ -1,5 +1,8 @@
 "use client"
 import React, { useState } from "react"
+import CreateContractButton from "../../components/CreateContractButton"
+import { contractAPI } from "../../lib/contractAPI";
+
 
 type ContractForm = {
   client: string
@@ -24,41 +27,29 @@ export default function CreateContractPage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
-    setMessage("")
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+  
     try {
-      const res = await fetch("/.redwood/functions/contracts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          plbReference: form.contractName || "PLB-" + Date.now(),
-          clientId: 1,
-          principalId: null,
-          productCode: form.client,
-          orderDate: form.startDate,
-          tonnPerFcl: null,
-          priceUsdPerMtC: 0,
-          totalUsdC: 0,
-          commissionGroupBp: null,
-          customerOrderNo: null,
-          principalContractNo: null,
-          principalContractDate: null,
-          principalOrderNo: null,
-          status: "ACTIVE"
-        })
-      })
-      if (!res.ok) throw new Error("Failed to save contract")
-      setMessage("Contract successfully created")
-      window.location.href = "/success"
-    } catch {
-      setMessage("Error creating contract")
+      await contractAPI.create({
+        plbReference: form.contractName || "PLB-" + Date.now(),
+        clientId: 1,
+        principalId: null,
+        productCode: form.client,
+        orderDate: form.startDate,
+        status: "ACTIVE"
+      });
+  
+      window.location.href = "/success";
+    } catch (err) {
+      setMessage("Error creating contract");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
-
+  };
+  
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-200 py-10">
       <div className="bg-white rounded-lg shadow-md p-10 w-full max-w-md">
@@ -146,13 +137,7 @@ export default function CreateContractPage() {
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-green-900 text-white py-2 rounded hover:bg-green-800 transition disabled:opacity-60"
-          >
-            {loading ? "Saving..." : "Create contract"}
-          </button>
+          <CreateContractButton loading={loading} label="Create Contract" />
 
           {message && <p className="text-center text-sm text-gray-700 mt-2">{message}</p>}
         </form>

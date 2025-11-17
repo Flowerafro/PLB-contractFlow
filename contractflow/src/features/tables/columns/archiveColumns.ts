@@ -1,10 +1,6 @@
-<<<<<<<< HEAD:contractflow/src/features/tables/table_column_structure/ArchiveColumns.tsx
-import type { ArchiveDocument } from "@/types/types";
-import { ColumnSetup } from "@/app/interfaces/ColumnSetup";
-========
-import type { ArchiveDocument } from "@/app/types/types.ts";
-import { ColumnSetup } from "@/features/tables/interfaces/ColumnSetup";
->>>>>>>> develop-cleanup:contractflow/src/features/tables/columns/archiveColumns.ts
+
+import type { ArchiveDocument } from "@/app/types/archiveDocument";
+import { ColumnSetup } from "@/features/tables/interfaces/columnSetup";
 
 /*
     -Kolonnetitler for bøker-

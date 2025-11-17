@@ -1,0 +1,27 @@
+name = "contractflow"
+main = "src/worker.tsx"
+compatibility_date = "2024-05-15"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+binding = "ASSETS"
+directory = "public"
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = 'DB'
+database_name = 'plb-contractflow-db'
+database_id = 'ff8d2ccd-6228-47d1-a98b-5e3f0ea4d02b'
+migrations_dir = "drizzle"
+
+[[r2_buckets]]
+binding = 'R2' 
+bucket_name = 'plb-contractflow-r2'
+preview_bucket_name = 'plb-contractflow-r2'
+
+[vars]
+cc = "73bedcb5d46a3f368e92d733b4564d2d"
+R2_BUCKET_NAME = "plb-contractflow-r2"
+remote = true

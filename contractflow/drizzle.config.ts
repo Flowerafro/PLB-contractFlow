@@ -4,8 +4,8 @@ dotenv.config();
 
 export default {
   schema: './src/db/schema/schema.ts',
-  out: './src/db/migrations',
-  dialect: 'sqlite', // LibSQL is SQLite-compatible
+  out: './drizzle/migrations',
+  dialect: 'sqlite', 
   dbCredentials: {
     url: process.env.DATABASE_URL ?? 'file:./local.db'
   },

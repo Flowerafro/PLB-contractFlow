@@ -4,7 +4,7 @@
  */
 
 async function setupD1Database() {
-  console.log('🚀 Setting up PLB ContractFlow D1 Database...');
+  console.log('Setting up PLB ContractFlow D1 Database...');
 
   const setupQueries = [
     // Enable foreign keys

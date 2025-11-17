@@ -1,12 +1,7 @@
-<<<<<<<< HEAD:contractflow/src/features/tables/custom_hooks/specializedStructures/HovedListenData.tsx
-import UseData from '@/features/tables/custom_hooks/UseData';
-import { HovedListeItem } from '@/types/types';
-import formatDate from '@/features/tables/functions/DateFormatter';
-========
+
 import { useData } from '@/features/tables/hooks/useData';
-import { HovedListeItem } from '@/app/types/types';
+import { HovedListeItem } from '@/app/types/hovedlisten';
 import formatDate from '@/features/tables/functions/formatDate';
->>>>>>>> develop-cleanup:contractflow/src/features/tables/hooks/datatypeStructures/hovedListenData.ts
 
 /*
     -Henter data fra json-fil knyttet til hovedfilen-
@@ -17,7 +12,7 @@ import formatDate from '@/features/tables/functions/formatDate';
 
 export function hovedListenData(){
     return useData<HovedListeItem>({
-        path: '../../../resources/hoved_listen_paaLissom.json',
+        path: '/src/features/tables/dummyData/hoved_listen_paaLissom.json',
         transform: (rawData: any[]) => rawData.map((item: any) => ({
             plbReference: item.plbReference || '',
             plbOrderDate: formatDate(new Date(item.plbOrderDate)) || '',

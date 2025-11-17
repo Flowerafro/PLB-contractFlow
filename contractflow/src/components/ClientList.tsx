@@ -1,8 +1,7 @@
 "use client";
 
 import ClientCard from "./ClientCard";
-import type { ClientSearchItem } from "@/app/types/clientSearch"
-
+import type { ClientSearchItem } from "../app/types/clientSearch";
 
 export default function ClientList({
   filteredClients,
@@ -12,12 +11,16 @@ export default function ClientList({
   onSelectClient?: (client: ClientSearchItem) => void;
 }) {
   return (
-    <section className="">
+    <section>
       <h2>Søkeresultater:</h2>
       <div>
         <section className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3 lg:grid-cols-4">
-          {filteredClients.map(client => (
-            <ClientCard key={client.id} client={client} onSelect={onSelectClient} />
+          {filteredClients.map((client) => (
+            <ClientCard
+              key={client.id}
+              client={client}
+              onSelect={onSelectClient}
+            />
           ))}
         </section>
       </div>

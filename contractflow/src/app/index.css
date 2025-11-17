@@ -38,6 +38,7 @@
   --font-noto: "Noto Sans", sans-serif;
   --text-color: #1a1a1a;
   --code-bg: #1b1b1b;
+  
 }
 
 body{
@@ -45,8 +46,9 @@ body{
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background-color: var(--bg-color);
-
+    min-height: 100vh;
 }
+
 /* td{
     border: 1rem solid black;
 } */

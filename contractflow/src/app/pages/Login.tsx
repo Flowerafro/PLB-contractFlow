@@ -1,6 +1,11 @@
 "use client"
 
 import React, { useState } from 'react';
+import { InputWLabelClient } from '../../components/InputWLabelClient';
+import { InputWithLabelSubmitForm } from '../../components/InputWithLabelSubmitForm';
+import Button from '../../components/Button';
+import Logo from '../../components/Logo';
+import Footer from '../../components/Footer';
 
 interface LoginProps {
   onLogin?: () => void;
@@ -54,42 +59,34 @@ export function Login({ onLogin }: LoginProps) {
     }
 
   return (
-    <section style={{ minHeight: '100vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', backgroundColor: '#1D391D' }}>
-      <div style={{ position: 'relative', zIndex: 10, background: 'white', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,0.2)', padding: 48, width: '100%', maxWidth: 420 }}>
-        <h1 style={{ textAlign: 'center', marginBottom: 32, color: '#1E1E1E' }}>Login</h1>
-        <p>Brukernavn og passord er "admin"</p>
+    <section className="min-h-screen relative flex flex-col items-center justify-center overflow-hidden bg-[var(--primary-color)]">
+      <div className="relative z-10 bg-white rounded-xl shadow-xl p-12 w-full max-w-sm">
+        <h1 className="text-center mb-8 text-[#1E1E1E] text-2xl font-semibold">Login</h1>
 
-        {error ? <div style={{ color: 'red', marginBottom: 16 }}>{error}</div> : null}
+        {error ? <div className="text-red-600 mb-4">{error}</div> : null}
         
-        <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 24 }}>
-          <div>
-            <label htmlFor="username" style={{ display: 'block', marginBottom: 8, color: '#1E1E1E' }}>User:</label>
-            <input id="username" type="text" placeholder="First name" value={username} onChange={(e) => setUsername(e.target.value)} style={{ width: '100%', background: 'white', border: '1px solid #D1D5DB', padding: 8 }} />
+        <form onSubmit={handleSubmit} className="grid gap-6 mt-6">
+          <InputWithLabelSubmitForm value={username} onChange={(e) => setUsername(e.target.value)} id="username" label='User' name="username"/>
+          <InputWithLabelSubmitForm label="Password" name="password" id="password" type="password"value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <div className='text-right mt-2'>
+            <a href="#" className='opacity-60 text-[var(--text-color-gray)]'> Glemt passord? </a>
           </div>
 
-          <div>
-            <label htmlFor="password" style={{ display: 'block', marginBottom: 8, color: '#1E1E1E' }}>Password:</label>
-            <input id="password" type="password" placeholder="••••••••••••" value={password} onChange={(e) => setPassword(e.target.value)} style={{ width: '100%', background: 'white', border: '1px solid #D1D5DB', padding: 8 }} />
-            
-            <div style={{ textAlign: 'right', marginTop: 8 }}>
-              <a href="#" style={{ opacity: 0.6, color: '#1E1E1E' }}>Forgot password?</a>
-            </div>
-          </div>
-
-          <div style={{ paddingTop: 16 }}>
-            <button type="submit" disabled={isLoading} style={{ width: '100%', backgroundColor: '#D6E897', color: '#1E1E1E', padding: 10, border: 'none', borderRadius: 6, cursor: isLoading ? 'not-allowed' : 'pointer', opacity: isLoading ? 0.8 : 1 }}> {isLoading ? 'Logging in..' : 'Login' }</button>
+          <div className='pt-4 flex justify-center'>
+            <Button type='submit' disabled={isLoading} >Login</Button>
           </div>
         </form>
 
       </div>
-      <div style={{ position: 'absolute', bottom: 24, left: 0, right: 0, textAlign: 'center', color: 'rgba(255,255,255,0.6)' }}>
-        © 2025 PLB-ContactFlow. All Rights Reserved.
-      </div>
+      <Footer />
     </section>
   );
 } 
 
 /* 
+
+kodestyling inspirert av dette: https://flowbite.com/docs/components/forms/
+
 Line kommenterer:
 
 Koden over:

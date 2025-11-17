@@ -1,7 +1,16 @@
+// newclient samler inputs og kaller clientAPI (midlertidig) for å opprette ny klient
+
 "use client"
 
 import React, { useState } from "react";
-import type { Client } from "@/lib/clientdummydata";
+import type { CreateClientInput } from "../features/fileHandling/interfaces/createClientInput";
+import type { Client } from "../app/types/client";
+import { clientAPI } from "../lib/clientAPI";
+import type { InputNewClient } from "../app/types/InputNewClient";
+import { InputWithLabelSubmitForm } from "./InputWithLabelSubmitForm";
+import ButtonClear from "./ButtonClear";
+/* import { InputWLabelClient } from "./InputWLabelClient"; */
+
 
 interface NewClientProps {
   onCreate?: (client: Client) => void;
@@ -10,63 +19,67 @@ interface NewClientProps {
 
 export default function NewClient({ onCreate, onCancel }: NewClientProps) {
 
-const [customer, setCustomer] = useState("");
-  const [customerCode, setCustomerCode] = useState("");
-  const [contactperson, setContactperson] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [country, setCountry] = useState("");
-  const [title, setTitle] = useState("");
-  const [relation, setRelation] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!customer.trim() || !customerCode.trim()) {
-        setError("Customer and Customer Code are required.");
-        return;
-    } 
-    setError(null);
+const [name, setName] = useState("");
+const [customerCode, setCustomerCode] = useState("");
+const [email, setEmail] = useState("");
+const [phone, setPhone] = useState("");
+const [country, setCountry] = useState("");
+const [error, setError] = useState<string | null>(null);
+const [loading, setLoading] = useState(false);
 
-    const partialClient: Omit<Client, "id"> = {
-      customer,
-      customerCode,
-      contactperson,
-      email,
-      phone,
-      country,
-      title,
-      relation,
-    };
-
-    console.log("Creating client:", partialClient);
-
-    onCreate?.(partialClient as Client);
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!name.trim()) {
+    setError("Navn på klient er påkrevd for å lagring i databasen");
+    return;
   }
 
-  return (   <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow max-w-lg w-full">
-        <h3 className="text-lg font-medium mb-4">New Client</h3>
+  setError(null);
+  setLoading(true);
 
+  const clientData: CreateClientInput = {
+    name: name.trim(),
+    customerCode: customerCode.trim() || undefined,
+    email: email.trim() || undefined,
+    phone: phone.trim() || undefined,
+    country: country.trim() || undefined,
+  };
+
+  try {
+    const createdClient = await clientAPI.create(clientData);
+    onCreate?.(createdClient);
+    setName("");
+    setCustomerCode("");
+    setEmail("");
+    setPhone("");
+    setCountry("");
+    onCancel?.();
+  } catch (error: any) {
+    console.error("Feil ved lagring av klient:", error);
+    setError(error?.message || "Det oppstod en feil ved lagring av klient.");
+  } finally {
+    setLoading(false);
+  }
+} 
+
+  return (   
+  
+  <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
         {error && <div className="text-red-600 mb-2">{error}</div>}
-
-        <div className="grid grid-cols-1 gap-3">
-          <input value={customer} onChange={e => setCustomer(e.target.value)} placeholder="Company name" className="border p-2 rounded" />
-          <input value={customerCode} onChange={e => setCustomerCode(e.target.value)} placeholder="Client No" className="border p-2 rounded" />
-          <input value={contactperson} onChange={e => setContactperson(e.target.value)} placeholder="Contact person" className="border p-2 rounded" />
-          <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Title" className="border p-2 rounded" />
-          <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" className="border p-2 rounded" />
-          <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone" className="border p-2 rounded" />
-          <input value={country} onChange={e => setCountry(e.target.value)} placeholder="Country" className="border p-2 rounded" />
-          <input value={relation} onChange={e => setRelation(e.target.value)} placeholder="Relation" className="border p-2 rounded" />
-        </div>
-
-        <div className="flex justify-end gap-3 mt-4">
-          <button type="button" onClick={onCancel} className="px-4 py-2 bg-gray-200 rounded">Cancel</button>
-          <button type="submit" className="px-4 py-2 bg-[var(--primary-color)] text-white rounded">Create</button>
-        </div>
+        <form className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md w-3xl" onSubmit={handleSubmit}>
+          <ButtonClear onClick={onCancel} className="mb-4">X</ButtonClear>
+          <h3 className="text-lg font-medium mb-4 p-4">New Client</h3>
+          <InputWithLabelSubmitForm value={name} onChange={(e) => setName(e.target.value)} label="Company name" name="company" id="company" required/>
+          <InputWithLabelSubmitForm value={customerCode} onChange={(e) => setCustomerCode(e.target.value)} label="Customer code" name="customerCode" id="customerCode"/>
+          <div className="grid md:grid-cols-2 md:gap-6">
+            <InputWithLabelSubmitForm value={email} onChange={(e) => setEmail(e.target.value)} label="Email address" type="email" name="email" id="email"/>
+            <InputWithLabelSubmitForm value={phone} onChange={(e) => setPhone(e.target.value)} label="Phone number" type="tel" name="phone" id="phone"/>
+          </div>
+          <InputWithLabelSubmitForm value={country} onChange={(e) => setCountry(e.target.value)} label="Country" name="country" id="country"/>
+        <button type="submit" className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Submit</button>
       </form>
-    </div>)
+    </div>
+    )
+  }
 
-
-}

@@ -11,12 +11,14 @@
     "module": "es2022",
     "moduleResolution": "bundler",
     "types": [
+      "node",
       "./worker-configuration.d.ts",
       "./types/rw.d.ts",
       "./types/vite.d.ts"
     ],
     "paths": {
       "@/*": [
+        "./src/",
         "./src/*"
       ]
     },
@@ -32,7 +34,7 @@
   "include": [
     "src",
     "types"
-  ],
+, "api/functions"  ],
   "exclude": [
     "node_modules",
     ".tmp"
