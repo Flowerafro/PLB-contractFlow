@@ -1,146 +1,87 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import type { SearchItem } from "../../app/types/searchItem"
+import ButtonClear from "../../components/ButtonClear";
+import { ButtonEdit } from "../../components/ButtonEdit";
+import Button from "../../components/Button";
+import DetailOrderInfo from "../../components/DetailViewComponents/DetailOrderInfo";
+import DetailShipmentInfo from "../../components/DetailViewComponents/DetailShipmentInfo";
+import DetailInvoiceInfo from "../../components/DetailViewComponents/DetailInvoiceInfo";
+import DetailPrincipalInfo from "../../components/DetailViewComponents/DetailPrincipalInfo";
+import ActionSidebar from "../../components/DetailViewComponents/ActionSidebar";
+import { set } from "zod";
 
 
-export default function DetailView({ item }: { item: SearchItem }) {
+export default function DetailView({ item, setSelectedShipment }: { item: SearchItem, setSelectedShipment: React.Dispatch<React.SetStateAction<SearchItem | null>> }) {
 
-    const customer = item.customer ?? "Ukjent";
-    const customerOrder = item.customerOrderNumber ?? "Ukjent";
-    const container = item.containerNumber ?? "Ukjent";
-    const product = item.product ?? "Ukjent";
-    const poEta = item.poEta ?? "Ukjent";
-    const etd = item.etd ?? "Ukjent";
-    const invoiceNo = item.invoiceNumber ?? "Ukjent"; 
-    const invoiceAmount = item.invoiceAmount ?? "Ukjent";
-    const booking = item.bookingNumber ?? "Ukjent";
-    const blNumber = item.blNumber ?? "Ukjent";
-    const principalContractNumber = item.principalContractNumber ?? "Ukjent";
-    const principalContractDate = item.principalContractDate ?? "Ukjent";
-    const principalOrderNumber = item.principalOrderNumber ?? "Ukjent";
+    const [isEditing, setIsEditing] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [showButtons, setShowButtons] = useState(false);
+
+    const [form, setForm] = useState({
+        plbReference: item.plbReference ?? "",
+        plbOrderDate: item.plbOrderDate ?? "",
+        customer: item.customer ?? "",
+        product: item.product ?? "",
+        customerOrderNumber: item.customerOrderNumber ?? "",
+
+        principalContractNumber: item.principalContractNumber ?? "",
+        principalContractDate: item.principalContractDate ?? "",
+        principalOrderNumber: item.principalOrderNumber ?? "",
+
+        containerNumber: item.containerNumber ?? "",
+        bookingNumber: item.bookingNumber ?? "",
+        blNumber: item.blNumber ?? "",
+        poEta: item.poEta ?? "",
+        etd: item.etd ?? "",
+        blDate: item.blDate ?? "",
+        eta: item.eta ?? "",
+
+        principalInvoiceNumber: item.principalInvoiceNumber ?? "",
+        principalInvoiceDate: item.principalInvoiceDate ?? "",
+        invoiceDueDate: item.invoiceDueDate ?? "",
+        invoiceAmount: item.invoiceAmount ?? "",
+    })
+
+    const handleEditClick = () => {
+        setIsEditing((previous) => !previous);
+    }
+
+    useEffect(() => {
+        if (isEditing) setShowButtons(true);
+    }, [isEditing]);
 
   
   return (
     <>
-    <table className="min-w-full divide-y divide-gray-200 overflow-x-auto">
-    <thead className="bg-gray-50">
-        <tr>
-          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-            </th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Customer Info
-            </th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Order info
-            </th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Container Info
-            </th>
-             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Shipment Info
-            </th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Invoice info
-            </th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Principal info
-            </th>
-        </tr>
-    </thead>
-    <tbody className="bg-white divide-y divide-gray-200">
-        <tr>
-            <td className="px-6 py-4 whitespace-nowrap align-top">
-                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    Active
-                </span>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap align-top">
-                <div className="flex items-left">
-                    <div className="flex flex-col items-start">
-                        <div className="text-sm font-medium text-gray-900 pb-2">
-                            {customer}
-                        </div>
-                        <div className="text-sm text-gray-500 pb-2">
-                            {customerOrder}
-                        </div>
-                    </div>
+    <section className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className=" rounded-3xl flex flex-col px-4">
+            <div>
+                <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear>
                 </div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap align-top">
-                <div className="flex items-left">
-                    <div className="flex flex-col items-start">
-                        <div className="text-sm font-medium text-gray-900 pb-2">
-                            {product}
-                        </div>
-                        <div className="text-sm text-gray-500 pb-2">
-                            {customerOrder}
-                        </div>
-                    </div>
+            <div className=" flex items-center justify-end px-6 m-4 gap-2">
+                {showButtons && (
+                <ButtonEdit onClick={handleEditClick}>{isEditing ? "Avbryt" : "Rediger"}</ButtonEdit>)}
+                 <Button onClick={() => {
+                    if (isEditing) return; 
+                    setShowButtons((prev) => !prev); }} disabled={isEditing}> {showButtons ? "Lukk" : "Mer"}
+                </Button>
+            </div>
+            <div className="flex-1 p-4 space-y-6 w-full">
+                <DetailOrderInfo form={form} setForm={setForm} isEditing={isEditing} />
+                 <DetailShipmentInfo form={form} setForm={setForm} isEditing={isEditing}  />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <DetailInvoiceInfo form={form} setForm={setForm} isEditing={isEditing}  />
+                    <DetailPrincipalInfo form={form} setForm={setForm} isEditing={isEditing}  />
                 </div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap align-top text-sm text-gray-500">
-                <div className="flex items-left">
-                    <div>
-                        <div className="text-sm font-medium text-gray-900 pb-2">
-                            {container}
-                        </div>
-                        <div className="text-sm text-gray-500 pb-2">
-                            {blNumber}
-                        </div>
-                    </div>
-                </div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap align-top text-sm text-gray-500">
-               <div className="flex items-left">
-                    <div className="flex flex-col items-start">
-                       <div className="text-sm font-medium text-gray-900 pb-2">
-                           ETD: {etd}
-                       </div>
-                       <div className="text-sm text-gray-500 pb-2">
-                           ETA: {poEta}
-                       </div>
-                         <div className="text-sm text-gray-500 pb-2">
-                           Booking: {booking}
-                       </div>
-                    </div>
-                </div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm align-top text-gray-500">
-                <div className="flex items-left">
-                    <div>
-                        <div className="text-sm font-medium text-gray-900 pb-2">
-                            <span className="text-bold">No.</span> {invoiceNo}
-                        </div>
-                        <div className="text-sm text-gray-500 pb-2">
-                            {invoiceAmount} USD$
-                        </div>
-                    </div>
-                </div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap  text-sm align-top font-medium">
-                <div className="flex flex-col items-left"> 
-                    <div className="text-sm font-medium text-gray-900 pb-2">
-                           Contract: {principalContractNumber}
-                       </div>
-                     <div className="text-sm text-gray-500 pb-2">
-                           Date: {principalContractDate}
-                       </div>
-                         <div className="text-sm text-gray-500 pb-2">
-                            Order: {principalOrderNumber}
-                       </div>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<div className="w-full pt-6 flex items-center justify-end">
-    <a href="#" className="text-white bg-[var(--primary-color)] p-2 rounded-2xl mr-10">View More</a>
-      <a href="#" className="text-indigo-600 hover:text-indigo-900">Edit</a>
-      <a href="#" className="ml-4 text-xs text-white hover:text-black bg-[var(--red-color)] p-2 rounded-2xl" >Delete</a>
-</div>
-</>
+            </div>
+            <ActionSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onEdit={handleEditClick} isEditing={isEditing} handleEditClick={handleEditClick} />
+        </div>
+    </section> 
+    </>
 
   );
+
 }

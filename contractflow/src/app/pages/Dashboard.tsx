@@ -65,20 +65,28 @@ export default function Dashboard() {
     console.log("selected row", row);
     const normalized = {
       id: row.id ?? null,
-      customerOrderNumber: row.customerOrderNumber?? null,
-      customer: row.customer ?? null,
-      containerNumber: row.containerNumber ?? null,
-      product: row.product ?? null,
-      poEta: row.poEta ?? null,
-      etd: row.etd ?? null,
-      invoiceNumber: row.principalInvoiceNumber ?? null,
-      invoiceAmount: row.invoiceAmount ?? null,
-      bookingNumber: row.bookingNumber ?? null,
-      blNumber: row.blNumber ?? null,
-      principalContractNumber: row.principalContractNumber ?? null,
-      principalContractDate: row.principalContractDate ?? null,
-      principalOrderNumber: row.principalOrderNumber ?? null,
-      principalOrderDate: row.principalOrderDate ?? null,
+      plbReference: row.plbReference ?? "",
+      plbOrderDate: row.plbOrderDate ?? "",
+      customer: row.customer ?? "",
+      product: row.product ?? "",
+      customerOrderNumber: row.customerOrderNumber ?? "",
+
+      principalContractNumber: String(row.principalContractNumber ?? ""),
+      principalContractDate: row.principalContractDate ?? "",
+      principalOrderNumber: String(row.principalOrderNumber ?? ""),
+
+      containerNumber: row.containerNumber ?? "",
+      bookingNumber: row.bookingNumber ?? "",
+      blNumber: row.blNumber ?? "",
+      poEta: row.poEta ?? "",
+      etd: row.etd ?? "",
+      blDate: row.blDate ?? "",
+      eta: row.eta ?? "",
+
+      principalInvoiceNumber: String(row.principalInvoiceNumber ?? ""),
+      principalInvoiceDate: row.principalInvoiceDate ?? "",
+      invoiceDueDate: row.invoiceDueDate ?? "",
+      invoiceAmount: row.invoiceAmount ?? 0,
     };
     console.log("data fra HovedListeData", normalized);
     setSelectedShipment(normalized);
@@ -92,8 +100,8 @@ export default function Dashboard() {
       <section className="mt-8">
         {selectedShipment ? (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md m-2">
-            <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear>
-            <DetailView item={selectedShipment} />
+            {/* <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear> */}
+            <DetailView item={selectedShipment} setSelectedShipment={setSelectedShipment} />
           </div>
         ) : searchTrimmed ? (
           results.length === 0 ? (
