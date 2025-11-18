@@ -41,27 +41,17 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
     });
 
     return(
-        <div style={{ 
-                width: '90vw',
-                margin: '1rem',
-                overflowX: 'auto',
-                border: '1px solid gray',
-                borderRadius: '8px',
-                }}>
-            <table  style={{ 
-                borderCollapse: 'collapse', 
-                }}
-            >
+        <div className="w-[90vw] m-4 overflow-x-auto border border-gray-400 rounded-lg">
+
+        <table id="contracts-table" className="border-collapse">
+
                 <thead style={{ width: 'fit-content' }}>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
-                                <th key={header.id} style={{ 
-                                    border: '1px solid #ccc', 
-                                    padding: '8px',
-                                    minWidth: '150px',
-                                    cursor: header.column.getCanSort() ? 'pointer' : undefined
-                                }}
+                                <th key={header.id}  className={`border border-gray-300 p-2 min-w-[150px] ${
+                                    header.column.getCanSort() ? "cursor-pointer" : ""
+                                  }`}
                                     onClick={header.column.getToggleSortingHandler()}
                                 >
                                     {header.isPlaceholder
@@ -81,16 +71,16 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
                         <tr 
                           key={row.id}
                           onClick={() => onRowClick?.(row.original as T)}
-                          style={{ cursor: onRowClick ? "pointer" : "default", backgroundColor: hoveredShipmentId === row.id ? "#f0f0f0" : undefined }}
-                          onMouseEnter={() => setHoveredShipmentId(row.id)}
+                          className={`${onRowClick ? "cursor-pointer" : "cursor-default"} ${
+                            hoveredShipmentId === row.id ? "bg-gray-100" : ""
+                          }`}
+                                                    onMouseEnter={() => setHoveredShipmentId(row.id)}
                           onMouseLeave={() => setHoveredShipmentId(null)}
                         >
                             {row.getVisibleCells().map(cell => (
-                                <td key={cell.id} style={{ 
-                                    minWidth: '150px',
-                                    border: '1px solid #ccc', 
-                                    padding: '8px', 
-                                    margin: '0'}}>
+                                <td key={cell.id} 
+                                className="min-w-[150px] border border-gray-300 p-2 m-0"
+                                    >
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
                             ))}

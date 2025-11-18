@@ -7,6 +7,10 @@ import DetailView from "./DetailView";
 import TableGeneration from "@/features/tables/component/TableGeneration";
 import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
+import { exportTableToExcel } from "@/lib/exportTableToExcel";
+import ExportExcelButton from "@/components/ExportExcelButton"
+
+
 
 
 
@@ -68,6 +72,8 @@ export default function Tables() {
             </div>
             )}
         </section>
+        <ExportExcelButton />
+
         </div>
   );
 }
