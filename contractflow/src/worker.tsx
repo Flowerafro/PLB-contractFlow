@@ -5,14 +5,14 @@ import { setCommonHeaders } from "./app/headers";
 import { Home } from "./app/pages/Home";
 import { Login } from "./app/pages/Login";
 import Archive from "./app/pages/Archive";
-import Dashboard from "./app/pages/Dashboard";
+//import Dashboard from "./app/pages/Dashboard";
 import CreateContract from "./app/pages/CreateContract";
 import Layout from "./app/pages/Layout";
 import ContractSuccess from "./app/pages/ContractSuccess";
 import ClientOverview from "./app/pages/ClientOverview";
 import Tables from "./app/pages/Tables";
 import { hovedListenRoutes } from "./features/databaseDataRetrieval/hovedListenRoutes";
-import { clientRoutes } from "./features/clients/clientRoutes";
+//import { clientRoutes } from "./features/clients/clientRoutes";
 
 
 
@@ -39,7 +39,8 @@ export default defineApp([
   setCommonHeaders(),
   ({ ctx }) => {
     // Make DB available globally for Drizzle (only if env and DB exist)
-    if (ctx && ctx.env && ctx.env.DB) {
+//    if (ctx && ctx.env && ctx.env.DB) {
+    if (ctx?.env?.DB) {
       globalThis.DB = ctx.env.DB;
     }
   },
@@ -63,29 +64,7 @@ export default defineApp([
       return Response.json({
         success: false,
         error: "Failed to seed database",
-      }, { status: 500 });
-    }
-  }),
-
-  route("/upload/", async ({ request, ctx }) => {
-    try {
-      
-       const formData = await request.formData();
-//       const data = new FormData();
-       const file = formData.get('file') as File;
-      console.log("file", file);
-       
-      if (!file) {
-        return Response.json({ error: 'No file provided' }, { status: 400 });
-      }
-      
-      if (!ctx || !ctx.env || !ctx.env.R2) {
-        console.log('R2 not available in development mode. Use "pnpm wrangler dev --remote" or deploy to test uploads.');
-        return Response.json({ 
-          success: true,
-          fileName: file.name,
-          url: `/storage/dev-${Date.now()}-${file.name}`,
-          message: 'Upload simulated (development mode). Deploy to Cloudflare or use "wrangler dev --remote" for real uploads.'
+. Deploy to Cloudflare or use "wrangler dev --remote" for real uploads.'
          });
       }
    
@@ -127,3 +106,4 @@ export default defineApp([
   ]),
   
 ]);
+// // // // // // // // // // // // 

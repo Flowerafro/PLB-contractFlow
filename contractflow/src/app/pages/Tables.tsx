@@ -4,7 +4,8 @@ import React, { useState } from "react";
 
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
-import TableGeneration from "@/features/tables/component/TableGeneration";
+import TabbedTableGeneration from "@/features/tables/component/TabbedTableGeneration";
+//import TableGeneration from "@/features/tables/component/TableGeneration";
 import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
 
@@ -64,7 +65,7 @@ export default function Tables() {
             ) : (
                 
             <div>   
-                <TableGeneration data={data} columnConfig={hovedListenColumns} />
+                <TabbedTableGeneration data={data} columnConfig={hovedListenColumns} groupByColumn="customer" />
             </div>
             )}
         </section>

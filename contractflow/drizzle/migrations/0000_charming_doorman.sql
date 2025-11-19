@@ -4,7 +4,6 @@ CREATE TABLE `audit_log` (
 	`record_id` integer NOT NULL,
 	`operation` text NOT NULL,
 	`user_id` integer,
-	`timestamp` text DEFAULT (datetime('now')) NOT NULL,
 	`old_data` text,
 	`new_data` text
 );
@@ -16,8 +15,7 @@ CREATE TABLE `clients` (
 	`email` text,
 	`phone` text,
 	`country` text,
-	`status` text DEFAULT 'ACTIVE' NOT NULL,
-	`created_at` text DEFAULT (datetime('now')) NOT NULL
+	`status` text DEFAULT 'ACTIVE' NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `clients_name_unique` ON `clients` (`name`);--> statement-breakpoint
@@ -37,7 +35,6 @@ CREATE TABLE `contracts` (
 	`principal_contract_date` text,
 	`principal_order_no` text,
 	`status` text DEFAULT 'ACTIVE' NOT NULL,
-	`created_at` text DEFAULT (datetime('now')) NOT NULL,
 	FOREIGN KEY (`client_id`) REFERENCES `clients`(`id`) ON UPDATE cascade ON DELETE restrict,
 	FOREIGN KEY (`principal_id`) REFERENCES `principals`(`id`) ON UPDATE cascade ON DELETE set null
 );
@@ -51,15 +48,13 @@ CREATE TABLE `invoices` (
 	`invoice_due_date` text,
 	`invoiced_amount_c` integer DEFAULT 0 NOT NULL,
 	`status` text DEFAULT 'PENDING' NOT NULL,
-	`created_at` text DEFAULT (datetime('now')) NOT NULL,
 	FOREIGN KEY (`contract_id`) REFERENCES `contracts`(`id`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `invoices_principal_invoice_no_unique` ON `invoices` (`principal_invoice_no`);--> statement-breakpoint
 CREATE TABLE `principals` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`name` text NOT NULL,
-	`created_at` text DEFAULT (datetime('now')) NOT NULL
+	`name` text NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `principals_name_unique` ON `principals` (`name`);--> statement-breakpoint
@@ -76,7 +71,6 @@ CREATE TABLE `shipments` (
 	`eta` text,
 	`tonnes_delivered` real,
 	`status` text DEFAULT 'PENDING' NOT NULL,
-	`created_at` text DEFAULT (datetime('now')) NOT NULL,
 	FOREIGN KEY (`contract_id`) REFERENCES `contracts`(`id`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint

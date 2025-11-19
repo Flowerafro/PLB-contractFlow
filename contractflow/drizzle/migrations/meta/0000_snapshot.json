@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "1b728d40-3944-4348-ac72-7265110d0fa8",
+  "id": "2f913988-a744-4eca-a3e6-48b65e558ea3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "audit_log": {
@@ -41,14 +41,6 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "timestamp": {
-          "name": "timestamp",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "datetime('now')"
         },
         "old_data": {
           "name": "old_data",
@@ -123,14 +115,6 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'ACTIVE'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "datetime('now')"
         }
       },
       "indexes": {
@@ -257,14 +241,6 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'ACTIVE'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "datetime('now')"
         }
       },
       "indexes": {
@@ -361,14 +337,6 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'PENDING'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "datetime('now')"
         }
       },
       "indexes": {
@@ -415,14 +383,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "datetime('now')"
         }
       },
       "indexes": {
@@ -526,14 +486,6 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'PENDING'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "datetime('now')"
         }
       },
       "indexes": {

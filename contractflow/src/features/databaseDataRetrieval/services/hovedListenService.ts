@@ -2,7 +2,7 @@ import { hovedListenRepository } from '@/features/databaseDataRetrieval/reposito
 import { HovedListeItem } from '@/app/types/hovedlisten';
 
 export interface HovedListenService {
-  getHovedListenData(): Promise<HovedListeItem[]>;
+  getHovedListenData(env?: any): Promise<HovedListeItem[]>;
 }
 
 function getSampleData(): HovedListeItem[] {
@@ -84,7 +84,7 @@ function createHovedListenService(): HovedListenService {
 
         // Fallback to direct repository access (server-side)
         try {
-          const result = await hovedListenRepository.findMany();
+          const result = await hovedListenRepository.findMany(env);
           if (result && result.success && Array.isArray(result.data)) {
             return result.data;
           }

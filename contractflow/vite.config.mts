@@ -13,42 +13,47 @@ export default defineConfig({
   environments: {
     ssr: {},
   },
-  optimizeDeps: {
-    include: ["drizzle-orm", "drizzle-orm/d1", "drizzle-orm/sqlite-core"],
-  },
-  ssr: {
-    optimizeDeps: {
-      include: ["drizzle-orm", "drizzle-orm/d1", "drizzle-orm/sqlite-core"],
-    },
-  },
+  // optimizeDeps: {
+  //   include: ["drizzle-orm", "drizzle-orm/d1", "drizzle-orm/sqlite-core"],
+  // },
+  // ssr: {
+  //   optimizeDeps: {
+  //     include: ["drizzle-orm", "drizzle-orm/d1", "drizzle-orm/sqlite-core"],
+  //   },
+  //   resolve: {
+  //     conditions: ["react-server"],
+  //   },
+  // },
   plugins: [
+    tailwindcss(),
     cloudflare({
       viteEnvironment: { name: "worker" },
     }),
     redwood(),
-    tailwindcss(),
+    
     react(),
   ],
-    build: {
-    rollupOptions: {
-      external: ["tailwindcss"]
-    }
-  },
+  // build: {
+  //   rollupOptions: {
+  //     external: ["tailwindcss"]
+  //   }
+  // },
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),
     },
+    // conditions: ["react-server"],
   },
-  server: {
-    host: "0.0.0.0",
-    port: 5173,
-    strictPort: true,
-    hmr: {
-      port: 5173,
-    },
-    watch: {
-      usePolling: true,
-      interval: 1000,
-    },
-  },
+  // server: {
+  //   host: "0.0.0.0",
+  //   port: 5173,
+  //   strictPort: true,
+  //   hmr: {
+  //     port: 5173,
+  //   },
+  //   watch: {
+  //     usePolling: true,
+  //     interval: 1000,
+  //   },
+  // },
 });

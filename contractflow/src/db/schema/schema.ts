@@ -1,6 +1,6 @@
 // Main database schema - Single source of truth
 import { sqliteTable, integer, text, real } from "drizzle-orm/sqlite-core";
-import { sql } from "drizzle-orm";
+//import { sql } from "drizzle-orm";
 
 export const clients = sqliteTable("clients", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -10,7 +10,7 @@ export const clients = sqliteTable("clients", {
   phone: text("phone"),
   country: text("country"),
   status: text("status").notNull().default("ACTIVE"),
-  createdAt: text("created_at").notNull().default(sql`datetime('now')`)
+  //createdAt: text("created_at").notNull().default(sql`datetime('now')`)
 });
 
 // til klienthåndtering i repo/service (features/clients) 
@@ -21,7 +21,7 @@ export type DBClientInsert = typeof clients.$inferInsert;
 export const principals = sqliteTable("principals", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull().unique(),
-  createdAt: text("created_at").notNull().default(sql`datetime('now')`)
+  //createdAt: text("created_at").notNull().default(sql`datetime('now')`)
 });
 
 export const contracts = sqliteTable("contracts", {
@@ -42,7 +42,7 @@ export const contracts = sqliteTable("contracts", {
   principalContractDate: text("principal_contract_date"), // ISO 8601 format
   principalOrderNo: text("principal_order_no"),
   status: text("status").notNull().default("ACTIVE"), // ACTIVE, COMPLETED, CANCELLED
-  createdAt: text("created_at").notNull().default(sql`datetime('now')`)
+  //createdAt: text("created_at").notNull().default(sql`datetime('now')`)
 });
 
 export const shipments = sqliteTable("shipments", {
@@ -59,7 +59,7 @@ export const shipments = sqliteTable("shipments", {
   eta: text("eta"), // Estimated Time of Arrival
   tonnesDelivered: real("tonnes_delivered"),
   status: text("status").notNull().default("PENDING"), // PENDING, IN_TRANSIT, DELIVERED, CANCELLED
-  createdAt: text("created_at").notNull().default(sql`datetime('now')`)
+  //createdAt: text("created_at").notNull().default(sql`datetime('now')`)
 });
 
 export const invoices = sqliteTable("invoices", {
@@ -71,7 +71,7 @@ export const invoices = sqliteTable("invoices", {
   invoiceDueDate: text("invoice_due_date"), // ISO 8601 format
   invoicedAmountC: integer("invoiced_amount_c").notNull().default(0), // Amount in USD cents
   status: text("status").notNull().default("PENDING"), // PENDING, SENT, PAID, OVERDUE, CANCELLED
-  createdAt: text("created_at").notNull().default(sql`datetime('now')`)
+  //createdAt: text("created_at").notNull().default(sql`datetime('now')`)
 });
 
 export const auditLog = sqliteTable("audit_log", {
@@ -80,7 +80,7 @@ export const auditLog = sqliteTable("audit_log", {
   recordId: integer("record_id").notNull(),
   operation: text("operation").notNull(), // 'INSERT' | 'UPDATE' | 'DELETE'
   userId: integer("user_id"),
-  timestamp: text("timestamp").notNull().default(sql`datetime('now')`),
+  //timestamp: text("timestamp").notNull().default(sql`datetime('now')`),
   oldData: text("old_data"), // JSON string
   newData: text("new_data")  // JSON string
 });

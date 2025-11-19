@@ -17,9 +17,9 @@ export interface HovedListenRepository {
 
 export function createHovedListenRepository(): HovedListenRepository {
   return {
-    async findMany() {
+    async findMany(env?: any) {
       try {
-        const database = getDb();
+        const database = getDb(env);
         const result = await database.select({
           plbReference: contracts.plbReference,
           orderDate: contracts.orderDate,
@@ -54,7 +54,7 @@ export function createHovedListenRepository(): HovedListenRepository {
         .leftJoin(shipments, eq(shipments.contractId, contracts.id))
         .leftJoin(invoices, eq(invoices.contractId, contracts.id))
         .where(eq(contracts.status, 'ACTIVE'))
-        .orderBy(desc(contracts.createdAt));
+        .orderBy(desc(contracts.orderDate));
 
         interface RawRow {
           plbReference: string | null;

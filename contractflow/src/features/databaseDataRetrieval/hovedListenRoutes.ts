@@ -3,22 +3,8 @@ import type { RequestInfo } from "rwsdk/worker";
 import { hovedListenService } from "@/features/databaseDataRetrieval/services/hovedListenService";
 
 export const hovedListenRoutes = [
-  route("/", async ({ request }: RequestInfo) => {
+  route("/", async ({ request, ctx }: RequestInfo) => {
     if (request.method === "GET") {
       try {
-        const data = await hovedListenService.getHovedListenData();
+        const data = await hovedListenService.getHovedListenData(ctx && ctx.env);
         return Response.json({ success: true, data });
-      } catch (error) {
-        console.error("Error fetching hovedlisten data:", error);
-        return Response.json(
-          { 
-            success: false, 
-            error: "Failed to fetch hovedlisten data" 
-          }, 
-          { status: 500 }
-        );
-      }
-    }
-    return Response.json({ error: "Method not allowed" }, { status: 405 });
-  }),
-];
