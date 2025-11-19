@@ -6,57 +6,65 @@ import { InputWithLabelSubmitForm } from '../../components/InputWithLabelSubmitF
 import Button from '../../components/Button';
 import Logo from '../../components/Logo';
 import Footer from '../../components/Footer';
+import { login } from '../actions/auth';
 
 interface LoginProps {
   onLogin?: () => void;
 }
 
 export function Login({ onLogin }: LoginProps) {
-      const [username, setUsername] = useState('');
-      const [password, setPassword] = useState('');
-      const [error, setError] = useState<string | null>(null);
-      const [isLoading, setIsLoading] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-      const checkLogin = async (user: string, pass: string) => {
-        await new Promise((r) => setTimeout(r, 400));
-        return user === 'admin' && pass === 'admin';
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isLoading) return;
+    
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('password', password);
+
+      // Call server action
+      const result = await login(formData);
+
+      if (!result.success) {
+        setError(result.error || 'Login failed');
+        return;
       }
 
-      const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (isLoading) return;
-        setError(null);
+      // Success - handle session and redirect
+      if (result.sessionData) {
+        localStorage.setItem('user_session', result.sessionData);
+      }
+      
+      // Set cookie for server-side authentication
+      if (result.setCookie) {
+        document.cookie = result.setCookie;
+      }
+      
+      if (result.redirect) {
+        window.location.href = result.redirect;
+        return;
+      }
 
-        if(!username || !password) {
-            setError('Please enter both username and password.');
-            return;
-        }
-
-        setIsLoading(true);
-       
-        try {
-          const isValid = true; // midlertidig: alltid godkjent
-
-            /*const isValid = await checkLogin(username, password);
-            if (!isValid) {
-                setError("Invalid username or password")
-                return;
-            }
-                */
-            if (onLogin) {
-                onLogin();
-            } else {
-                window.location.href = '/Home'; // suksessfull login sender til /Home
-            }
-        } catch (err) {
-            console.error(err);
-            setError('An error occurred during login. Please try again.');
-        } finally {
-            setUsername('');
-            setPassword('');
-            setIsLoading(false);
-        }
+      if (onLogin) {
+        onLogin();
+      }
+    } catch (err) {
+      console.error(err);
+      setError('An error occurred during login. Please try again.');
+    } finally {
+      setUsername('');
+      setPassword('');
+      setIsLoading(false);
     }
+  };
 
   return (
     <section className="min-h-screen relative flex flex-col items-center justify-center overflow-hidden bg-[var(--primary-color)]">

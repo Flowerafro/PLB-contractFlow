@@ -13,7 +13,21 @@ import ClientOverview from "./app/pages/ClientOverview";
 import Tables from "./app/pages/Tables";
 import { hovedListenRoutes } from "./features/databaseDataRetrieval/hovedListenRoutes";
 import { clientRoutes } from "./features/clients/clientRoutes";
+import { UserSession } from "./sessions/UserSession";
 
+
+
+// Authentication check using cookies
+function requireAuth(request: Request) {
+  // Check for user session in cookies
+  const cookies = request.headers.get('Cookie');
+  if (cookies && cookies.includes('user_session=')) {
+    return true; // User has session
+  }
+  
+  // For simple testing, we'll redirect to login
+  return Response.redirect(new URL('/Login', request.url), 302);
+}
 
 
 declare global {
@@ -37,14 +51,16 @@ export type AppContext = {
 export default defineApp([
 
   setCommonHeaders(),
+  
+  
   ({ ctx }) => {
-    // Make DB available globally for Drizzle (only if env and DB exist)
+
     if (ctx && ctx.env && ctx.env.DB) {
       globalThis.DB = ctx.env.DB;
     }
   },
 
-  // API  for database access
+  // API for database access
   prefix("/api/v1/hovedlisten", hovedListenRoutes),
 
   //prefix("/api/v1/clients", clientRoutes),
@@ -71,7 +87,7 @@ export default defineApp([
     try {
       
        const formData = await request.formData();
-//       const data = new FormData();
+       //const data = new FormData();
        const file = formData.get('file') as File;
       console.log("file", file);
        
@@ -116,14 +132,53 @@ export default defineApp([
   }),
  
   render(Document, [
-   route("/", () => <Login />), // default rute er login for å simulere beskyttet side
-    route("/Home", () => <Home />),
-    route("/create", () => <Layout><CreateContract /></Layout>),
-    route("/success", () => <Layout><ContractSuccess /></Layout>),
-    route("/clients", () => <Layout><ClientOverview /></Layout>),
-    route("/clients/:id", (({params}) => <Layout><ClientOverview clientId={params.id} /></Layout>)),
-    route("/tables", () => <Layout><Tables /></Layout>),
-    route("/archive", () => <Layout><Archive /></Layout>)
+    route("/", () => <Login />), // default route is login
+    route("/Login", () => <Login />),
+    
+    // Protected routes - require authentication  
+    route("/Home", ({ request }) => {
+      const authResult = requireAuth(request);
+      if (authResult instanceof Response) return authResult;
+      return <Home />;
+    }),
+    route("/Dashboard", ({ request }) => {
+      const authResult = requireAuth(request);
+      if (authResult instanceof Response) return authResult;
+      return <Dashboard />;
+    }),
+    route("/create", ({ request }) => {
+      const authResult = requireAuth(request);
+      if (authResult instanceof Response) return authResult;
+      return <Layout><CreateContract /></Layout>;
+    }),
+    route("/success", ({ request }) => {
+      const authResult = requireAuth(request);
+      if (authResult instanceof Response) return authResult;
+      return <Layout><ContractSuccess /></Layout>;
+    }),
+    route("/clients", ({ request }) => {
+      const authResult = requireAuth(request);
+      if (authResult instanceof Response) return authResult;
+      return <Layout><ClientOverview /></Layout>;
+    }),
+    route("/clients/:id", ({ request, params }) => {
+      const authResult = requireAuth(request);
+      if (authResult instanceof Response) return authResult;
+      return <Layout><ClientOverview clientId={params.id} /></Layout>;
+    }),
+    route("/tables", ({ request }) => {
+      const authResult = requireAuth(request);
+      if (authResult instanceof Response) return authResult;
+      return <Layout><Tables /></Layout>;
+    }),
+    route("/archive", ({ request }) => {
+      const authResult = requireAuth(request);
+      if (authResult instanceof Response) return authResult;
+      return <Layout><Archive /></Layout>;
+    })
   ]),
   
 ]);
+
+// Export Durable Objects
+export { UserSession };
