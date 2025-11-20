@@ -1,7 +1,7 @@
 "use client";
 
-import TableGeneration from "@/features/tables/component/TableGeneration";
-import UploadFile from "@/features/fileHandling/component/UploadFileToR2";
+import TableGeneration from "@/features/components/TableGeneration";
+import UploadFile from "@/features/components/UploadFileToR2";
 import { hovedlistenDatabaseData } from "@/features/tables/hooks/datatypeStructures/hovedlistenDatabaseData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
 

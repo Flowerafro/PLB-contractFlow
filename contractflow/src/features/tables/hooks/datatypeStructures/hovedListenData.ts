@@ -10,7 +10,6 @@ import { useMemo } from 'react';
     Improved date handling for better performance.
 */
 
-// ✅ Cache for date parsing to avoid redundant Date object creation
 const dateParseCache = new Map<string, Date>();
 
 const parseDate = (dateStr: string): Date => {
@@ -22,7 +21,6 @@ const parseDate = (dateStr: string): Date => {
     return date;
 };
 
-// ✅ Memoized transformation function
 const transformHovedListenItem = (item: any): HovedListeItem => ({
     plbReference: item.plbReference || '',
     plbOrderDate: formatDate(parseDate(item.plbOrderDate)) || '',
@@ -52,7 +50,6 @@ const transformHovedListenItem = (item: any): HovedListeItem => ({
 });
 
 export function hovedListenData(){
-    // ✅ Memoize the data source configuration
     const dataSource = useMemo(() => ({
         path: '/src/features/tables/dummyData/hoved_listen_paaLissom.json',
         transform: (rawData: any[]) => rawData.map(transformHovedListenItem),

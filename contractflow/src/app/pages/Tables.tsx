@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
-import TabbedTableGeneration from "@/features/tables/component/TabbedTableGeneration";
+import TabbedTableGeneration from "@/features/components/TabbedTableGeneration";
 import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
 import { exportTableToExcel } from "@/lib/exportTableToExcel";

@@ -3,7 +3,6 @@ import {
     flexRender,
     getCoreRowModel, 
     getSortedRowModel,
-//    SortingFn,
     SortingState,
     useReactTable,
 } from "@tanstack/react-table";
@@ -17,7 +16,7 @@ import {
     memo
  } from "react";
 
-
+// Komponent for tabbede tabeller
 function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, columnConfig, groupByColumn, onRowClick }: TabbedTableProps<T> & { onRowClick?: (row: T) => void }){
     const [sorting, setSorting] = useState<SortingState>([]);
     const [hoveredShipmentId, setHoveredShipmentId] = useState<string | null>(null);    
@@ -60,18 +59,15 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
         }
     }, [uniqueValues, selectedTab]);
 
-    // ✅ Memoize filtered data to prevent recalculation
     const filteredData = useMemo(() => 
         data.filter(item => item[groupByColumn] === selectedTab),
         [data, groupByColumn, selectedTab]
     );
 
-    // ✅ Use callback for tab selection to prevent function recreation
     const handleTabSelect = useCallback((value: any) => {
         setSelectedTab(value);
     }, []);
 
-    // ✅ Use callback for row hover to prevent function recreation
     const handleMouseEnter = useCallback((rowId: string) => {
         setHoveredShipmentId(rowId);
     }, []);
@@ -102,7 +98,7 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
                         key={String(value)}
                         onClick={() => handleTabSelect(value)}
                         style={{
-// midlertidig styling:                            
+// midlertidig styling:
                             padding: '12px 20px',
                             border: 'none',
                             backgroundColor: selectedTab === value ? '#ffffff' : 'transparent',
@@ -195,7 +191,6 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
     )
 }
 
-// ✅ Memoize the entire component to prevent unnecessary re-renders
 const TabbedTableGeneration = memo(TabbedTableGenerationComponent) as typeof TabbedTableGenerationComponent;
 
 export default TabbedTableGeneration;

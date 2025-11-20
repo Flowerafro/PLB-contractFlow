@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import DetailView from "./DetailView";
-import TableGeneration from "../../features/tables/component/TableGeneration";
+import TableGeneration from "../../features/components/TableGeneration";
 import ShipmentList from "../../components/ShipmentList";
 import { hovedListenData } from "../../features/tables/hooks/datatypeStructures/hovedListenData";
 import { hovedListenColumns } from "../../features/tables/columns/hovedListenColumns";
@@ -117,7 +117,11 @@ export default function Dashboard() {
         ) : (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
             <h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">Alle forsendelser</h2>
-            <TableGeneration data={data} columnConfig={hovedListenColumns} onRowClick={handleSelectShipment} />
+            <TableGeneration 
+              data={data} 
+              columnConfig={hovedListenColumns} 
+              onRowClick={handleSelectShipment} 
+            />
           </div>
         )}
       </section>
