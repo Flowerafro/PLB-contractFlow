@@ -27,8 +27,8 @@ export default defineConfig({
     cloudflare({
       viteEnvironment: { name: "worker" },
     }),
-    redwood(),
     tailwindcss(),
+    redwood(),
     react(),
   ],
     build: {
