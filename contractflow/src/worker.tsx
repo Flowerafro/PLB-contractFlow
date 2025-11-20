@@ -11,7 +11,7 @@ import Layout from "./app/pages/Layout";
 import ContractSuccess from "./app/pages/ContractSuccess";
 import ClientOverview from "./app/pages/ClientOverview";
 import Tables from "./app/pages/Tables";
-import { hovedListenRoutes } from "./features/databaseDataRetrieval/hovedListenRoutes";
+import { hovedListenRoutes } from "./features/dataRetrieval/hovedListenRoutes";
 import { clientRoutes } from "./features/clients/clientRoutes";
 import { UserSession } from "./sessions/UserSession";
 

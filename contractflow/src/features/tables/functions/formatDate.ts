@@ -1,12 +1,10 @@
-//    -Optimized date formatting with memoization-
-//    Caches formatted dates to prevent redundant processing
+//    -Formatering av dato-
 
 const dateCache = new Map<string, string>();
 
 export default function formatDate(date: Date): string {
     if (!(date instanceof Date) || isNaN(date.getTime())) return '';
     
-    // ✅ Use timestamp as cache key for memoization
     const timestamp = date.getTime().toString();
     
     if (dateCache.has(timestamp)) {
@@ -18,7 +16,6 @@ export default function formatDate(date: Date): string {
     const d = date.getDate().toString().padStart(2, '0');
     const formatted = `${y}-${m}-${d}`;
     
-    // ✅ Cache the result to avoid recalculation
     dateCache.set(timestamp, formatted);
     
     return formatted;

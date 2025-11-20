@@ -1,6 +1,6 @@
 import { route } from "rwsdk/router";
 import type { RequestInfo } from "rwsdk/worker";
-import { hovedListenService } from "@/features/databaseDataRetrieval/services/hovedListenService";
+import { hovedListenService } from "@/features/dataRetrieval/services/hovedListenService";
 
 export const hovedListenRoutes = [
   route("/", async ({ request }: RequestInfo) => {

@@ -1,5 +1,5 @@
 import { ColumnSetup } from "../interfaces/columnSetup";
-import { ContractTest } from "../../../app/types/contractTest";
+import { ContractTest } from "@/app/types/contractTest";
 
 export const contractTestColumns: ColumnSetup<ContractTest>[] = [
     {

@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ContractTest } from "../../../../app/types/contractTest";
+import { ContractTest } from "@/app/types/contractTest";
 
-/*
-    -Hook for fetching contract data from database-
-    
-    This hook manages the data fetching for contracts table
-    with proper error handling and loading states using API calls.
-*/
+// -Hook for uthenting av contract-data from database-
 
 export function contractTestDatabaseData() {
     const [data, setData] = useState<ContractTest[]>([]);

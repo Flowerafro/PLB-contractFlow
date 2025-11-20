@@ -4,11 +4,11 @@ import React, {
     useState
 } from "react";
 
-import { UploadProps } from '../interfaces/uploadProps';
-import { uploadToR2 } from "../services/uploadToR2";
-import { processExcelFile, shouldProcessAsExcel } from "../services/fileProcessingService";
-import { validateFileSize, validateFileType } from "../utils/validateFile";
-import { useDragAndDrop } from "../hooks/useDragAndDrop";
+import { UploadProps } from '@/features/fileHandling/interfaces/uploadProps';
+import { uploadToR2 } from "@/features/fileHandling/services/uploadToR2";
+import { processExcelFile, shouldProcessAsExcel } from "@/features/fileHandling/services/fileProcessingService";
+import { validateFileSize, validateFileType } from "@/features/fileHandling/utils/validateFile";
+import { useDragAndDrop } from "@/features/fileHandling/hooks/useDragAndDrop";
 
 // - Upload felt for opplasting til R2 bucket -
 

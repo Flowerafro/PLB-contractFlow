@@ -6,12 +6,7 @@ import {
 } from "react";
 import type { DataSource } from "@/features/tables/interfaces/dataSource";
 
-/*
-    -Optimized code for data transformation from JSON files-
-
-    Improved performance with memoization and reduced re-processing.
-    Added caching to prevent redundant data loading and transformation.
-*/
+//    -Data transformation from JSON files-
 
 export function useData<T>(dataSource: DataSource<T>){
     const [data, setData] = useState<T[]>([]);
@@ -19,16 +14,14 @@ export function useData<T>(dataSource: DataSource<T>){
     const [error, setError] = useState<string | null>(null);
     const loadedPath = useRef<string | null>(null);
 
-    // ✅ Memoize dataSource to prevent unnecessary re-loads
     const memoizedDataSource = useMemo(() => dataSource, [
         dataSource.path, 
         dataSource.dataPath, 
         dataSource.errorMessage
     ]);
 
-//  Enhanced data loading with caching:    
+//  Forbedret data-loading med caching:    
     const loadData = async () => { 
-        // ✅ Prevent redundant loading of same path
         if (loadedPath.current === memoizedDataSource.path && data.length > 0) {
             setLoading(false);
             return;
@@ -44,7 +37,7 @@ export function useData<T>(dataSource: DataSource<T>){
                 ? memoizedDataSource.dataPath.split('.').reduce((obj, key) => obj?.[key], incomingData)
                 : incomingData;
 
-            // ✅ Only transform if we have data and it's different from current
+// Sjekk for unik data før transformering:
             if (retrievedData && Array.isArray(retrievedData)) {
                 const transformedData: T[] = memoizedDataSource.transform(retrievedData);
                 setData(transformedData);
@@ -59,11 +52,10 @@ export function useData<T>(dataSource: DataSource<T>){
             setLoading(false);
         }
     };
-    
 
     useEffect(() => {
         loadData();
-    }, [memoizedDataSource]) // Only depend on memoized dataSource
+    }, [memoizedDataSource])
 
     return { data, loading, error };
 }

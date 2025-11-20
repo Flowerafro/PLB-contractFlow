@@ -1,4 +1,4 @@
-import { hovedListenRepository } from '@/features/databaseDataRetrieval/repositoryPatterns/hovedListenRepository';
+import { hovedListenRepository } from '@/features/dataRetrieval/repositoryPatterns/hovedListenRepository';
 import { HovedListeItem } from '@/app/types/hovedlisten';
 
 export interface HovedListenService {
