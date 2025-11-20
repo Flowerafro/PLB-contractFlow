@@ -1,3 +1,5 @@
+// midlertidig api kall for contracthåndtering før database er på plass
+
 const BASE_URL = "/api/contracts";
 
 type ApiError = {

@@ -5,7 +5,6 @@ type Props = {
   loading?: boolean
   label?: string
 }
-
 export default function CreateContractButton({ loading, label = "Create Contract" }: Props) {
   return (
     <button

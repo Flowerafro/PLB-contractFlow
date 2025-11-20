@@ -1,20 +1,23 @@
-"use client"
-import React, { useState } from "react"
-import CreateContractButton from "../../components/CreateContractButton"
+"use client";
+
+import React, { useState } from "react";
+import CreateContractButton from "../../components/CreateContractButton";
 import { contractAPI } from "../../lib/contractAPI";
 
+/* Skjema for å legge inn kontraktinfo før sending til backend */
 
 type ContractForm = {
-  client: string
-  contractName: string
-  clientName: string
-  clientEmail: string
-  startDate: string
-  stopDate: string
-  terms: string
-}
+  client: string;
+  contractName: string;
+  clientName: string;
+  clientEmail: string;
+  startDate: string;
+  stopDate: string;
+  terms: string;
+};
 
 export default function CreateContractPage() {
+  // Holder alle felt vi skriver inn
   const [form, setForm] = useState<ContractForm>({
     client: "",
     contractName: "",
@@ -23,25 +26,36 @@ export default function CreateContractPage() {
     startDate: "",
     stopDate: "",
     terms: ""
-  })
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState("")
+  });
 
+  // Viser loading mens kontrakten sendes inn
+  const [loading, setLoading] = useState(false);
+
+  // Viser feilmeldinger hvis noe går galt
+  const [message, setMessage] = useState("");
+
+  /* Når vi sender skjemaet:
+     – stopper vanlig submit
+     – prøver å lage kontrakt
+     – hvis alt ok → gå videre
+     – hvis ikke → vis feilmelding
+  */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-  
+
     try {
       await contractAPI.create({
         plbReference: form.contractName || "PLB-" + Date.now(),
-        clientId: 1,
+        clientId: 1,     // Midlertidig ID til databasen er klar
         principalId: null,
         productCode: form.client,
         orderDate: form.startDate,
         status: "ACTIVE"
       });
-  
+
+      // Ferdig → send bruker videre
       window.location.href = "/success";
     } catch (err) {
       setMessage("Error creating contract");
@@ -49,18 +63,21 @@ export default function CreateContractPage() {
       setLoading(false);
     }
   };
-  
+
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-200 py-10">
       <div className="bg-white rounded-lg shadow-md p-10 w-full max-w-md">
-      <h2 className="text-2xl font-bold text-black mb-8">Create Contract</h2>
+
+        <h2 className="text-2xl font-bold text-black mb-8">Create Contract</h2>
+
         <form onSubmit={handleSubmit} className="grid gap-4">
+
           <div>
             <label className="block font-medium mb-1">Choose client</label>
             <select
               value={form.client}
               onChange={e => setForm({ ...form, client: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-900"
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-900"
             >
               <option value="">----</option>
               <option value="plb">PLB Consulting</option>
@@ -68,6 +85,7 @@ export default function CreateContractPage() {
             </select>
           </div>
 
+          {/* Kontraktnavn */}
           <div>
             <label className="block font-medium mb-1">Contract name</label>
             <input
@@ -104,6 +122,7 @@ export default function CreateContractPage() {
             />
           </div>
 
+          {/* Start og stoppdato */}
           <div className="flex gap-2">
             <div className="w-1/2">
               <label className="block font-medium mb-1">Start date</label>
@@ -115,6 +134,7 @@ export default function CreateContractPage() {
                 className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-900"
               />
             </div>
+
             <div className="w-1/2">
               <label className="block font-medium mb-1">Stop date</label>
               <input
@@ -139,9 +159,11 @@ export default function CreateContractPage() {
 
           <CreateContractButton loading={loading} label="Create Contract" />
 
-          {message && <p className="text-center text-sm text-gray-700 mt-2">{message}</p>}
+          {message && (
+            <p className="text-center text-sm text-gray-700 mt-2">{message}</p>
+          )}
         </form>
       </div>
     </section>
-  )
+  );
 }

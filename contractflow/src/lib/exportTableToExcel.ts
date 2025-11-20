@@ -1,3 +1,5 @@
+// Eksporterer et table (via tableId) til en Excel fil som lastes ned i nettleseren
+
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 

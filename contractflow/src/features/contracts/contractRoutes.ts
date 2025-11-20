@@ -3,10 +3,8 @@ import { contractController } from "./contractController";
 
 export const contractRoutes = [
 
-    // /api/v1/contracts
     route("/", async (ctx) => {
         const method = ctx.request.method.toLowerCase();
-
         switch (method) {
             case "get":
                 return contractController.list(ctx);
@@ -16,13 +14,9 @@ export const contractRoutes = [
                 return new Response("Method Not Allowed", { status: 405 });
         }
     }),
-
-    // /api/v1/contracts/search
     route("/search", (ctx) => {
         return contractController.search(ctx);
     }),
-
-    // /api/v1/contracts/:id
     route("/:id", async (ctx) => {
         const method = ctx.request.method.toLowerCase();
 

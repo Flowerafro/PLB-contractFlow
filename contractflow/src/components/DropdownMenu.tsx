@@ -1,5 +1,6 @@
 import React from "react";
 import Hamburger from "./Hamburger";
+import { logout } from "../app/actions/auth";
 
 type DropdownMenuProps = {
   options: { id: number; value: string; label: string }[];
@@ -7,6 +8,24 @@ type DropdownMenuProps = {
 
 export default function DropdownMenu({ options }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = React.useState(false);
+
+  const handleOptionClick = async (option: { id: number; value: string; label: string }) => {
+    setIsOpen(false);
+    
+    if (option.value === "/logout") {
+      const result = await logout();
+      if (result.clearSession) {
+        localStorage.removeItem('user_session');
+      }
+      if (result.redirect) {
+        window.location.href = result.redirect;
+      }
+      return;
+    }
+    
+    // For other options, navigate normally
+    window.location.href = option.value;
+  };
 
   return (
     <nav className="relative">
@@ -18,13 +37,12 @@ export default function DropdownMenu({ options }: DropdownMenuProps) {
         <ul className="bg-(--dropdown-bg) absolute right-0 m-2 p-4 rounded-md shadow-md z-50">
           {options.map((option) => (
             <li key={option.id} className="p-4 hover:underline rounded-md cursor-pointer">
-              <a
-                href={option.value}
-                onClick={() => setIsOpen(false)}
-                className="block"
+              <button
+                onClick={() => handleOptionClick(option)}
+                className="block w-full text-left"
               >
                 {option.label}
-              </a>
+              </button>
             </li>
           ))}
         </ul>
