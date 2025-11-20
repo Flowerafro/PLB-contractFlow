@@ -11,7 +11,9 @@ const __dirname = dirname(__filename);
 
 export default defineConfig({
   environments: {
-    ssr: {},
+    ssr: {
+      external: ["file-server"]
+    },
   },
   optimizeDeps: {
     include: ["drizzle-orm", "drizzle-orm/d1", "drizzle-orm/sqlite-core"],

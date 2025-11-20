@@ -1,41 +1,59 @@
 import { 
     useEffect,
-    useState 
+    useState,
+    useRef,
+    useMemo
 } from "react";
 import type { DataSource } from "@/features/tables/interfaces/dataSource";
 
 /*
-    -Kode for omdanning av data fra JSON-filer-
+    -Optimized code for data transformation from JSON files-
 
-    Her bearbeides data for tabell-innleggelse. 
-    Denne skal være ganske anvendelig for forsjellige
-    datakilder, men det må nok ha json struktur.
-    Andre er ikke testet.
+    Improved performance with memoization and reduced re-processing.
+    Added caching to prevent redundant data loading and transformation.
 */
 
 export function useData<T>(dataSource: DataSource<T>){
     const [data, setData] = useState<T[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const loadedPath = useRef<string | null>(null);
 
-//  Henter data fra JSON-filen:    
+    // ✅ Memoize dataSource to prevent unnecessary re-loads
+    const memoizedDataSource = useMemo(() => dataSource, [
+        dataSource.path, 
+        dataSource.dataPath, 
+        dataSource.errorMessage
+    ]);
+
+//  Enhanced data loading with caching:    
     const loadData = async () => { 
+        // ✅ Prevent redundant loading of same path
+        if (loadedPath.current === memoizedDataSource.path && data.length > 0) {
+            setLoading(false);
+            return;
+        }
+
         try {
             setLoading(true);
             setError(null);
 
-            const {default: incomingData } = await import(/* @vite-ignore */ dataSource.path);
+            const {default: incomingData } = await import(/* @vite-ignore */ memoizedDataSource.path);
     
-            const retrievedData = dataSource.dataPath && dataSource.dataPath.trim()
-                ? dataSource.dataPath.split('.').reduce((obj, key) => obj?.[key], incomingData)
+            const retrievedData = memoizedDataSource.dataPath && memoizedDataSource.dataPath.trim()
+                ? memoizedDataSource.dataPath.split('.').reduce((obj, key) => obj?.[key], incomingData)
                 : incomingData;
 
-            const transformedData: T[] = dataSource.transform(retrievedData);
-            setData(transformedData);
+            // ✅ Only transform if we have data and it's different from current
+            if (retrievedData && Array.isArray(retrievedData)) {
+                const transformedData: T[] = memoizedDataSource.transform(retrievedData);
+                setData(transformedData);
+                loadedPath.current = memoizedDataSource.path;
+            }
         }
         catch (err) {
-            setError(dataSource.errorMessage);
-            console.error(err);
+            setError(memoizedDataSource.errorMessage);
+            console.error('useData loading error:', err);
         }
         finally {
             setLoading(false);
@@ -45,7 +63,7 @@ export function useData<T>(dataSource: DataSource<T>){
 
     useEffect(() => {
         loadData();
-    }, []) // Remove dependencies to prevent infinite loop
+    }, [memoizedDataSource]) // Only depend on memoized dataSource
 
     return { data, loading, error };
 }

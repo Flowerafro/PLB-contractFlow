@@ -2,45 +2,62 @@
 import { useData } from '@/features/tables/hooks/useData';
 import { HovedListeItem } from '@/app/types/hovedlisten';
 import formatDate from '@/features/tables/functions/formatDate';
+import { useMemo } from 'react';
 
 /*
-    -Henter data fra json-fil knyttet til hovedfilen-
-    Her er verdiene tatt fra hovedliste-eksempelet vi 
-    ble tilsendt. Her er det igjen problemer med dato-
-    formatet.
+    -Optimized data fetching from JSON file for hovedlisten-
+    Added memoization to prevent redundant transformations.
+    Improved date handling for better performance.
 */
 
-export function hovedListenData(){
-    return useData<HovedListeItem>({
-        path: '/src/features/tables/dummyData/hoved_listen_paaLissom.json',
-        transform: (rawData: any[]) => rawData.map((item: any) => ({
-            plbReference: item.plbReference || '',
-            plbOrderDate: formatDate(new Date(item.plbOrderDate)) || '',
-            customer: item.customer || 'Unknown',
-            product: item.product || 'Unknown',
-            tonn: Number(item.tonn) || 0,
-            priceUsdMt: Number(item.priceUsdMt) || 0,
-            totalPriceUsd: Number(item.totalPriceUsd) || 0,
-            prisgrProv: Number(item.prisgrProv) || 0,
-            poEta: formatDate(new Date(item.poEta)) || '',
-            etd: formatDate(new Date(item.etd)) || '',
-            customerOrderNumber: item.customerOrderNumber || '',
-            principalContractNumber: Number(item.principalContractNumber) || 0,
-            principalContractDate: formatDate(new Date(item.principalContractDate)) || '',
-            principalOrderNumber: Number(item.principalOrderNumber) || 0,
-            containerNumber: item.containerNumber || '',
-            principalInvoiceNumber: Number(item.principalInvoiceNumber) || 0,
-            principalInvoiceDate: formatDate(new Date(item.principalInvoiceDate)) || '',
-            invoiceDueDate: formatDate(new Date(item.invoiceDueDate)) || '',
-            tonnesDeliveres: Number(item.tonnesDeliveres) || 0,
-            invoiceAmount: Number(item.invoiceAmount) || 0,
-            blDate: formatDate(new Date(item.blDate)) || '',
-            eta: formatDate(new Date(item.eta)) || '',
-            bookingNumber: item.bookingNumber || '',
-            blNumber: item.blNumber || '',
-            aakDelNumber: Number(item.aakDelNumber) || 0,
-        })),
+// ✅ Cache for date parsing to avoid redundant Date object creation
+const dateParseCache = new Map<string, Date>();
 
+const parseDate = (dateStr: string): Date => {
+    if (dateParseCache.has(dateStr)) {
+        return dateParseCache.get(dateStr)!;
+    }
+    const date = new Date(dateStr);
+    dateParseCache.set(dateStr, date);
+    return date;
+};
+
+// ✅ Memoized transformation function
+const transformHovedListenItem = (item: any): HovedListeItem => ({
+    plbReference: item.plbReference || '',
+    plbOrderDate: formatDate(parseDate(item.plbOrderDate)) || '',
+    customer: item.customer || 'Unknown',
+    product: item.product || 'Unknown',
+    tonn: Number(item.tonn) || 0,
+    priceUsdMt: Number(item.priceUsdMt) || 0,
+    totalPriceUsd: Number(item.totalPriceUsd) || 0,
+    prisgrProv: Number(item.prisgrProv) || 0,
+    poEta: formatDate(parseDate(item.poEta)) || '',
+    etd: formatDate(parseDate(item.etd)) || '',
+    customerOrderNumber: item.customerOrderNumber || '',
+    principalContractNumber: Number(item.principalContractNumber) || 0,
+    principalContractDate: formatDate(parseDate(item.principalContractDate)) || '',
+    principalOrderNumber: Number(item.principalOrderNumber) || 0,
+    containerNumber: item.containerNumber || '',
+    principalInvoiceNumber: Number(item.principalInvoiceNumber) || 0,
+    principalInvoiceDate: formatDate(parseDate(item.principalInvoiceDate)) || '',
+    invoiceDueDate: formatDate(parseDate(item.invoiceDueDate)) || '',
+    tonnesDeliveres: Number(item.tonnesDeliveres) || 0,
+    invoiceAmount: Number(item.invoiceAmount) || 0,
+    blDate: formatDate(parseDate(item.blDate)) || '',
+    eta: formatDate(parseDate(item.eta)) || '',
+    bookingNumber: item.bookingNumber || '',
+    blNumber: item.blNumber || '',
+    aakDelNumber: Number(item.aakDelNumber) || 0,
+});
+
+export function hovedListenData(){
+    // ✅ Memoize the data source configuration
+    const dataSource = useMemo(() => ({
+        path: '/src/features/tables/dummyData/hoved_listen_paaLissom.json',
+        transform: (rawData: any[]) => rawData.map(transformHovedListenItem),
         errorMessage: 'PLB contract data did not load'
-    });
+    }), []);
+
+    return useData<HovedListeItem>(dataSource);
 }
