@@ -4,11 +4,6 @@ import { HovedListeItem } from '@/app/types/hovedlisten';
 import formatDate from '@/features/tables/functions/formatDate';
 import { useMemo } from 'react';
 
-/*
-    -Optimized data fetching from JSON file for hovedlisten-
-    Added memoization to prevent redundant transformations.
-    Improved date handling for better performance.
-*/
 
 const dateParseCache = new Map<string, Date>();
 

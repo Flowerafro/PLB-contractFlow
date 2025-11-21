@@ -1,5 +1,6 @@
 import { hovedListenRepository } from '@/features/dataRetrieval/repositoryPatterns/hovedListenRepository';
 import { HovedListeItem } from '@/app/types/hovedlisten';
+import { AppContext } from '@/worker';
 
 export interface HovedListenService {
   getHovedListenData(): Promise<HovedListeItem[]>;
@@ -84,7 +85,7 @@ function createHovedListenService(): HovedListenService {
 
         // Fallback to direct repository access (server-side)
         try {
-          const result = await hovedListenRepository.findMany();
+          const result = await hovedListenRepository.findMany(ctx.env);
           if (result && result.success && Array.isArray(result.data)) {
             return result.data;
           }

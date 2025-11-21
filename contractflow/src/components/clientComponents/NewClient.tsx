@@ -3,12 +3,12 @@
 "use client"
 
 import React, { useState } from "react";
-import type { CreateClientInput } from "../features/fileHandling/interfaces/createClientInput";
-import type { Client } from "../app/types/client";
-import { clientAPI } from "../lib/clientAPI";
-import type { InputNewClient } from "../app/types/InputNewClient";
-import { InputWithLabelSubmitForm } from "./InputWithLabelSubmitForm";
-import ButtonClear from "./ButtonClear";
+import type { CreateClientInput } from "@/features/fileHandling/interfaces/createClientInput";
+import type { Client } from "@/app/types/client";
+import { clientAPI } from "@/lib/clientAPI";
+import type { InputNewClient } from "@/app/types/InputNewClient";
+import { InputWithLabelSubmitForm } from "@/components/InputWithLabelSubmitForm";
+import ButtonClear from "@/components/ButtonClear";
 /* import { InputWLabelClient } from "./InputWLabelClient"; */
 
 

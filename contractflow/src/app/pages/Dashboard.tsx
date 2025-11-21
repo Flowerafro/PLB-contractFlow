@@ -1,7 +1,133 @@
+
 // ...existing code...
 "use client";
 
-import React, { useState } from "react";
+import React, { 
+  useState,
+  useMemo 
+} from "react";
+import SearchBar from "@/components/SearchBar";
+import DetailView from "./DetailView";
+import TableGeneration from "@/features/components/TableGeneration";
+import ShipmentList from "@/components/ShipmentList";
+import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
+import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
+import ButtonClear from "../../components/ButtonClear";
+
+interface Shipment {
+  id: number;
+  contactperson?: string;
+  container: string;
+  customer: string;
+  status?: string;
+}
+
+export default function Dashboard() {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [hasSearched, sethasSearched] = useState(false);
+  const [selectedShipment, setSelectedShipment] = useState<any | null>(null);
+
+  const { data, loading, error } = hovedListenData();
+
+  const handleSearch = (query: string) => {
+    setSearchTerm(query.trim().toLowerCase());
+    sethasSearched(true);
+  };
+
+  const filteredResults = useMemo(() => {
+    if (!searchTerm) return [];
+    const source = Array.isArray(data) ? data : [];
+    return source.filter((row: any) => (
+        String(row.container ?? "").toLowerCase().includes(searchTerm) ||
+        String(row.customer ?? "").toLowerCase().includes(searchTerm) ||
+        String(row.bookingNumber ?? "").toLowerCase().includes(searchTerm) ||
+        String(row.client ?? "").toLowerCase().includes(searchTerm) ||
+        String(row.product ?? "").toLowerCase().includes(searchTerm) ||
+        String(row.principalContractNumber ?? "").toLowerCase().includes(searchTerm) ||
+        String(row.principalContractDate ?? "").toLowerCase().includes(searchTerm) ||
+        String(row.principalOrderNumber ?? "").toLowerCase().includes(searchTerm) ||
+        String(row.principalOrderDate ?? "").toLowerCase().includes(searchTerm) 
+      ));
+    }, [searchTerm, data]);
+/* const normalized samler alle verdier til de ulike data fra HovedListenData */
+
+    const handleSelectShipment = (row: any) => {
+      setSelectedShipment({
+        id: row.id ?? null,
+        plbReference: row.plbReference ?? "",
+        plbOrderDate: row.plbOrderDate ?? "",
+        customer: row.customer ?? "",
+        product: row.product ?? "",
+        customerOrderNumber: row.customerOrderNumber ?? "",
+
+        principalContractNumber: String(row.principalContractNumber ?? ""),
+        principalContractDate: row.principalContractDate ?? "",
+        principalOrderNumber: String(row.principalOrderNumber ?? ""),
+
+        containerNumber: row.containerNumber ?? "",
+        bookingNumber: row.bookingNumber ?? "",
+        blNumber: row.blNumber ?? "",
+        poEta: row.poEta ?? "",
+        etd: row.etd ?? "",
+        blDate: row.blDate ?? "",
+        eta: row.eta ?? "",
+
+        principalInvoiceNumber: String(row.principalInvoiceNumber ?? ""),
+        principalInvoiceDate: row.principalInvoiceDate ?? "",
+        invoiceDueDate: row.invoiceDueDate ?? "",
+        invoiceAmount: row.invoiceAmount ?? 0,
+      });
+  };
+
+    // Basic informasjon relatert til tabell data visningen
+  if (loading) return <div>Table is loading...</div>;
+  if (error) return <div>Error: {String(error)}</div>;
+
+  return (
+    <div>
+      <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">Hovedlisten</h1>
+      <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />
+
+      <section className="mt-8">
+        {selectedShipment ? (
+          <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md m-2">
+            {/* <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear> */}
+            <DetailView item={selectedShipment} setSelectedShipment={setSelectedShipment} />
+          </div>
+        ) : hasSearched ? (
+          filteredResults.length === 0 ? (
+            <div className="bg-white p-2">
+              <p>Ingen treff for "{searchTerm}"</p>
+              <a href="/Home">
+              <ButtonClear>Tilbake</ButtonClear>
+              </a>
+            </div>
+          ) : (
+            <ShipmentList filteredItems={filteredResults.map((r: any) => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
+          )
+        ) : (
+          <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">Alle forsendelser</h2>
+            <TableGeneration 
+              data={data} 
+              columnConfig={hovedListenColumns} 
+              onRowClick={handleSelectShipment} 
+            />
+          </div>
+        )}
+      </section>
+  </div>
+  );
+}
+
+/*
+// ...existing code...
+"use client";
+
+import React, { 
+  useState,
+  useMemo 
+} from "react";
 import SearchBar from "../../components/SearchBar";
 import DetailView from "./DetailView";
 import TableGeneration from "../../features/components/TableGeneration";
@@ -59,7 +185,7 @@ export default function Dashboard() {
     setResults(found);
   };
 
-/* const normalized samler alle verdier til de ulike data fra HovedListenData */
+// const normalized samler alle verdier til de ulike data fra HovedListenData 
 
     const handleSelectShipment = (row: any) => {
     console.log("selected row", row);
@@ -100,7 +226,7 @@ export default function Dashboard() {
       <section className="mt-8">
         {selectedShipment ? (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md m-2">
-            {/* <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear> */}
+            {/* <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear> *//*}
             <DetailView item={selectedShipment} setSelectedShipment={setSelectedShipment} />
           </div>
         ) : searchTrimmed ? (
@@ -128,3 +254,4 @@ export default function Dashboard() {
   </div>
   );
 }
+*/

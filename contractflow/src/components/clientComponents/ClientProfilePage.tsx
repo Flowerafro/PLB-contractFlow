@@ -1,7 +1,7 @@
 "use client";
 
-import type { Client } from "../app/types/client";
-import ButtonClear from "./ButtonClear";
+import type { Client } from "../../app/types/client";
+import ButtonClear from "../ButtonClear";
 
 export default function ClientProfilePage({
   client, onBack,

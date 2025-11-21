@@ -2,18 +2,10 @@
 import type { ArchiveDocument } from "@/app/types/archiveDocument";
 import { ColumnSetup } from "@/features/tables/interfaces/columnSetup";
 
-/*
-    -Kolonnetitler for bøker-
-    Venstre side viser key-verdien i dataobjektet
-    Høyre side viser navnet som presenteres i tabellen 
-
-    Arbeid benyttet i eksperiment. Kan slettes eller 
-    redigeres.
-*/
+//    -Kolonnetitler for Archive-
 
 export const archiveColumns: ColumnSetup<ArchiveDocument>[] = [
-    { key: "date", header: "Date" },
-    { key: "containerNumber", header: "Container no." },
-    { key: "customer", header: "Customer" },
-    { key: "documentName", header: "Document" },
+    { key: "fileName", header: "Filename" },
+    { key: "size", header: "Size" },
+    { key: "uploadDate", header: "Date" },
 ];

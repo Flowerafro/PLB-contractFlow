@@ -1,7 +1,7 @@
 "use client";
 
-import { ButtonEdit } from "../../components/ButtonEdit";
-import Button from "../../components/Button";
+import { ButtonEdit } from "../ButtonEdit";
+import Button from "../Button";
 import ButtonClear from "../ButtonClear";
 
 interface ActionSidebarProps {

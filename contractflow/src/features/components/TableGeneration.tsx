@@ -12,7 +12,6 @@ import type { TableGenerationProps } from "@/features/tables/interfaces/tableGen
 import { useState } from "react";
 
 
-
 export default function TableGeneration<T>({ data, columnConfig, onRowClick }: TableGenerationProps<T> & { onRowClick?: (row: T) => void }){
     const [hoveredShipmentId, setHoveredShipmentId] = useState<string | null>(null);
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -41,7 +40,7 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
     });
 
     return(
-        <div className="w-[90vw] m-4 overflow-x-auto border border-gray-400 rounded-lg">
+        <div className="w-[90vw] my-4 overflow-x-auto border border-gray-400 rounded-lg">
 
         <table id="contracts-table" className="border-collapse">
 

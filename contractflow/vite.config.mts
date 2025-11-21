@@ -12,7 +12,7 @@ const __dirname = dirname(__filename);
 export default defineConfig({
   environments: {
     ssr: {
-      external: ["file-server"]
+//      external: ["file-server"]
     },
   },
   optimizeDeps: {
@@ -27,9 +27,13 @@ export default defineConfig({
     cloudflare({
       viteEnvironment: { name: "worker" },
     }),
-    tailwindcss(),
-    redwood(),
-    react(),
+    react(/*{
+      babel: {
+        plugins: ["babel-plugin-react-compiler"],
+        },
+        }*/),
+      redwood(),
+      tailwindcss(),
   ],
     build: {
     rollupOptions: {

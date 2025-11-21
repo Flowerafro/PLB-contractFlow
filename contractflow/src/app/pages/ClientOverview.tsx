@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import SearchBar from "../../components/SearchBar";
-import ClientList from "../../components/ClientList";
-import ClientProfilePage from "../../components/ClientProfilePage";
-import NewClient from "../../components/NewClient";
+import SearchBar from "@/components/SearchBar";
+import ClientList from "@/components/clientComponents/ClientList";
+import ClientProfilePage from "@/components/clientComponents/ClientProfilePage";
+import NewClient from "@/components/clientComponents/NewClient";
 
 import { clientAPI } from "../../lib/clientAPI";
 

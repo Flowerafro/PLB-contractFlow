@@ -1,6 +1,6 @@
 "use client";
 
-import type { ClientSearchItem } from "../app/types/clientSearch";
+import type { ClientSearchItem } from "../../app/types/clientSearch";
 
 export default function ClientCard({
   client,
