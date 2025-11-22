@@ -10,6 +10,7 @@ import { dummyClients, addClient, getClientById } from "../../lib/clientdummydat
 import type { Client } from "../../lib/clientdummydata";
 
 import type { ClientOverviewProps } from "../types/client";
+import Button from "@/components/Button";
 
 
 
@@ -70,14 +71,17 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
   if (selectedClient) {
     return (
       <section className="space-y-6">
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <h2 style={{ margin: 0, color: "#000" }}>Clients</h2>
-          <button
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">Clients</h2>
+          <Button onClick={() => { setShowNewClientForm(true); onNewClient?.(); }} >
+            + New Client
+          </Button>
+        {/*   <button 
             style={{ backgroundColor: "#1D391D", color: "#fff", padding: "8px 16px", borderRadius: "4px" }}
             onClick={() => { setShowNewClientForm(true); onNewClient?.(); }}
           >
             + New Client
-          </button>
+          </button> */}
         </div>
 
         <section className="bg-white rounded-lg border border-black/10 overflow-hidden p-6">
@@ -91,14 +95,17 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
 
   return (
     <section className="space-y-6">
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h2 style={{ margin: 0, color: "#000" }}>Clients</h2>
-        <button
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">Clients</h2>
+          <Button onClick={() => { setShowNewClientForm(true); onNewClient?.(); }} >
+            + New Client
+          </Button>
+      {/*   <button
           style={{ backgroundColor: "#1D391D", color: "#fff", padding: "8px 16px", borderRadius: "4px" }}
           onClick={() => { setShowNewClientForm(true); onNewClient?.(); }}
         >
           + New Client
-        </button>
+        </button> */}
       </div>
 
       <SearchBar placeholder="Search here..." onSearch={handleSearch} />
@@ -106,7 +113,7 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
       <section className="bg-white rounded-lg border border-black/10 overflow-hidden">
         {searchClient ? (
           filteredClients.length === 0 ? (
-            <div style={{ padding: 16 }}>
+            <div className="p-4">
               <p>No clients found for "{searchClient}"</p>
               <a href="/clients"><button>Back</button></a>
             </div>
@@ -114,17 +121,17 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
             <ClientList filteredClients={filteredClients} onSelectClient={handleSelectClient} />
           )
         ) : (
-          <div style={{ padding: 16 }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", background: "#fff" }}>
-              <thead style={{ background: "#f7f7f7", borderBottom: "2px solid #ddd", fontSize: 16, color: "#000", fontFamily: "Arial, sans-serif" }}>
+          <div className="p-4">
+          <table className="w-full border-collapse bg-white">
+              <thead className="bg-gray-100 border-b-2 border-gray-300 text-[16px] text-black font-sans">
                 <tr>
-                  <th style={{ textAlign: "left", padding: 8 }}>Status</th>
-                  <th style={{ textAlign: "left", padding: 8 }}>Client No</th>
-                  <th style={{ textAlign: "left", padding: 8 }}>Company Name</th>
-                  <th style={{ textAlign: "left", padding: 8 }}>Contact Person</th>
-                  <th style={{ textAlign: "left", padding: 8 }}>Email</th>
-                  <th style={{ textAlign: "left", padding: 8 }}>Phone</th>
-                  <th style={{ textAlign: "left", padding: 8 }}>Country</th>
+                  <th className="text-left p-2">Status</th>
+                  <th className="text-left p-2">Client No</th>
+                  <th className="text-left p-2">Company Name</th>
+                  <th className="text-left p-2">Contact Person</th>
+                  <th className="text-left p-2">Email</th>
+                  <th className="text-left p-2">Phone</th>
+                  <th className="text-left p-2">Country</th>
                 </tr>
               </thead>
               <tbody>
@@ -133,25 +140,18 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
                     key={client.id}
                     onClick={() => handleSelectClient(client)}
                     onMouseEnter={() => setHoveredClientId(client.id)}
-                    onMouseLeave={() => setHoveredClientId(null)}
-                    style={{
-                      cursor: "pointer",
-                      backgroundColor: hoveredClientId === client.id ? "#f0f0f0" : undefined,
-                      transition: "background-color 0.3s"
-                    }}>
-                    <td style={{ padding: 8 }}>
-                      {client.status === "Active" ? (
+                    onMouseLeave={() => setHoveredClientId(null)} className={`cursor-pointer transition-colors ${hoveredClientId === client.id ? "bg-gray-100" : ""}`}>
+                       <td className="p-2"> {client.status === "Active" ? ( 
                         <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
                       ) : client.status === "Inactive" ? (
-                        <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">Inactive</span>
-                      ) : null}
-                    </td>
-                    <td style={{ padding: 8 }}>{client.customerCode}</td>
-                    <td style={{ padding: 8 }}>{client.customer}</td>
-                    <td style={{ padding: 8 }}>{client.contactperson}</td>
-                    <td style={{ padding: 8 }}>{client.email}</td>
-                    <td style={{ padding: 8 }}>{client.phone}</td>
-                    <td style={{ padding: 8 }}>{client.country}</td>
+                      <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">Inactive</span>
+                      ) : null} </td>
+                    <td className="p-4">{client.customerCode}</td>
+                    <td className="p-4">{client.customer}</td>
+                    <td className="p-4">{client.contactperson}</td>
+                    <td className="p-4">{client.email}</td>
+                    <td className="p-4">{client.phone}</td>
+                    <td className="p-4">{client.country}</td>
                   </tr>
                 ))}
               </tbody>
