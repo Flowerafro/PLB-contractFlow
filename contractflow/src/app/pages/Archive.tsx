@@ -74,6 +74,7 @@ function fetchR2Files() {
 
 import TableGeneration from "@/features/components/TableGeneration";
 import UploadFile from "@/features/components/UploadFileToR2";
+
 import { hovedlistenDatabaseData } from "@/features/tables/hooks/datatypeStructures/hovedlistenDatabaseData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
 import PdfModal from "@/components/PdfModal";
