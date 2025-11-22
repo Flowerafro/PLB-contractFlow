@@ -107,13 +107,21 @@ export default function Dashboard() {
           )
         ) : (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">Alle forsendelser</h2>
-            <TableGeneration 
-              data={data} 
-              columnConfig={hovedListenColumns} 
-              onRowClick={handleSelectShipment} 
-            />
+          <h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">
+            Alle forsendelser
+          </h2>
+        
+          <div className="overflow-x-auto w-full flex justify-center">
+            <div className="min-w-full max-w-[900px]">
+              <TableGeneration 
+                data={data}
+                columnConfig={hovedListenColumns}
+                onRowClick={handleSelectShipment}
+              />
+            </div>
           </div>
+        </div>
+        
         )}
       </section>
   </div>
