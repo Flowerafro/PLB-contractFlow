@@ -180,17 +180,15 @@ export default defineApp([
       }
   }),
 
-  route("/api/plb-contractflow-r2", async ({ ctx }) => {
+  route("/plb-contractflow-r2/", async ({ ctx }) => {
     try {
-      const r2 = ctx.env.R2;
+      const r2 = env.R2;
 
       if (!r2) {
         console.error("R2 binding is missing!");
         return Response.json({ error: "R2 binding is missing" }, { status: 500 });
       }
-      const listResponse = await ctx.env.R2.list({ 
-        prefix: "/storage/" 
-      });
+      const listResponse = await env.R2.list();
       console.log("R2 objects:", listResponse.objects);
       const files = listResponse.objects.map(obj => ({
         fileName: obj.key,
@@ -204,27 +202,6 @@ export default defineApp([
       return Response.json({ error: 'Failed to fetch files' }, { status: 500 });
     }
   }),
-/*
-    route("/api/plb-contractflow-r2/blob/:fileName", async ({ ctx, params }) => {
-    try {
-      const fileName = params.fileName;
-      const r2ObjectKey = `storage/${fileName}`;
-      const object = await ctx.env.R2.get(r2ObjectKey);
-      if (!object) {
-        return new Response("File not found", { status: 404 });
-      }
-      return new Response(object.body, {
-        headers: {
-          "Content-Type": object.httpMetadata?.contentType || "application/octet-stream",
-          "Content-Disposition": `attachment; filename="${fileName}"`
-        }
-      });
-    } catch (error) {
-      console.error("Failed to fetch blob:", error);
-      return new Response("Failed to fetch blob", { status: 500 });
-    }
-  }),
-*/
   render(Document, [
     route("/", () => <Login />), // default route is login
     route("/Login", () => <Login />),

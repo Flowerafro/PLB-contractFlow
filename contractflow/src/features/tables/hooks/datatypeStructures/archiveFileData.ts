@@ -15,10 +15,10 @@ const parseDate = (dateStr: string): Date => {
 };
 
 const transformArchiveDocument = (item: any): ArchiveDocument => ({
-    fileName: item.fileName || '',
-    size: Number(item.size) || 0,
     uploaded: formatDate(parseDate(item.uploaded)) || '',
-    // Add more fields if needed
+    fileName: (item.fileName || '').replace(/\.[^/.]+$/, '') || '',
+    size: Number(item.size) || 0,
+    fullFileName: item.fileName || '',
 });
 
 export function useArchiveData() {
@@ -27,7 +27,7 @@ export function useArchiveData() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch("/api/plb-contractflow-r2")
+        fetch("/plb-contractflow-r2/")
             .then(res => {
                 if (!res.ok) throw new Error('Failed to fetch files');
                 return res.json();

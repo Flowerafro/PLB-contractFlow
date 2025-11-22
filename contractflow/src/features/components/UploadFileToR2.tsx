@@ -15,10 +15,10 @@ import { useDragAndDrop } from "@/features/fileHandling/hooks/useDragAndDrop";
 export default function UploadFileToR2({
   onUploadComplete,
   maxSize = 10485760,
-  width = '100%',
-  height = 'auto',
-  acceptedFileTypes = ['.xlsx', '.xls'],
-  fileTypeLabels = '.xlsx, .xls'
+  width = '20rem',
+  height = '15rem',
+  acceptedFileTypes = ['.pdf', '.docx', '.xlsx', '.xls'],
+  fileTypeLabels = '.pdf, .docx, .xlsx, .xls'
 }: UploadProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,6 +33,14 @@ export default function UploadFileToR2({
 
   const { isDragOver, handleDragOver, handleDragLeave, handleDrop } = useDragAndDrop(handleFileDrop);
   
+    const getFileCategory = (file: File): 'pdf' | 'docx' | 'excel' => {
+    const fileName = file.name.toLowerCase();
+    if (fileName.endsWith('.pdf')) return 'pdf';
+    if (fileName.endsWith('.docx')) return 'docx';
+    if (fileName.endsWith('xlsx') || fileName.endsWith('.xls')) return 'excel';
+    return 'pdf';
+  }
+
   const fileProcesser = async (file: File) => {
     const sizeValidation = validateFileSize(file, maxSize);
     if (!sizeValidation.isValid) {
@@ -50,23 +58,40 @@ export default function UploadFileToR2({
     setUploadError(null);
 
     try {
-      console.log("Processing file:", file.name, "(", file.size, "bytes )");
-      
+      const fileCategory = getFileCategory(file);
+      console.log(`Processing ${fileCategory} file:`, file.name, "(", file.size, "bytes)");
+
       const uploadResult = await uploadToR2(file);
       console.log("Upload completed:", uploadResult);
 
       let processedData = null;
-      if (shouldProcessAsExcel(acceptedFileTypes)) {
+
+      if (fileCategory === 'excel' && shouldProcessAsExcel(acceptedFileTypes)) {
           processedData = await processExcelFile(file);
+      }
+      else if (fileCategory === 'pdf') {
+        processedData = {
+          type: 'pdf',
+          message: 'PDF file stored'
+        };
+      }
+      else if (fileCategory === 'docx') {
+        processedData = {
+          type: 'docx',
+          message: 'DOCX file stored'
+        };
       }
 
       if (onUploadComplete) {
-        onUploadComplete([file], {
+          onUploadComplete([file], {
           uploadResult,
           processedData,
           r2Url: uploadResult?.url,
+          fileCategory,
+          file: file,
+          ...(fileCategory === 'pdf' ? { pdfFile: file} : fileCategory === 'docx' ? {docxFile: file} : { excelData: processedData})
         });
-    }
+      }
 
     setFiles([file]);
     console.log("File uploaded successfully.");
@@ -79,7 +104,7 @@ export default function UploadFileToR2({
       if (error instanceof Error) {
         errorMessage = error.message;
       }
-      setUploadError(errorMessage);
+      setUploadError(errorMessage);       
     }
     finally {
       setIsLoading(false);
@@ -93,33 +118,46 @@ export default function UploadFileToR2({
   };
 
   return (
-    <div className="upload-container" style={{ width, height }}>   
+    <div 
+      className={`w-[${width}] h-[${height}]`} 
+//      style={{ width: "30rem", height: "20rem" }}
+    >   
       <div 
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => document.getElementById('file-upload')?.click()}
-        style={{
-          border: isDragOver ? '2px solid #1D391D' : '2px #ccc',
-          borderRadius: '10px',
-          padding: '40px',
-          textAlign: 'center',
-          backgroundColor: isDragOver ? '#e0ffe0' : '#f9f9f9',
-          cursor: 'pointer',
-          marginBottom: '16px',
-          transition: 'all 0.3s ease',
-          outline: "2px dashed #cacacaff",
-          outlineOffset: '-10px',
-        }}
+        className={`
+          max-w-xs
+          max-h-xs
+          border-2
+          border-solid
+          rounded-lg
+          p-10
+          text-center
+          cursor-pointer
+          mb-4
+          transition-colors
+          duration-300
+          ${isDragOver 
+            ? 'border-green-800 bg-green-50' 
+            : 'border-gray-300 bg-gray-50 hover:bg-gray-100'
+          }`}
+            style={{
+              outline: "2px dashed #cacacaff",
+              outlineOffset: '-10px',
+            }}
       >
         {isDragOver ? (
-          <p style={{ color: '#1D391D', fontSize: '18px' }}>Drop the Excel file here...</p>
+          <p className="text-green-800 text-lg">
+            Drop file here...
+          </p>
         ) : (
           <div>
-            <p style={{ fontSize: '18px', marginBottom: '10px' }}>
+            <p className="text-lg mb-2">
               Drop file here, or click to browse
             </p>
-            <p style={{ fontSize: '14px', color: '#666' }}>
+            <p className="text-sm text-gray-600">
               {fileTypeLabels} (max {(maxSize / 1024 / 1024).toFixed(1)}MB)
             </p>
           </div>
@@ -134,28 +172,23 @@ export default function UploadFileToR2({
         style={{ display: 'none' }}
       /> 
       {uploadError && (
-        <div 
-          className="error-message" 
-          style={{ 
-            color: 'red', 
-            marginTop: '10px' 
-          }}>
+        <div className="text-red-500 mt-2">
           {uploadError}
         </div>
       )}
 
       {isLoading && (
-        <div style={{ marginBottom: '16px' }}>
+        <div className="mb-4">
           <p>Loading and converting file, please wait...</p>
         </div>
       )}
 
       {files.length > 0 && (
-        <div className='uploaded-files' style={{ marginTop: '16px' }}>
-          <h3>Selected files:</h3>
-          <ul>
+        <div className="mt-4">
+          <h3 className="font-bold mb-2">Selected files:</h3>
+          <ul className="list-disc list-inside">
             {files.map((file) => (
-              <li key={file.name}>
+              <li key={file.name} className="text-sm">
                 {file.name} - {(file.size / 1024).toFixed(2)} KB
               </li>
             ))}
