@@ -15,11 +15,12 @@ import { hovedListenRoutes } from "./features/dataRetrieval/hovedListenRoutes";
 import { clientRoutes } from "./features/clients/clientRoutes";
 import { UserSession } from "./sessions/UserSession";
 import { getDb } from "./db/index";
-import type { D1Database } from '@cloudflare/workers-types';
+import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
 import {contracts } from "./db/schema/schema";
 import { env } from "cloudflare:workers"
 
 type DB = D1Database;
+type R2 = R2Bucket; 
 
 /*declare global {
   var DB: D1Database;
@@ -151,38 +152,46 @@ export default defineApp([
       //const fileBuffer = await file.arrayBuffer();
       const r2ObjectKey = `/storage/${file.name}`;
    
-        await env.R2.put(r2ObjectKey, file.stream(), {
-         httpMetadata: {
-           contentType: file.type,
-         },
-       });
+      await env.R2.put(r2ObjectKey, file.stream(), {
+        httpMetadata: {
+          contentType: file.type,
+        },
+      });
 
-        return Response.json({ 
-          success: true,
-          fileName: file.name,
-          url: `/storage/dev-${Date.now()}-${file.name}`,
-          message: 'Upload simulated (development mode). Deploy to Cloudflare or use "wrangler dev --remote" for real uploads.'
-         });
-       
+      return Response.json({ 
+        success: true,
+        fileName: file.name,
+        url: `/storage/dev-${Date.now()}-${file.name}`,
+        message: 'Upload simulated (development mode). Deploy to Cloudflare or use "wrangler dev --remote" for real uploads.'
+      });
 
-       return Response.json({ 
-         success: true, 
-         fileName,
-         url: r2ObjectKey ,
-         message: 'File uploaded successfully' 
-       });
+      return Response.json({ 
+        success: true, 
+        fileName,
+        url: r2ObjectKey ,
+        message: 'File uploaded successfully' 
+      });
    
-     } catch (error) {
-       console.error('R2 upload error:', error);
-       return Response.json({ 
-         error: 'Failed to upload file' 
-       }, { status: 500 });
-     }
+      } catch (error) {
+        console.error('R2 upload error:', error);
+        return Response.json({ 
+          error: 'Failed to upload file' 
+        }, { status: 500 });
+      }
   }),
 
-  route("/api/r2-files", async ({ ctx }) => {
+  route("/api/plb-contractflow-r2", async ({ ctx }) => {
     try {
-      const listResponse = await ctx.env.R2.list();
+      const r2 = ctx.env.R2;
+
+      if (!r2) {
+        console.error("R2 binding is missing!");
+        return Response.json({ error: "R2 binding is missing" }, { status: 500 });
+      }
+      const listResponse = await ctx.env.R2.list({ 
+        prefix: "/storage/" 
+      });
+      console.log("R2 objects:", listResponse.objects);
       const files = listResponse.objects.map(obj => ({
         fileName: obj.key,
         size: obj.size,
@@ -192,10 +201,30 @@ export default defineApp([
       }));
     return Response.json(files);
     } catch (error) {
-      return Response.json({ error: 'Failes to fetch files' }, { status: 500 });
+      return Response.json({ error: 'Failed to fetch files' }, { status: 500 });
     }
   }),
-
+/*
+    route("/api/plb-contractflow-r2/blob/:fileName", async ({ ctx, params }) => {
+    try {
+      const fileName = params.fileName;
+      const r2ObjectKey = `storage/${fileName}`;
+      const object = await ctx.env.R2.get(r2ObjectKey);
+      if (!object) {
+        return new Response("File not found", { status: 404 });
+      }
+      return new Response(object.body, {
+        headers: {
+          "Content-Type": object.httpMetadata?.contentType || "application/octet-stream",
+          "Content-Disposition": `attachment; filename="${fileName}"`
+        }
+      });
+    } catch (error) {
+      console.error("Failed to fetch blob:", error);
+      return new Response("Failed to fetch blob", { status: 500 });
+    }
+  }),
+*/
   render(Document, [
     route("/", () => <Login />), // default route is login
     route("/Login", () => <Login />),

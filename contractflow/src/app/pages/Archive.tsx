@@ -1,30 +1,31 @@
-/*
+
 "use client";
 
 import TableGeneration from "@/features/components/TableGeneration";
 import UploadFileToR2 from "@/features/components/UploadFileToR2";
-import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
 import PdfModal from "@/components/PdfModal";
 import { useState } from "react";
 import type { ArchiveDocument } from "@/app/types/archiveDocument";
 import { archiveColumns } from "@/features/tables/columns/archiveColumns";
-import { fetchFromR2 } from "@/features/r2FileFetching/fetchFromR2";
-import { useEffect } from "react";
+//import { fetchFromR2 } from "@/features/r2FileFetching/fetchFromR2";
+//import { useEffect } from "react";
+import { useArchiveData } from "@/features/tables/hooks/datatypeStructures/archiveFileData";
 
 export default function Archive() {
   const [selectedRecord, setSelectedRecord] = useState<any>(null);
 
+  const { data: files, loading, error } = useArchiveData();
+  /*
   const [files, setFiles] = useState<ArchiveDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
   useEffect(() => {
     fetchFromR2()
       .then(setFiles)
       .catch(e => setError(e.message))
       .finally(() => setLoading(false));
   }, []);
-
+*/
   function handleOpenPdf(record: any) {
     setSelectedRecord(record);
   }
@@ -65,11 +66,7 @@ export default function Archive() {
     </div>
   );
 }
-function fetchR2Files() {
-  throw new Error("Function not implemented.");
-}
-*/
-
+/*
 "use client";
 
 import TableGeneration from "@/features/components/TableGeneration";
@@ -87,23 +84,23 @@ export default function Archive() {
   }
   return (
     <div>
-      <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">Archive</h1>
-
+    <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">Archive</h1>
+    
       {loading && (
         <div>
-          <p>Loading data...</p>
+        <p>Loading data...</p>
         </div>
       )}
 
       {error && (
         <div>
-          <p>Error: {error}</p>
+        <p>Error: {error}</p>
         </div>
       )}
 
       {!loading && !error && (
         <div>
-          <p>Data loaded successfully. Total records: {data.length}</p>
+        <p>Data loaded successfully. Total records: {data.length}</p>
         </div>
       )}
 
@@ -111,14 +108,15 @@ export default function Archive() {
         data={data}
         columnConfig={hovedListenColumns}
         onRowClick={handleOpenPdf} 
-      />
-   <UploadFile />
-   {selectedRecord && (
-        <PdfModal
+        />
+        <UploadFile />
+        {selectedRecord && (
+          <PdfModal
           data={selectedRecord}
           onClose={() => setSelectedRecord(null)}
-        />
-      )}
-    </div>
-  );
-}
+          />
+        )}
+        </div>
+      );
+    }
+    */

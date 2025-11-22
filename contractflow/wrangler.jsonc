@@ -39,6 +39,15 @@
       "remote": true
     }
   ],
+  
+   "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": [
+        "UserSession"
+      ]
+    }
+  ],
 
   "durable_objects": {
     "bindings": [

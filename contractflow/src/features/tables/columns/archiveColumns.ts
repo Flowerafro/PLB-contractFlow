@@ -7,5 +7,5 @@ import { ColumnSetup } from "@/features/tables/interfaces/columnSetup";
 export const archiveColumns: ColumnSetup<ArchiveDocument>[] = [
     { key: "fileName", header: "Filename" },
     { key: "size", header: "Size" },
-    { key: "uploadDate", header: "Date" },
+    { key: "uploaded", header: "Date" },
 ];

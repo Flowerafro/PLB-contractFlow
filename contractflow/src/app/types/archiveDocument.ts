@@ -3,7 +3,7 @@
 export interface ArchiveDocument {
     fileName: string;
     size: number;
-    uploadDate: Date | string;
+    uploaded: Date | string;
 //    containerNumber: string;
 //    customer: string;
 }
