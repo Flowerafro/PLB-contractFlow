@@ -1,4 +1,4 @@
-// midlertidig api-kall for klienthåndtering før database er på plass
+// midlertidig api-kall for klienthåndtering før database er på plass. ikke i bruk siden vi måtte gå tilbake til mock-data
 
 import type { Client } from "../app/types/client";
 import { ClientSearchItem } from "../app/types/clientSearch";

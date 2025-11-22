@@ -1,4 +1,5 @@
 // kode inspirert fra https://github.com/mariuswallin/hiof-2025-webapp-demo/blob/main/src/features/tasks/tasksRepository.ts
+// Ligger klart for når databasen er satt opp
 
 import { getDb } from '../../db/index'
 import { clients } from '../../db/schema/schema'

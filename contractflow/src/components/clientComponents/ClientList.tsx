@@ -1,14 +1,15 @@
 "use client";
 
 import ClientCard from "./ClientCard";
-import type { ClientSearchItem } from "../../app/types/clientSearch";
+/* import type { ClientSearchItem } from "../../app/types/clientSearch"; */
+import type { Client } from "../../lib/clientdummydata";
 
 export default function ClientList({
   filteredClients,
   onSelectClient,
 }: {
-  filteredClients: ClientSearchItem[];
-  onSelectClient?: (client: ClientSearchItem) => void;
+  filteredClients: Client[];
+  onSelectClient?: (client: Client) => void;
 }) {
   return (
     <section>
