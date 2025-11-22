@@ -1,5 +1,5 @@
 // kode inspirert av https://github.com/mariuswallin/hiof-2025-webapp-demo/blob/main/src/features/tasks/tasksRoutes.ts
-
+// Ligger klart for når databasen er satt opp
 import { route } from "rwsdk/router";
 import { clientController } from "./clientController";
 

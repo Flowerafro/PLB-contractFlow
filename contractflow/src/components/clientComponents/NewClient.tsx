@@ -1,15 +1,19 @@
 // newclient samler inputs og kaller clientAPI (midlertidig) for å opprette ny klient
+/* import { InputWLabelClient } from "./InputWLabelClient"; */
+/* import type { Client } from "@/app/types/client";
+import { clientAPI } from "@/lib/clientAPI"; */
 
 "use client"
 
 import React, { useState } from "react";
 import type { CreateClientInput } from "@/features/fileHandling/interfaces/createClientInput";
-import type { Client } from "@/app/types/client";
-import { clientAPI } from "@/lib/clientAPI";
+
+import type { Client } from "../../lib/clientdummydata";
+import { addClient } from "../../lib/clientdummydata";
 import type { InputNewClient } from "@/app/types/InputNewClient";
 import { InputWithLabelSubmitForm } from "@/components/InputWithLabelSubmitForm";
 import ButtonClear from "@/components/ButtonClear";
-/* import { InputWLabelClient } from "./InputWLabelClient"; */
+import { on } from "events";
 
 
 interface NewClientProps {
@@ -27,6 +31,11 @@ const [phone, setPhone] = useState("");
 const [country, setCountry] = useState("");
 const [error, setError] = useState<string | null>(null);
 const [loading, setLoading] = useState(false);
+
+/* 
+
+
+Kommentert ut fordi det er satt opp for clientAPI og lagring til DB som ikke er ferdig enda
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -61,7 +70,32 @@ const handleSubmit = async (e: React.FormEvent) => {
   } finally {
     setLoading(false);
   }
-} 
+}  */
+
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) {
+      setError("Navn på klient er påkrevd for å lagring i databasen");
+      return;
+    }
+
+    const newClient: Omit<Client, "id"> = {
+      customer: name.trim(),
+      customerCode: customerCode.trim() || undefined,
+      email: email.trim() || undefined,
+      phone: phone.trim() || undefined,
+      country: country.trim() || undefined,
+      relation: "",
+      contactperson: "",
+      title: "",
+      clientAdded: new Date().toISOString(),
+    }
+
+    const createdClient = addClient(newClient)
+    onCreate?.(createdClient);
+    onCancel?.();
+  }
 
   return (   
   

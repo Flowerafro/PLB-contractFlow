@@ -1,3 +1,5 @@
+// Ligger klart for når databasen er satt opp
+
 import { createClientRepository } from "./clientRepository";
 import type { clientServiceResult } from "../fileHandling/interfaces/clientResult";
 import type { CreateClientInput } from "../fileHandling/interfaces/createClientInput";

@@ -1,13 +1,14 @@
 "use client";
 
-import type { ClientSearchItem } from "../../app/types/clientSearch";
+/* import type { ClientSearchItem } from "../../app/types/clientSearch"; */
+import type { Client } from "../../lib/clientdummydata";
 
 export default function ClientCard({
   client,
   onSelect
 }: {
-  client: ClientSearchItem;
-  onSelect?: (client: ClientSearchItem) => void;
+  client: Client;
+  onSelect?: (client: Client) => void;
 }) {
   return (
     <article className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
@@ -20,7 +21,7 @@ export default function ClientCard({
         />
 
         <h5 className="mb-1 text-xl font-medium text-gray-800">
-          {client.name}
+          {client.customer}
         </h5>
 
         {client.email && (
