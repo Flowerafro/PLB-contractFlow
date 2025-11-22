@@ -1,4 +1,4 @@
-// newclient samler inputs og kaller clientAPI (midlertidig) for å opprette ny klient
+// Igjen revertert tl dummydata for å unngå avhengighet til uferdig clientAPI og DB-lagring
 /* import { InputWLabelClient } from "./InputWLabelClient"; */
 /* import type { Client } from "@/app/types/client";
 import { clientAPI } from "@/lib/clientAPI"; */
@@ -6,14 +6,11 @@ import { clientAPI } from "@/lib/clientAPI"; */
 "use client"
 
 import React, { useState } from "react";
-import type { CreateClientInput } from "@/features/fileHandling/interfaces/createClientInput";
-
 import type { Client } from "../../lib/clientdummydata";
 import { addClient } from "../../lib/clientdummydata";
-import type { InputNewClient } from "@/app/types/InputNewClient";
 import { InputWithLabelSubmitForm } from "@/components/InputWithLabelSubmitForm";
 import ButtonClear from "@/components/ButtonClear";
-import { on } from "events";
+
 
 
 interface NewClientProps {
@@ -90,6 +87,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       contactperson: "",
       title: "",
       clientAdded: new Date().toISOString(),
+      status: "Active",
     }
 
     const createdClient = addClient(newClient)

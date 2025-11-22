@@ -69,7 +69,11 @@ export default function ClientProfilePage({
 
               <div>
                 <p className="text-sm text-gray-500 mb-1">Status</p>
-                <p className="text-gray-800"> Status - funksjon kommer</p>
+                {client.status === "Active" ? (
+                  <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
+                ) : client.status === "Inactive" ? (
+                  <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">Inactive</span>
+                ) : null}
               </div>
 
               <div>

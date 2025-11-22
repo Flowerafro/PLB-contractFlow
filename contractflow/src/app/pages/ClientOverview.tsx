@@ -9,7 +9,6 @@ import NewClient from "@/components/clientComponents/NewClient";
 import { dummyClients, addClient, getClientById } from "../../lib/clientdummydata";
 import type { Client } from "../../lib/clientdummydata";
 
-import type { ClientSearchItem } from "../types/clientSearch";
 import type { ClientOverviewProps } from "../types/client";
 
 
@@ -45,7 +44,8 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
       (client.phone ?? "").toLowerCase().includes(trimmedClient) ||
       (client.country ?? "").toLowerCase().includes(trimmedClient) ||
       (client.clientAdded ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.relation ?? "").toLowerCase().includes(trimmedClient)
+      (client.relation ?? "").toLowerCase().includes(trimmedClient) ||
+      (client.status ?? "").toLowerCase().includes(trimmedClient)
     );
     setFilteredClients(clientResults);
   };
@@ -111,23 +111,6 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
               <a href="/clients"><button>Back</button></a>
             </div>
           ) : (
-            /*  <ClientList
-              filteredClients={filteredClients.map(c => ({
-                id: String(c.id), 
-                name: c.customer ?? "",
-                customer: c.customer ?? "",
-                contactperson: c.contactperson,
-                title: c.title,
-                email: c.email,
-                phone: c.phone,
-                country: c.country,
-                clientAdded: c.clientAdded
-              }))}
-              onSelectClient={(item: ClientSearchItem) => { 
-                const full = getClientById(String(item.id)); 
-                if (full) handleSelectClient(full);
-              }}
-            /> */
             <ClientList filteredClients={filteredClients} onSelectClient={handleSelectClient} />
           )
         ) : (
@@ -135,6 +118,7 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
             <table style={{ width: "100%", borderCollapse: "collapse", background: "#fff" }}>
               <thead style={{ background: "#f7f7f7", borderBottom: "2px solid #ddd", fontSize: 16, color: "#000", fontFamily: "Arial, sans-serif" }}>
                 <tr>
+                  <th style={{ textAlign: "left", padding: 8 }}>Status</th>
                   <th style={{ textAlign: "left", padding: 8 }}>Client No</th>
                   <th style={{ textAlign: "left", padding: 8 }}>Company Name</th>
                   <th style={{ textAlign: "left", padding: 8 }}>Contact Person</th>
@@ -154,8 +138,14 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
                       cursor: "pointer",
                       backgroundColor: hoveredClientId === client.id ? "#f0f0f0" : undefined,
                       transition: "background-color 0.3s"
-                    }}
-                  >
+                    }}>
+                    <td style={{ padding: 8 }}>
+                      {client.status === "Active" ? (
+                        <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
+                      ) : client.status === "Inactive" ? (
+                        <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">Inactive</span>
+                      ) : null}
+                    </td>
                     <td style={{ padding: 8 }}>{client.customerCode}</td>
                     <td style={{ padding: 8 }}>{client.customer}</td>
                     <td style={{ padding: 8 }}>{client.contactperson}</td>
@@ -168,6 +158,7 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
             </table>
           </div>
         )}
+
       </section>
 
       {showNewClientForm && <NewClient onCreate={handleCreateClient} onCancel={() => setShowNewClientForm(false)} />}
