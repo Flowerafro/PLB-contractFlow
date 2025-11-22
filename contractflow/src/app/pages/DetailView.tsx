@@ -5,11 +5,11 @@ import type { SearchItem } from "../../app/types/searchItem"
 import ButtonClear from "../../components/ButtonClear";
 import { ButtonEdit } from "../../components/ButtonEdit";
 import Button from "../../components/Button";
-import DetailShipmentInfo from "../components/detailViewComponents/DetailShipmentInfo";
-import DetailInvoiceInfo from "../components/detailViewComponents/DetailInvoiceInfo";
-import DetailOrderInfo from "../components/detailViewComponents/DetailOrderInfo";
-import DetailPrincipalInfo from "../components/detailViewComponents/DetailPrincipalInfo";
-import ActionSidebar from "../components/detailViewComponents/ActionSidebar";
+import DetailShipmentInfo from "../../components/DetailViewComponents/DetailShipmentInfo";
+import DetailInvoiceInfo from "../../components/DetailViewComponents/DetailInvoiceInfo";
+import DetailOrderInfo from "../../components/DetailViewComponents/DetailOrderInfo";
+import DetailPrincipalInfo from "../../components/DetailViewComponents/DetailPrincipalInfo";
+import ActionSidebar from "../../components/DetailViewComponents/ActionSidebar";
 
 import { set } from "zod";
 
