@@ -17,7 +17,6 @@ type ContractForm = {
 };
 
 export default function CreateContractPage() {
-  // Holder alle felt vi skriver inn
   const [form, setForm] = useState<ContractForm>({
     client: "",
     contractName: "",
@@ -28,18 +27,10 @@ export default function CreateContractPage() {
     terms: ""
   });
 
-  // Viser loading mens kontrakten sendes inn
   const [loading, setLoading] = useState(false);
 
-  // Viser feilmeldinger hvis noe går galt
   const [message, setMessage] = useState("");
 
-  /* Når vi sender skjemaet:
-     – stopper vanlig submit
-     – prøver å lage kontrakt
-     – hvis alt ok → gå videre
-     – hvis ikke → vis feilmelding
-  */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -55,7 +46,6 @@ export default function CreateContractPage() {
         status: "ACTIVE"
       });
 
-      // Ferdig → send bruker videre
       window.location.href = "/success";
     } catch (err) {
       setMessage("Error creating contract");
@@ -85,7 +75,6 @@ export default function CreateContractPage() {
             </select>
           </div>
 
-          {/* Kontraktnavn */}
           <div>
             <label className="block font-medium mb-1">Contract name</label>
             <input
@@ -122,7 +111,6 @@ export default function CreateContractPage() {
             />
           </div>
 
-          {/* Start og stoppdato */}
           <div className="flex gap-2">
             <div className="w-1/2">
               <label className="block font-medium mb-1">Start date</label>
