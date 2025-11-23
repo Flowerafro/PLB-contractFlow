@@ -22,10 +22,11 @@ interface Shipment {
   status?: string;
 }
 
-export default function Dashboard() {
+export default function Dashboard({shipmentId}: {shipmentId?: string}) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [hasSearched, sethasSearched] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<any | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const { data, loading, error } = hovedListenData();
 
@@ -49,7 +50,6 @@ export default function Dashboard() {
         String(row.principalOrderDate ?? "").toLowerCase().includes(searchTerm) 
       ));
     }, [searchTerm, data]);
-/* const normalized samler alle verdier til de ulike data fra HovedListenData */
 
     const handleSelectShipment = (row: any) => {
       setSelectedShipment({
@@ -86,12 +86,13 @@ export default function Dashboard() {
   return (
     <div>
       <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">Hovedlisten</h1>
-      <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />
+      {!isEditing && <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />}
+      {/* <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." /> */}
 
       <section className="mt-8">
         {selectedShipment ? (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md m-2">
-            <DetailView item={selectedShipment} setSelectedShipment={setSelectedShipment} />
+            <DetailView item={selectedShipment} setSelectedShipment={setSelectedShipment} isEditing={isEditing} onEditModeChange={setIsEditing} />
           </div>
         ) : hasSearched ? (
           filteredResults.length === 0 ? (

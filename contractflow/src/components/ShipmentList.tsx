@@ -1,24 +1,9 @@
 "use client";
 
-import DetailView from "@/app/pages/DetailView";
-import { SearchItem } from "@/app/types/searchItem";
-import React from "react";
+
 import ButtonClear from "./ButtonClear";
 import ShipmentCard from "./ShipmentCard";
 
-/* interface SearchItem {
-    id?: number;
-  customer?: string;
-  customerOrderNumber?: string;
-  containerNumber?: string;
-  product?: string;
-  poEta?: string;
-  etd?: string;
-  invoiceNumber?: string;
-  invoiceAmount?: string;
-  bookingNumber?: string;
-  blNumber?: string;
-} */
 
   interface ShipmentListProps {
     filteredItems: any[];
@@ -42,7 +27,7 @@ export default function ShipmentList({ filteredItems, onSelectShipment }: Shipme
       </div>
       
       
-      <div className="mb-2">
+      <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3 lg:grid-cols-4">
       {filteredItems.map((item) => (
         <ShipmentCard key={item.id} item={item} onSelectShipment={onSelectShipment} />
         ))} 
