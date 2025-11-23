@@ -77,13 +77,13 @@ export default function Dashboard() {
             <ShipmentList filteredItems={filteredResults} onSelectShipment={handleSelectShipment} />
           )
         ) : (
-          <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">
+<div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md w-full">
+<h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">
             Alle forsendelser
           </h2>
         
           <div className="overflow-x-auto w-full flex justify-center">
-            <div className="min-w-full max-w-[900px]">
+            <div className="min-w-full max-w-[1200px]">
               <TableGeneration 
                 data={data}
                 columnConfig={hovedListenColumns}

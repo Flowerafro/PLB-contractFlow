@@ -40,7 +40,7 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick, met
     });
 
     return(
-        <div className="w-[90vw] my-4 overflow-x-auto border border-gray-400 rounded-lg">
+<div className="w-[95vw] my-4 overflow-x-auto border border-gray-400 rounded-lg">
 
 <table id="contracts-table" className="border-collapse min-w-max">
 
