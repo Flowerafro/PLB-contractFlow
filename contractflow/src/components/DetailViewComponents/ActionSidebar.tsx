@@ -1,3 +1,5 @@
+/* Denne ble laget for å ha en slide inn "verktøyskuff for Edit mode. Men siden DB ikke er oppe og går, ble det heller ikke mulig å bruuke CRUD-funksjonalitet. Derfor ble det heller lagt inn knapper for endring. Se mer utfyllende info i rapporten." */
+
 "use client";
 
 import { ButtonEdit } from "../ButtonEdit";
