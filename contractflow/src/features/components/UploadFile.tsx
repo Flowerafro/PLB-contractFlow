@@ -223,28 +223,31 @@ export default function UploadFile({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => document.getElementById('file-upload')?.click()}
-        style={{
-          border: isDragOver ? '2px solid #1D391D' : '2px #ccc',
-          borderRadius: '10px',
-          padding: '40px',
-          textAlign: 'center',
-          backgroundColor: isDragOver ? '#e0ffe0' : '#f9f9f9',
-          cursor: 'pointer',
-          marginBottom: '16px',
-          transition: 'all 0.3s ease',
-          outline: "2px dashed #cacacaff",
-          outlineOffset: '-10px',
-        }}
+        className={`
+          rounded-[10px]
+          p-[40px]
+          text-center
+          cursor-pointer
+          mb-4
+          transition-all duration-300 ease-in-out
+          outline outline-2 outline-dashed outline-gray-300
+          outline-offset-[-10px]
+          ${isDragOver 
+            ? "bg-green-100 border-2 border-green-900" 
+            : "bg-gray-50 border border-gray-300"
+          }
+        `}
+        
       >
         {isDragOver ? (
-          <p style={{ color: '#1D391D', fontSize: '18px' }}>Drop the Excel file here...</p>
+          <p className="text-green-900 text-[18px]"> Drop the Excel file here...</p>
         ) : (
           <div>
-            <p style={{ fontSize: '18px', marginBottom: '10px' }}>
-              Drop file here, or click to browse
+          <p className="text-[18px] mb-2">
+          Drop file here, or click to browse
             </p>
-            <p style={{ fontSize: '14px', color: '#666' }}>
-              {fileTypeLabels} (max {(maxSize / 1024 / 1024).toFixed(1)}MB)
+            <p className="text-[14px] text-gray-600">
+            {fileTypeLabels} (max {(maxSize / 1024 / 1024).toFixed(1)}MB)
             </p>
           </div>
         )}
@@ -256,28 +259,23 @@ export default function UploadFile({
           accept={acceptedFileTypes.join(',')}
           onChange={handleFileUpload}
           disabled={isLoading}
-          style={{ display: 'none' }}
-        />
+          className="hidden"
+          />
       </form> 
       {uploadError && (
-        <div 
-          className="error-message" 
-          style={{ 
-            color: 'red', 
-            marginTop: '10px' 
-          }}>
+        <div className="error-message text-red-600 mt-3">
           {uploadError}
         </div>
       )}
 
       {isLoading && (
-        <div style={{ marginBottom: '16px' }}>
+        <div className="mb-4">
           <p>Loading and converting file, please wait...</p>
         </div>
       )}
 
       {files.length > 0 && (
-        <div className='uploaded-files' style={{ marginTop: '16px' }}>
+        <div className="uploaded-files mt-4">
           <h3>Selected files:</h3>
           <ul>
             {files.map((file) => (

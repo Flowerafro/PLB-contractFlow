@@ -42,10 +42,10 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
     return(
         <div className="w-[90vw] my-4 overflow-x-auto border border-gray-400 rounded-lg">
 
-        <table id="contracts-table" className="border-collapse">
+<table id="contracts-table" className="border-collapse min-w-max">
 
-                <thead style={{ width: 'fit-content' }}>
-                    {table.getHeaderGroups().map(headerGroup => (
+                <thead className="w-fit">
+                {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
                                 <th key={header.id}  className={`border border-gray-300 p-2 min-w-[150px] ${

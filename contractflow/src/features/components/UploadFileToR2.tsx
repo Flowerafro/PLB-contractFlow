@@ -118,45 +118,36 @@ export default function UploadFileToR2({
   };
 
   return (
-    <div 
-      className={`w-[${width}] h-[${height}]`} 
-//      style={{ width: "30rem", height: "20rem" }}
-    >   
+    <div className="w-[20rem] h-[15rem]">
+
       <div 
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => document.getElementById('file-upload')?.click()}
         className={`
-          max-w-xs
+           max-w-xs
           max-h-xs
           border-2
-          border-solid
           rounded-lg
           p-10
           text-center
           cursor-pointer
           mb-4
-          transition-colors
-          duration-300
+          transition-all duration-300 ease-in-out
+          outline outline-2 outline-dashed outline-gray-300
+          outline-offset-[-10px]
           ${isDragOver 
             ? 'border-green-800 bg-green-50' 
             : 'border-gray-300 bg-gray-50 hover:bg-gray-100'
-          }`}
-            style={{
-              outline: "2px dashed #cacacaff",
-              outlineOffset: '-10px',
-            }}
-      >
+          }`} >
         {isDragOver ? (
-          <p className="text-green-800 text-lg">
-            Drop file here...
-          </p>
+            <p className="text-green-800 text-lg">Drop file here...</p>
+
         ) : (
           <div>
-            <p className="text-lg mb-2">
-              Drop file here, or click to browse
-            </p>
+            <p className="text-lg mb-2">Drop file here, or click to browse</p>
+
             <p className="text-sm text-gray-600">
               {fileTypeLabels} (max {(maxSize / 1024 / 1024).toFixed(1)}MB)
             </p>
@@ -169,7 +160,7 @@ export default function UploadFileToR2({
         accept={acceptedFileTypes.join(',')}
         onChange={handleFileUpload}
         disabled={isLoading}
-        style={{ display: 'none' }}
+        className="hidden"
       /> 
       {uploadError && (
         <div className="text-red-500 mt-2">
