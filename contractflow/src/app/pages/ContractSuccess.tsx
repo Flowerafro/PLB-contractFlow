@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Layout from "./Layout";
 
 function SuccessIcon() {
   return (
@@ -57,10 +56,8 @@ export default function ContractSuccess() {
   };
 
   return (
-    <Layout>
-      <main className="min-h-screen flex items-center justify-center bg-gray-300">
-        <SuccessCard onBack={goBack} />
-      </main>
-    </Layout>
+<main className="flex items-center justify-center">
+<SuccessCard onBack={goBack} />
+    </main>
   );
 }

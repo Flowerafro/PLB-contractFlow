@@ -39,23 +39,32 @@ export default function CreateContractPage() {
     setLoading(true);
     setMessage("");
 
-    try {
-      await contractAPI.create({
-        plbReference: form.contractName || "PLB-" + Date.now(),
-        clientId: 1,
-        principalId: null,
-        productCode: form.client,
-        orderDate: form.startDate,
-        status: "ACTIVE"
-      });
+    /*
+      Midlertidig deaktivert API kall.
+      Vi lagrer ikke kontrakten i databasen ennå.
+      Når brukeren trykker på Create Contract, går de direkte videre
+      til ContractSuccess siden uten å sende data til backend.
+    */
 
-      window.location.href = "/success";
-    } catch (err) {
-      setMessage("Error creating contract");
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   await contractAPI.create({
+    //     plbReference: form.contractName || "PLB-" + Date.now(),
+    //     clientId: 1,
+    //     principalId: null,
+    //     productCode: form.client,
+    //     orderDate: form.startDate,
+    //     status: "ACTIVE"
+    //   });
+    // } catch (err) {
+    //   setMessage("Error creating contract");
+    // }
+
+    // Send alltid videre uansett (mock)
+    window.location.href = "/success";
+
+    setLoading(false);
   };
+
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-200 py-10">
@@ -107,21 +116,21 @@ function ContractFormCard({
         <FormInput
           label="Contract name"
           value={form.contractName}
-          required
+          //required
           placeholder="Shipping contract with"
           onChange={v => onChange("contractName", v)}
         />
         <FormInput
           label="Client name"
           value={form.clientName}
-          required
+          //required
           placeholder="John Doe"
           onChange={v => onChange("clientName", v)}
         />
         <FormInput
           label="Client email"
           type="email"
-          required
+          //required
           value={form.clientEmail}
           placeholder="name@email.com"
           onChange={v => onChange("clientEmail", v)}
@@ -178,14 +187,14 @@ function FormInput({
   label,
   value,
   placeholder,
-  required,
+  //required,
   type = "text",
   onChange
 }: {
   label: string;
   value: string;
   placeholder?: string;
-  required?: boolean;
+  //required?: boolean;
   type?: string;
   onChange: (value: string) => void;
 }) {
@@ -194,7 +203,7 @@ function FormInput({
       <input
         type={type}
         value={value}
-        required={required}
+        //required={required}
         placeholder={placeholder}
         onChange={e => onChange(e.target.value)}
         className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-900"
