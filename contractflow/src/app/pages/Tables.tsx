@@ -10,6 +10,8 @@ import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns
 import { exportTableToExcel } from "@/lib/exportTableToExcel";
 import ExportExcelButton from "@/components/ExportExcelButton"
 import { HovedListeItem } from "../types/hovedlisten";
+import useFilteredResults from "../hooks/useFilteredResults";
+import mapShipmentData from "@/lib/mapShipmentData";
 
 //  -Tables-siden
 //  Her er dashboard siden lagt over slik at den kan bearbeides videre
@@ -24,10 +26,14 @@ interface Shipment {
 
 export default function Tables() {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [results, setResults] = useState<Shipment[]>([]);
-  const [searchTrimmed, setSearchTrimmed] = useState(false);
+  const [selectedShipment, setSelectedShipment] = useState<any | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+/*   const [results, setResults] = useState<Shipment[]>([]);
+  const [searchTrimmed, setSearchTrimmed] = useState(false); */
   
   const { data: data, loading, error } = hovedListenData();
+
+  const filteredResults = useFilteredResults(searchTerm, data);
 
   if (loading) {
     return (
@@ -88,18 +94,25 @@ export default function Tables() {
 
 
   const handleSearch = (query: string) => {
-    // fjerner mellomrom og tillater søk med store og små bokstaver
+    /* const trimmed = query.trim().toLowerCase(); */
+    setSearchTerm(query.trim().toLowerCase());
+  }
+
+  const handleSelectedShipment = (row: any) => {
+    setSelectedShipment(mapShipmentData(row));
+  }
+
+  /* const handleSearch = (query: string) => {
     const trimmed = query.trim().toLowerCase();
     setSearchTerm(trimmed);
     setSearchTrimmed(true);
 
-    // sjekker etter tomt søk, hvis tomt så skjer ingenting
     if (!trimmed) {
       setResults([]);
       return;
     }
   };
-
+ */
   return (
         <div>
       <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">
@@ -108,12 +121,17 @@ export default function Tables() {
 
         <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />
 
-        <section style={{ marginTop: 16 }}>
-            {searchTrimmed ? (
-            results.length === 0 ? (
-                <div> <p>Ingen treff for "{searchTerm}"</p><a href="/Home"><button>Tilbake</button></a></div>
+        <section className="mt-8">
+            {searchTerm ? (
+            filteredResults.length === 0 ? (
+                <div> <p>Ingen treff for "{searchTerm}"</p>
+                  <a href="/tables"><button onClick={() => setSearchTerm("")}>Tilbake</button>
+                  </a>
+                </div>
             ) : (
-                <DetailView filteredItems={results.map(r => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
+              <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md m-2">
+                <DetailView item={mapShipmentData(filteredResults[0])} setSelectedShipment={setSelectedShipment} isEditing={isEditing} onEditModeChange={() => {}} />
+              </div>
             )
             ) : (
                 
@@ -131,6 +149,7 @@ export default function Tables() {
         </div>
   );
 }
+
 
 /*
 Beholdt opprinnelig kode:

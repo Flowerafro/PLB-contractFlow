@@ -17,6 +17,9 @@ export default function DropdownMenu({ options }: DropdownMenuProps) {
       if (result.clearSession) {
         localStorage.removeItem('user_session');
       }
+      if (result.clearCookie) {
+    document.cookie = result.clearCookie;
+      }
       if (result.redirect) {
         window.location.href = result.redirect;
       }

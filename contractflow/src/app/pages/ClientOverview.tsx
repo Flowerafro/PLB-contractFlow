@@ -5,12 +5,12 @@ import SearchBar from "@/components/SearchBar";
 import ClientList from "@/components/clientComponents/ClientList";
 import ClientProfilePage from "@/components/clientComponents/ClientProfilePage";
 import NewClient from "@/components/clientComponents/NewClient";
-
+import Button from "@/components/Button";
+import useHoverEffect from "../hooks/useHoverEffect";
 import { dummyClients, addClient, getClientById } from "../../lib/clientdummydata";
 import type { Client } from "../../lib/clientdummydata";
-
 import type { ClientOverviewProps } from "../types/client";
-import Button from "@/components/Button";
+
 
 
 
@@ -18,9 +18,10 @@ import Button from "@/components/Button";
 export default function ClientOverview({ onClientClick, onNewClient, clientId }: ClientOverviewProps) {
   const [searchClient, setSearchClient] = useState("");
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
-  const [hoveredClientId, setHoveredClientId] = useState<string | null>(null);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [showNewClientForm, setShowNewClientForm] = useState(false);
+
+  const { hoverEffect, onHover, onLeave } = useHoverEffect<string>();
 
   useEffect(() => {
     if (!clientId) return;
@@ -76,12 +77,6 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
           <Button onClick={() => { setShowNewClientForm(true); onNewClient?.(); }} >
             + New Client
           </Button>
-        {/*   <button 
-            style={{ backgroundColor: "#1D391D", color: "#fff", padding: "8px 16px", borderRadius: "4px" }}
-            onClick={() => { setShowNewClientForm(true); onNewClient?.(); }}
-          >
-            + New Client
-          </button> */}
         </div>
 
         <section className="bg-white rounded-lg border border-black/10 overflow-hidden p-6">
@@ -100,12 +95,6 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
           <Button onClick={() => { setShowNewClientForm(true); onNewClient?.(); }} >
             + New Client
           </Button>
-      {/*   <button
-          style={{ backgroundColor: "#1D391D", color: "#fff", padding: "8px 16px", borderRadius: "4px" }}
-          onClick={() => { setShowNewClientForm(true); onNewClient?.(); }}
-        >
-          + New Client
-        </button> */}
       </div>
 
       <SearchBar placeholder="Search here..." onSearch={handleSearch} />
@@ -139,12 +128,12 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
                   <tr
                     key={client.id}
                     onClick={() => handleSelectClient(client)}
-                    onMouseEnter={() => setHoveredClientId(client.id)}
-                    onMouseLeave={() => setHoveredClientId(null)} className={`cursor-pointer transition-colors ${hoveredClientId === client.id ? "bg-gray-100" : ""}`}>
+                    onMouseEnter={() => onHover(client.id)}
+                    onMouseLeave={() => onLeave()} className={`cursor-pointer transition-colors ${hoverEffect === client.id ? "bg-gray-100" : ""}`}>
                        <td className="p-2"> {client.status === "Active" ? ( 
                         <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
                       ) : client.status === "Inactive" ? (
-                      <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">Inactive</span>
+                      <span className="px-2 py-1 text-xs font-medium bg-red-100 text-gray-800 rounded-full">Inactive</span>
                       ) : null} </td>
                     <td className="p-4">{client.customerCode}</td>
                     <td className="p-4">{client.customer}</td>

@@ -9,15 +9,10 @@ import DetailShipmentInfo from "../../components/DetailViewComponents/DetailShip
 import DetailInvoiceInfo from "../../components/DetailViewComponents/DetailInvoiceInfo";
 import DetailOrderInfo from "../../components/DetailViewComponents/DetailOrderInfo";
 import DetailPrincipalInfo from "../../components/DetailViewComponents/DetailPrincipalInfo";
-import ActionSidebar from "../../components/DetailViewComponents/ActionSidebar";
-
-import { set } from "zod";
 
 
-export default function DetailView({ item, setSelectedShipment }: { item: SearchItem, setSelectedShipment: React.Dispatch<React.SetStateAction<SearchItem | null>> }) {
+export default function DetailView({ item, setSelectedShipment, isEditing, onEditModeChange }: { item: SearchItem, setSelectedShipment: React.Dispatch<React.SetStateAction<SearchItem | null>>, isEditing: boolean, onEditModeChange: (val: boolean) => void }) {
 
-    const [isEditing, setIsEditing] = useState(false);
-    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showButtons, setShowButtons] = useState(false);
 
     const [form, setForm] = useState({
@@ -46,11 +41,13 @@ export default function DetailView({ item, setSelectedShipment }: { item: Search
     })
 
     const handleEditClick = () => {
-        setIsEditing((previous) => !previous);
+        onEditModeChange(!isEditing);
     }
 
     useEffect(() => {
-        if (isEditing) setShowButtons(true);
+        if
+         (isEditing) 
+         setShowButtons(true);
     }, [isEditing]);
 
   
@@ -59,14 +56,17 @@ export default function DetailView({ item, setSelectedShipment }: { item: Search
     <section className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className=" rounded-3xl flex flex-col px-4">
             <div>
+                <a href="/Home">
                 <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear>
+                </a>
+                
                 </div>
             <div className=" flex items-center justify-end px-6 m-4 gap-2">
                 {showButtons && (
                 <ButtonEdit onClick={handleEditClick}>{isEditing ? "Avbryt" : "Rediger"}</ButtonEdit>)}
                  <Button onClick={() => {
                     if (isEditing) return; 
-                    setShowButtons((prev) => !prev); }} disabled={isEditing}> {showButtons ? "Lukk" : "Mer"}
+                    setShowButtons((prev) => !prev); }} disabled={isEditing}> {showButtons ? "Lukk" : "Endre"}
                 </Button>
             </div>
             <div className="flex-1 p-4 space-y-6 w-full">
@@ -78,7 +78,7 @@ export default function DetailView({ item, setSelectedShipment }: { item: Search
                     <DetailPrincipalInfo form={form} setForm={setForm} isEditing={isEditing}  />
                 </div>
             </div>
-            <ActionSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onEdit={handleEditClick} isEditing={isEditing} handleEditClick={handleEditClick} />
+            {/* <ActionSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onEdit={handleEditClick} isEditing={isEditing} handleEditClick={handleEditClick} /> */}
         </div>
     </section> 
     </>

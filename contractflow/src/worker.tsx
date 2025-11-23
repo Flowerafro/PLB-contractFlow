@@ -27,15 +27,14 @@ type R2 = R2Bucket;
 }
 */
 
-// Authentication check using cookies
+
 function requireAuth(request: Request) {
-  // Check for user session in cookies
+  
   const cookies = request.headers.get('Cookie');
   if (cookies && cookies.includes('user_session=')) {
-    return true; // User has session
+    return true; 
   }
   
-  // For simple testing, we'll redirect to login
   return Response.redirect(new URL('/Login', request.url), 302);
 }
 
@@ -205,7 +204,7 @@ export default defineApp([
   }),
   
   render(Document, [
-    route("/", () => <Login />), // default route is login
+    route("/", () => <Login />), 
     route("/Login", () => <Login />),
     
     // Protected routes - require authentication  
@@ -214,6 +213,7 @@ export default defineApp([
       if (authResult instanceof Response) return authResult;
       return <Home />;
     }),
+
     route("/Dashboard", ({ request }) => {
       const authResult = requireAuth(request);
       if (authResult instanceof Response) return authResult;

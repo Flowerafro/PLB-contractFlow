@@ -23,7 +23,6 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
 
     const columnHelper = createColumnHelper<T>();
     
-    // 
     const uniqueValues = useMemo(() =>
         Array.from(new Set(data.map(item => item[groupByColumn]))),
         [data, groupByColumn]
@@ -37,7 +36,6 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
         return counts;
     }, [data, groupByColumn, uniqueValues]);
 
-    // Bruker Memo på kolonner for å avverge fry-problemer med rerendering
     const columns = useMemo(() => 
         columnConfig.map((config: ColumnSetup<T>) =>
             columnHelper.accessor(config.key as any, {
@@ -87,65 +85,39 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
 
     return(
         <>
-            <div style={{
-                display: 'flex',
-                borderBottom: '1px solid #ccc',
-                backgroundColor: '#f5f5f5',
-                borderRadius: '8px'   
-            }}>
-                {uniqueValues.map((value, index) => (
-                    <button
-                        key={String(value)}
-                        onClick={() => handleTabSelect(value)}
-                        style={{
-// midlertidig styling:
-                            padding: '12px 20px',
-                            border: 'none',
-                            backgroundColor: selectedTab === value ? '#ffffff' : 'transparent',
-                            borderBottom: selectedTab === value ? '2px solid #085c00ff' : 'none',
-                            cursor: 'pointer',
-                            fontWeight: selectedTab === value ? 'bold' : 'normal',
-                            color: selectedTab === value ? '#085c00ff' : '#666',
-                            transition: 'all 0.2s ease'
-                        }}
-                        onMouseEnter={(e) => {
-                            if (selectedTab !== value) {
-                                e.currentTarget.style.backgroundColor = '#e9ecef';
-                            }
-                        }}
-                        onMouseLeave={(e) => {
-                            if (selectedTab !== value) {
-                                e.currentTarget.style.backgroundColor ='transparent'
-                            }
-                        }}
-                    >
-                        {String(value)} ({tabCounts[String(value)] || 0})
-                    </button>
-                ))}
-            </div>
-            <div style={{ 
-                    width: '90vw',
-                    margin: '1rem',
-                    overflowX: 'auto',
-                    border: '1px solid gray',
-                    borderRadius: '8px',
-                    }}>
-                <table style={{ 
-                    borderCollapse: 'collapse', 
-                    width: '100%'
-                    }}
-                >
-                    <thead style={{ width: 'fit-content' }}>
+<div className="overflow-x-auto w-full">
+  <div className="flex border-b border-gray-300 bg-gray-100 rounded-lg w-max">
+    {uniqueValues.map((value, index) => (
+      <button
+        key={String(value)}
+        onClick={() => handleTabSelect(value)}
+        className={`
+          px-5 py-3 whitespace-nowrap
+          border-none transition-all
+          ${selectedTab === value ? 
+            "bg-white font-bold border-b-2 border-green-800 text-green-800" :
+            "bg-transparent text-gray-600 hover:bg-gray-300"
+          }
+        `}
+      >
+        {String(value)} ({tabCounts[String(value)] || 0})
+      </button>
+    ))}
+  </div>
+</div>
+
+
+<div className="w-full overflow-x-auto mt-4 border border-gray-400 rounded-lg">
+  <table id="contracts-table" className="border-collapse w-full">
+
+                    <thead className="w-fit">
                         {table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
                                 {headerGroup.headers.map(header => (
-                                    <th key={header.id} style={{ 
-                                        border: '1px solid #ccc', 
-                                        padding: '8px',
-                                        minWidth: '150px',
-                                        cursor: header.column.getCanSort() ? 'pointer' : undefined,
-                                        backgroundColor: '#f8f9fa'
-                                    }}
+                                   <th
+                                   key={header.id}
+                                   className={`border border-gray-300 bg-gray-100 p-2 
+                                               ${header.index === 0 ? "pl-4" : "pl-2"}`}
                                         onClick={header.column.getToggleSortingHandler()}
                                     >
                                         {header.isPlaceholder
@@ -160,31 +132,32 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
                             </tr>
                         ))}
                     </thead>
+
                     <tbody>
-                    {table.getRowModel().rows.map(row => (
+                        {table.getRowModel().rows.map(row => (
                             <tr 
                             key={row.id}
                             onClick={() => onRowClick?.(row.original as T)}
-                            style={{ 
-                                cursor: onRowClick ? "pointer" : "default", 
-                                backgroundColor: hoveredShipmentId === row.id ? "#f0f0f0" : undefined,
-                                transition: 'background-color 0.1s ease'
-                            }}
+                            className={`
+                                transition-colors
+                                ${onRowClick ? "cursor-pointer" : "cursor-default"}
+                                ${hoveredShipmentId === row.id ? "bg-gray-100" : ""}
+                            `}
                             onMouseEnter={() => handleMouseEnter(row.id)}
                             onMouseLeave={handleMouseLeave}
                             >
                                 {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id} style={{ 
-                                        minWidth: '150px',
-                                        border: '1px solid #ccc', 
-                                        padding: '8px', 
-                                        margin: '0'}}>
+                                    <td key={cell.id}
+                                    className={`border border-gray-300 p-2 
+                                                ${cell.column.id === table.getAllColumns()[0].id ? "pl-4" : "pl-2"}`}
+                                        >
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </td>
                                 ))}
                             </tr>
                         ))}
                     </tbody>
+
                 </table>
             </div>
         </>

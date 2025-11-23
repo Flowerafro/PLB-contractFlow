@@ -3,7 +3,22 @@ import { logout } from "../app/actions/auth";
 export function LogoutButton() {
   const handleLogout = async () => {
     try {
-      await logout();
+      const result = await logout();
+      
+      // Clear localStorage
+      if (result.clearSession) {
+        localStorage.removeItem('user_session');
+      }
+      
+      // Clear cookie
+      if (result.clearCookie) {
+        document.cookie = result.clearCookie;
+      }
+      
+      // Redirect
+      if (result.redirect) {
+        window.location.href = result.redirect;
+      }
     } catch (error) {
       console.error('Logout error:', error);
     }

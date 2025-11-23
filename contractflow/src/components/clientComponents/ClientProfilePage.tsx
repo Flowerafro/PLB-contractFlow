@@ -14,7 +14,7 @@ export default function ClientProfilePage({
   const initials = client?.customer?.split(" ").map(n => n[0]).join("");
 
   return (
-    <section className="min-h-screen bg-gray-50">
+    <section className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         <div className="lg:col-span-1 space-y-6">
@@ -40,9 +40,13 @@ export default function ClientProfilePage({
                 <p className="text-gray-800">{client.clientAdded ?? "–"}</p>
               </div>
 
-              <div>
-                <p className="text-sm text-gray-500 mb-1">Land</p>
-                <p className="text-gray-800">{client.country ?? "–"}</p>
+                <div>
+                <p className="text-sm text-gray-500 mb-1">Status</p>
+                {client.status === "Active" ? (
+                  <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
+                ) : client.status === "Inactive" ? (
+                  <span className="px-2 py-1 text-xs font-medium bg-red-100 text-gray-800 rounded-full">Inactive</span>
+                ) : null}
               </div>
             </div>
           </div>
@@ -57,30 +61,25 @@ export default function ClientProfilePage({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
+               <div>
+                <p className="text-sm text-gray-500 mb-1">Kunde-ID</p>
+                <p className="text-gray-800 font-bold">{client.customerCode ?? "–"}</p>
+              </div>
+
               <div>
                 <p className="text-sm text-gray-500 mb-1">E-post</p>
-                <p className="text-gray-800">{client.email ?? "–"}</p>
+                <a href={`mailto:${client.email}`} className="text-blue-600 hover:underline">{client.email ?? "–"}</a>
+              </div>
+
+               <div>
+                <p className="text-sm text-gray-500 mb-1">Land</p>
+                <p className="text-gray-800">{client.country ?? "–"}</p>
               </div>
 
               <div>
                 <p className="text-sm text-gray-500 mb-1">Telefon</p>
                 <p className="text-gray-800">{client.phone ?? "–"}</p>
               </div>
-
-              <div>
-                <p className="text-sm text-gray-500 mb-1">Status</p>
-                {client.status === "Active" ? (
-                  <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
-                ) : client.status === "Inactive" ? (
-                  <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">Inactive</span>
-                ) : null}
-              </div>
-
-              <div>
-                <p className="text-sm text-gray-500 mb-1">Kunde-ID</p>
-                <p className="text-gray-800">{client.customerCode ?? "–"}</p>
-              </div>
-
             </div>
           </article>
         </section>
