@@ -212,6 +212,7 @@ export default defineApp([
       if (authResult instanceof Response) return authResult;
       return <Home />;
     }),
+
     route("/Dashboard", ({ request }) => {
       const authResult = requireAuth(request);
       if (authResult instanceof Response) return authResult;

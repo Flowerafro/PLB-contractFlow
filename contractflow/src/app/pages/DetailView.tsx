@@ -59,7 +59,10 @@ export default function DetailView({ item, setSelectedShipment }: { item: Search
     <section className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className=" rounded-3xl flex flex-col px-4">
             <div>
+                <a href="/Home">
                 <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear>
+                </a>
+                
                 </div>
             <div className=" flex items-center justify-end px-6 m-4 gap-2">
                 {showButtons && (

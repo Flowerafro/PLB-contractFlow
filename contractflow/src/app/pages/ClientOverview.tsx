@@ -18,7 +18,6 @@ import type { ClientOverviewProps } from "../types/client";
 export default function ClientOverview({ onClientClick, onNewClient, clientId }: ClientOverviewProps) {
   const [searchClient, setSearchClient] = useState("");
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
-  /* const [hoveredClientId, setHoveredClientId] = useState<string | null>(null); */
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [showNewClientForm, setShowNewClientForm] = useState(false);
 

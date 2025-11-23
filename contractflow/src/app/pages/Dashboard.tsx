@@ -91,7 +91,6 @@ export default function Dashboard() {
       <section className="mt-8">
         {selectedShipment ? (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md m-2">
-            {/* <ButtonClear onClick={() => setSelectedShipment(null)}>Tilbake</ButtonClear> */}
             <DetailView item={selectedShipment} setSelectedShipment={setSelectedShipment} />
           </div>
         ) : hasSearched ? (
@@ -103,7 +102,7 @@ export default function Dashboard() {
               </a>
             </div>
           ) : (
-            <ShipmentList filteredItems={filteredResults.map((r: any) => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
+            <ShipmentList filteredItems={filteredResults} onSelectShipment={handleSelectShipment} />
           )
         ) : (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">

@@ -80,8 +80,6 @@ export default function ClientProfilePage({
                 <p className="text-sm text-gray-500 mb-1">Telefon</p>
                 <p className="text-gray-800">{client.phone ?? "–"}</p>
               </div>
-
-
             </div>
           </article>
         </section>
