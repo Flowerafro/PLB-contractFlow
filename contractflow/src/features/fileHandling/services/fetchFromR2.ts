@@ -1,7 +1,4 @@
-import { file } from "zod";
 import type { ArchiveDocument } from "@/app/types/archiveDocument";
-
-import { useEffect } from "react";
 
 export async function fetchFromR2(): Promise<ArchiveDocument[]> {
   try {

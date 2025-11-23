@@ -67,13 +67,13 @@ export default defineApp([
 */
     },
 
-  prefix("/api/v1/hovedlisten/", hovedListenRoutes),
+  prefix("/api/v1/hovedlisten", hovedListenRoutes),
 
   //prefix("/api/v1/clients", clientRoutes),
   //prefix("/api/v1/contracts", contractRoutes),
 
 
-  route("/api/v1/hovedlisten/", async ({ ctx }) => {
+  route("/api/v1/hovedlisten", async ({ ctx }) => {
     try {
       const db = getDb(ctx.env);
 
@@ -99,7 +99,7 @@ export default defineApp([
   }),
 
   // Seed route(testing)
-  route("/seed/", async ({ ctx }) => {
+  route("/seed", async ({ ctx }) => {
     try {
       const { seedData } = await import("./db/seedHovedlisten");
       await seedData(ctx.env);
@@ -113,8 +113,7 @@ export default defineApp([
     }
   }),
 
-// Vil på sikt forenes med R2 upload arbeidet:  
-  route("/upload/", async ({ request, ctx }) => {
+  route("/upload", async ({ request, ctx }) => {
     try {
       const formData = await request.formData();
       const data = new FormData();
@@ -124,33 +123,9 @@ export default defineApp([
         return Response.json({ error: 'No file provided' }, { status: 400 });
       }
       
-/*      
-      if (typeof process !== 'undefined' && process.versions && process.versions.node) {
-        const fs = await import('fs/promises');
-        const path = await import('path');
-        const uploadDir = 'C:/Users/pa-te/Documents/Studierelatert2025_2026/ITF31619_Webapplikasjoner/ProsjektOppgave/PLB-contactFlow/contractflow/.wrangler/state/v3/r2/plb-contractflow-r2';
-        const fileName = `${Date.now()}-${file.name}`;
-        const filePath = path.join(uploadDir, fileName);
-
-        await fs.mkdir(uploadDir, {recursive: true});
-
-        const arrayBuffer = await file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-        await fs.writeFile(filePath, buffer);
-
-        return Response.json({
-          success: true,
-          fileName,
-          path: filePath,
-          message: 'File saved locally'
-        });
-      }   
-*/
-
       const timestamp = Date.now();
       const fileName = `${timestamp}-${file.name}`;
-      //const fileBuffer = await file.arrayBuffer();
-      const r2ObjectKey = `/storage/${file.name}`;
+      const r2ObjectKey = `${file.name}`;
    
       await env.R2.put(r2ObjectKey, file.stream(), {
         httpMetadata: {
@@ -161,9 +136,8 @@ export default defineApp([
       return Response.json({ 
         success: true,
         fileName: file.name,
-        url: `/storage/dev-${Date.now()}-${file.name}`,
-        message: 'Upload simulated (development mode). Deploy to Cloudflare or use "wrangler dev --remote" for real uploads.'
-      });
+        url: `/dev-${Date.now()}-${file.name}`,
+        message: 'File uploaded to R2 successfully'});
 
       return Response.json({ 
         success: true, 
@@ -180,7 +154,7 @@ export default defineApp([
       }
   }),
 
-  route("/plb-contractflow-r2/", async ({ ctx }) => {
+  route("/plb-contractflow-r2", async ({ ctx }) => {
     try {
       const r2 = env.R2;
 
@@ -202,6 +176,34 @@ export default defineApp([
       return Response.json({ error: 'Failed to fetch files' }, { status: 500 });
     }
   }),
+
+  route("/plb-contractflow-r2/*", async ({ request, ctx }) => {
+    try {
+      const url = new URL(request.url);
+      const path = url.pathname.replace('/plb-contractflow-r2', '');
+      const r2 = env.R2;
+
+      if (!r2) {
+        return new Response('R2 binding missing', { status: 500 });
+      }
+
+      const object = await r2.get(path);
+      if (!object) {
+        return new Response('File not found', { status: 404 });
+      }
+
+      const headers = new Headers();
+      if (object.httpMetadata?.contentType) {
+        headers.set('Content-Type', object.httpMetadata.contentType);
+      }
+
+      return new Response(object.body, { headers });
+    } catch (error) {
+      console.error('Error fetching file:', error);
+      return new Response('Internal server error', { status: 500 });
+    }
+  }),
+  
   render(Document, [
     route("/", () => <Login />), // default route is login
     route("/Login", () => <Login />),

@@ -1,31 +1,22 @@
 
 "use client";
 
-import TableGeneration from "@/features/components/TableGeneration";
-import UploadFileToR2 from "@/features/components/UploadFileToR2";
+import TableGeneration from "@/components/featureComponents/TableGeneration";
+import UploadFileToR2 from "@/components/featureComponents/UploadFileToR2";
 import PdfModal from "@/components/PdfModal";
 import { useState } from "react";
-import type { ArchiveDocument } from "@/app/types/archiveDocument";
 import { archiveColumns } from "@/features/tables/columns/archiveColumns";
-//import { fetchFromR2 } from "@/features/r2FileFetching/fetchFromR2";
-//import { useEffect } from "react";
 import { useArchiveData } from "@/features/tables/hooks/datatypeStructures/archiveFileData";
 
 export default function Archive() {
   const [selectedRecord, setSelectedRecord] = useState<any>(null);
 
   const { data: files, loading, error } = useArchiveData();
-  /*
-  const [files, setFiles] = useState<ArchiveDocument[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  useEffect(() => {
-    fetchFromR2()
-      .then(setFiles)
-      .catch(e => setError(e.message))
-      .finally(() => setLoading(false));
-  }, []);
-*/
+
+  const handleFilenameClick = (record: any) => {
+    setSelectedRecord(record);
+  };
+
   function handleOpenPdf(record: any) {
     setSelectedRecord(record);
   }
@@ -55,6 +46,8 @@ export default function Archive() {
         data={files}
         columnConfig={archiveColumns}
         onRowClick={handleOpenPdf} 
+        meta={{ onFileNameClick: handleFilenameClick }}
+        columnWidth="25%"
       />
       <UploadFileToR2 />
       {selectedRecord && (

@@ -27,7 +27,7 @@ export function useArchiveData() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch("/plb-contractflow-r2/")
+        fetch("/plb-contractflow-r2")
             .then(res => {
                 if (!res.ok) throw new Error('Failed to fetch files');
                 return res.json();

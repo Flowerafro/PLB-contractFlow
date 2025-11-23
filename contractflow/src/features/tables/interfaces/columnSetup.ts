@@ -4,4 +4,5 @@ export interface ColumnSetup<T> {
     width?: string;
     sortable?: boolean;
     formatter?: (value: any) => string;
+    cell?: (props: any) => React.ReactNode;
 } 

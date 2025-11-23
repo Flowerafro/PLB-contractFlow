@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
-import TableGeneration from "@/features/components/TableGeneration";
+import TableGeneration from "@/components/featureComponents/TableGeneration";
 import ShipmentList from "@/components/ShipmentList";
 import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";

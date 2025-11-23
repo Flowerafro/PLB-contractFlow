@@ -1,6 +1,7 @@
 import { hovedListenRepository } from '@/features/dataRetrieval/repositoryPatterns/hovedListenRepository';
 import { HovedListeItem } from '@/app/types/hovedlisten';
 import { AppContext } from '@/worker';
+import { env } from 'process';
 
 export interface HovedListenService {
   getHovedListenData(): Promise<HovedListeItem[]>;
@@ -69,7 +70,6 @@ function createHovedListenService(): HovedListenService {
   return {
     async getHovedListenData(): Promise<HovedListeItem[]> {
       try {
-        // First try API route if we're in client-side context
         if (typeof window !== 'undefined') {
           try {
             const response = await fetch('/api/v1/hovedlisten/');
@@ -83,9 +83,8 @@ function createHovedListenService(): HovedListenService {
           }
         }
 
-        // Fallback to direct repository access (server-side)
         try {
-          const result = await hovedListenRepository.findMany(ctx.env);
+          const result = await hovedListenRepository.findMany(env);
           if (result && result.success && Array.isArray(result.data)) {
             return result.data;
           }
@@ -93,7 +92,6 @@ function createHovedListenService(): HovedListenService {
           console.log('Database access failed, using sample data:', dbError);
         }
 
-        // Return sample data as final fallback
         console.log('Using sample data for development');
         return getSampleData();
       } catch (error) {

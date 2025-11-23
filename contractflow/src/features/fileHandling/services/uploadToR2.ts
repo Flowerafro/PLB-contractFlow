@@ -6,7 +6,7 @@ export const uploadToR2 = async (file: File): Promise<UploadResult> => {
     formData.append('file', file);
 
     try {
-        const response = await fetch('/upload/', { 
+        const response = await fetch('/upload', { 
             method: 'POST',
             body: formData,
     });

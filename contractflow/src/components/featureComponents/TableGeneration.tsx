@@ -3,7 +3,6 @@ import {
     flexRender,
     getCoreRowModel, 
     getSortedRowModel,
-//    SortingFn,
     SortingState,
     useReactTable,
 } from "@tanstack/react-table";
@@ -12,7 +11,7 @@ import type { TableGenerationProps } from "@/features/tables/interfaces/tableGen
 import { useState } from "react";
 
 
-export default function TableGeneration<T>({ data, columnConfig, onRowClick }: TableGenerationProps<T> & { onRowClick?: (row: T) => void }){
+export default function TableGeneration<T>({ data, columnConfig, onRowClick, meta, columnWidth = 'auto' }: TableGenerationProps<T> & { onRowClick?: (row: T) => void; meta?: any }) {
     const [hoveredShipmentId, setHoveredShipmentId] = useState<string | null>(null);
     const [sorting, setSorting] = useState<SortingState>([]);
     const columnHelper = createColumnHelper<T>();
@@ -22,7 +21,7 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
         columnHelper.accessor(config.key as any, {
             id: String(config.key),
             header: () => <span>{config.header}</span>,
-            cell: info => {
+            cell: config.cell ? config.cell : info => {
                 const value = info.getValue();
                 return config.formatter ? config.formatter(value) : String(value || "");
             },
@@ -37,20 +36,21 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
         onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
+        meta,
     });
 
     return(
         <div className="w-[90vw] my-4 overflow-x-auto border border-gray-400 rounded-lg">
 
-        <table id="contracts-table" className="border-collapse">
+        <table id="contracts-table" className="border-collapse" style={{ width: '100%' }}>
 
-                <thead style={{ width: 'fit-content' }}>
+                <thead style={{ width: '100%' }}>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
-                                <th key={header.id}  className={`border border-gray-300 p-2 min-w-[150px] ${
+                                <th key={header.id}  className={`border border-gray-300 p-2 ${
                                     header.column.getCanSort() ? "cursor-pointer" : ""
-                                  }`}
+                                  }`} style={{ width: columnWidth }}
                                     onClick={header.column.getToggleSortingHandler()}
                                 >
                                     {header.isPlaceholder
@@ -78,7 +78,8 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick }: T
                         >
                             {row.getVisibleCells().map(cell => (
                                 <td key={cell.id} 
-                                className="min-w-[150px] border border-gray-300 p-2 m-0"
+                                    className="border border-gray-300 p-2 m-0"
+                                    style={{ width: columnWidth }}
                                     >
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>

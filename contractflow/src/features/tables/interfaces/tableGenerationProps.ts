@@ -6,8 +6,10 @@ export interface TableGenerationProps<T>{
     columnConfig: Array<{
         key: keyof T;
         header: string;
+        columnWidth?: string;
         cellRenderer?: (value: T[keyof T]) => React.ReactNode;
-    }>
+    }>;
+    columnWidth?: string;
 }
 
 export default function TableGeneration<T>({ data, columnConfig }: TableGenerationProps<T>) {
