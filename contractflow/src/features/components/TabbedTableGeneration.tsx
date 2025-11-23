@@ -107,9 +107,9 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
 </div>
 
 
-            <div className="w-full overflow-x-auto mt-4 border border-gray-400 rounded-lg">
+<div className="w-full overflow-x-auto mt-4 border border-gray-400 rounded-lg">
+  <table id="contracts-table" className="border-collapse w-full">
 
-<table className="border-collapse min-w-max">
                     <thead className="w-fit">
                         {table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
