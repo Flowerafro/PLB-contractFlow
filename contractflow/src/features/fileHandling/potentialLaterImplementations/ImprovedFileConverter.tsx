@@ -118,61 +118,57 @@ export default function ImprovedFileConverter({
     });
     */
     return (
-    <div className="xlsx-converter upload-container">
+      <div className="xlsx-converter upload-container p-4">
 
-      <h2>XLSX to JSON Converter</h2>
+      <h2 className="text-xl font-bold mb-4">XLSX to JSON Converter</h2>
       
       <div>
-        <input
-          id="file-upload"
-          type="file"
-          accept=".xlsx, .xls"
-          onChange={handleFileUpload}
-          disabled={isLoading}
-          style={{ 
-              display: 'none',
-              backgroundColor: '#9e2828ff',
-              outline: "1px dashed #1D391D",
-              outlineOffset: '-10px',
-              borderRadius: 8,
-              padding: 16,
-              textAlign: "center",
-              color: "#1D391D",
-              cursor: "pointer",
-              backgroundImage: '/upload.png',
-  //  Hentet fra: https://www.flaticon.com/free-icons/file-upload 
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              backgroundSize: "contain",
-          }}
-        />
-        <label
-          htmlFor="file-upload"
-          style={{
-            display: 'inline-block',
-            backgroundColor: isLoading ? '#9e2828ff': '#1D391D',
-            color: '#fff',
-            padding: '12px 24px',
-            borderRadius: '8px',
-            cursor: isLoading ? 'not-allowed' : 'pointer',  
-            border: 'none',
-            fontSize: '16px',
-            transition: 'background-color 0.3s',
+      <input
+        id="file-upload"
+        type="file"
+        accept=".xlsx, .xls"
+        onChange={handleFileUpload}
+        disabled={isLoading}
+        className="
+          hidden
+          bg-[#9e2828]
+          outline outline-1 outline-dashed outline-[#1D391D]
+          outline-offset-[-10px]
+          rounded-lg
+          p-4
+          text-center
+          text-[#1D391D]
+          cursor-pointer
+          bg-no-repeat bg-center bg-contain
+          bg-[url('/upload.png')]
+        "
+      />
 
-          }}
-        >
-          {isLoading ? 'Processing...' : 'Choose Excel File'}
-        </label>
+      <label
+        htmlFor="file-upload"
+        className={`
+          inline-block
+          text-white
+          px-6 py-3
+          rounded-lg
+          text-[16px]
+          transition-colors duration-300
+          ${isLoading ? "bg-[#9e2828] cursor-not-allowed" : "bg-[#1D391D] cursor-pointer"}
+        `}
+      >
+        {isLoading ? "Processing..." : "Choose Excel File"}
+      </label>
+
       </div>
 
       {uploadError && (
-        <div className="error-message" style={{ color: 'red', marginTop: '10px' }}>
+        <div className="error-message text-red-600 mt-3">
           {uploadError}
         </div>
       )}
 
       {isLoading && (
-        <div style={{ marginBottom: '16px' }}>
+        <div className="mb-4">
           <p>Loading and converting file, please wait...</p>
         </div>
       )}
@@ -181,25 +177,28 @@ export default function ImprovedFileConverter({
         <div>
           <h3>File: {fileName}</h3>
           {jsonData.length > 0 && (
-            <div style={{ marginTop: '16px' }}>
-              <h3>File: {fileName}</h3>
+        <div className="mt-4">
+          <h3 className="font-semibold mb-2">File: {fileName}</h3>
               
-              <button onClick={downloadJSON} style={{ backgroundColor: 'red' }}>
-                Download JSON-file
-              </button>
+          <button
+            onClick={downloadJSON}
+            className="px-4 py-2 bg-red-600 text-white rounded mb-4"
+          >
+            Download JSON-file
+          </button>
              
-              <details>
-                <summary style={{ cursor: 'pointer', marginTop: '16px'  }}>
-                  Show preview ({jsonData.reduce((total, sheet) => total + sheet.data.length, 0)} rows)
-                </summary>
+          <details className="mt-4">
+            <summary className="cursor-pointer">
+              Show preview (
+              {jsonData.reduce(
+                (total, sheet) => total + sheet.data.length,
+                0
+              )}{" "}
+              rows)
+            </summary>
              
-                <pre style={{ 
-                  maxHeight: '400px', 
-                  overflowY: 'auto', 
-                  backgroundColor: '#f4f4f4', 
-                  padding: '16px', 
-                  borderRadius: '8px'   
-                }}>
+            <pre className="max-h-[400px] overflow-y-auto bg-gray-100 p-4 rounded mt-3 text-sm">
+
                   {JSON.stringify(jsonData, null, 2)}
                 </pre>
               </details>

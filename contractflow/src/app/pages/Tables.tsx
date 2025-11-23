@@ -31,23 +31,11 @@ export default function Tables() {
 
   if (loading) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '50vh',
-        flexDirection: 'column',
-        gap: '1rem'
-      }}>
+      <div className="flex justify-center items-center h-[50vh] flex-col gap-4">
+
         <div>Loading table data...</div>
-        <div style={{ 
-          width: '40px', 
-          height: '40px', 
-          border: '3px solid #f3f3f3',
-          borderTop: '3px solid #007bff',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
+        <div className="w-10 h-10 border-[3px] border-gray-200 border-t-blue-500 rounded-full animate-spin" />
+
         <style dangerouslySetInnerHTML={{
           __html: `
             @keyframes spin {
@@ -62,24 +50,10 @@ export default function Tables() {
 
   if (error) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '50vh',
-        flexDirection: 'column',
-        gap: '1rem',
-        color: '#dc3545'
-      }}>
+      <div className="flex justify-center items-center h-[50vh] flex-col gap-4 text-red-600">
+
         <div>Error loading data: {error}</div>
-        <button onClick={() => window.location.reload()} style={{
-          padding: '8px 16px',
-          backgroundColor: '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer'
-        }}>
+        <button onClick={() => window.location.reload()} className="px-4 py-2 bg-blue-600 text-white rounded cursor-pointer">
           Retry
         </button>
       </div>
@@ -108,8 +82,8 @@ export default function Tables() {
 
         <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />
 
-        <section style={{ marginTop: 16 }}>
-            {searchTrimmed ? (
+        <section className="mt-4">
+        {searchTrimmed ? (
             results.length === 0 ? (
                 <div> <p>Ingen treff for "{searchTerm}"</p><a href="/Home"><button>Tilbake</button></a></div>
             ) : (

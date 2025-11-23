@@ -224,32 +224,21 @@ export default function UploadFile({
         onDrop={handleDrop}
         onClick={() => document.getElementById('file-upload')?.click()}
         className={`
-          rounded-[10px]
-          p-[40px]
-          text-center
-          cursor-pointer
-          mb-4
-          transition-all duration-300 ease-in-out
-          outline outline-2 outline-dashed outline-gray-300
-          outline-offset-[-10px]
-          ${isDragOver 
-            ? "bg-green-100 border-2 border-green-900" 
-            : "bg-gray-50 border border-gray-300"
-          }
+          rounded-lg p-10 text-center cursor-pointer mb-4 transition-all
+          outline outline-2 outline-dashed outline-gray-300 outline-offset-[-10px]
+          ${isDragOver ? "bg-green-100 border-green-900" : "bg-gray-50 border border-gray-300"}
         `}
         
       >
         {isDragOver ? (
-          <p className="text-green-900 text-[18px]"> Drop the Excel file here...</p>
+          <p className="text-green-900 text-lg">Drop the Excel file here...</p>
         ) : (
           <div>
-          <p className="text-[18px] mb-2">
-          Drop file here, or click to browse
-            </p>
-            <p className="text-[14px] text-gray-600">
+          <p className="text-lg mb-2">Drop file here, or click to browse</p>
+          <p className="text-sm text-gray-600">
             {fileTypeLabels} (max {(maxSize / 1024 / 1024).toFixed(1)}MB)
-            </p>
-          </div>
+          </p>
+        </div>
         )}
       </div>
       <form onSubmit={handleUpload}>
@@ -262,11 +251,7 @@ export default function UploadFile({
           className="hidden"
           />
       </form> 
-      {uploadError && (
-        <div className="error-message text-red-600 mt-3">
-          {uploadError}
-        </div>
-      )}
+      {uploadError && <div className="text-red-600 mt-3">{uploadError}</div>}
 
       {isLoading && (
         <div className="mb-4">
@@ -275,16 +260,16 @@ export default function UploadFile({
       )}
 
       {files.length > 0 && (
-        <div className="uploaded-files mt-4">
-          <h3>Selected files:</h3>
-          <ul>
-            {files.map((file) => (
-              <li key={file.name}>
-                {file.name} - {(file.size / 1024).toFixed(2)} KB
-              </li>
-            ))}
-          </ul>
-        </div>
+         <div className="mt-4">
+         <h3 className="font-semibold mb-2">Selected files:</h3>
+         <ul className="list-disc ml-5">
+           {files.map((file) => (
+             <li key={file.name}>
+               {file.name} – {(file.size / 1024).toFixed(2)} KB
+             </li>
+           ))}
+         </ul>
+       </div>
       )}
     </div>
   );  

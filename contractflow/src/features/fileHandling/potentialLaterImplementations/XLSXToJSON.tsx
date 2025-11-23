@@ -57,26 +57,33 @@ export default function XLSXToJSONConverter() {
   };
 
   return (
-    <div className="xlsx-converter">
-      <h2>XLSX to JSON Converter</h2>
+    <div className="p-6">
+      <h2 className="text-xl font-bold mb-4">XLSX to JSON Converter</h2>
       
       <input
         type="file"
         accept=".xlsx,.xls"
         onChange={handleFileUpload}
         disabled={isLoading}
+        className="block mb-4"
       />
       
       {isLoading && <p>Converting...</p>}
       
       {fileName && (
-        <div>
-          <h3>File: {fileName}</h3>
+        <div className="mt-4">
+          <h3 className="font-semibold mb-2">File: {fileName}</h3>
           {jsonData.length > 0 && (
             <>
-              <button onClick={downloadJSON}>Download JSON-file</button>
-              <h4>Preview:</h4>
-              <pre style={{ maxHeight: '300px', overflow: 'auto' }}>
+              <button
+                onClick={downloadJSON}
+                className="px-4 py-2 bg-blue-600 text-white rounded mb-4"
+              >
+                Download JSON-file
+              </button>             
+              <h4 className="font-semibold mb-2">Preview:</h4>
+
+              <pre className="max-h-[300px] overflow-auto bg-gray-100 p-4 rounded text-sm">
                 {JSON.stringify(jsonData, null, 2)}
               </pre>
             </>
