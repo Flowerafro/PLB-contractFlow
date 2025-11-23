@@ -85,31 +85,32 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
 
     return(
         <>
-           <div className="flex border-b border-gray-300 bg-gray-100 rounded-lg">
+<div className="overflow-x-auto w-full">
+  <div className="flex border-b border-gray-300 bg-gray-100 rounded-lg w-max">
+    {uniqueValues.map((value, index) => (
+      <button
+        key={String(value)}
+        onClick={() => handleTabSelect(value)}
+        className={`
+          px-5 py-3 whitespace-nowrap
+          border-none transition-all
+          ${selectedTab === value ? 
+            "bg-white font-bold border-b-2 border-green-800 text-green-800" :
+            "bg-transparent text-gray-600 hover:bg-gray-300"
+          }
+        `}
+      >
+        {String(value)} ({tabCounts[String(value)] || 0})
+      </button>
+    ))}
+  </div>
+</div>
 
-                {uniqueValues.map((value, index) => (
-                    <button
-                        key={String(value)}
-                        onClick={() => handleTabSelect(value)}
-                        className={`
-                            px-5 py-3
-                            border-none
-                            transition-all
-                            ${selectedTab === value ? 
-                                "bg-white font-bold border-b-2 border-green-800 text-green-800" :
-                                "bg-transparent text-gray-600 hover:bg-gray-300"
-                            }
-                        `}
-                    >
-                        {String(value)} ({tabCounts[String(value)] || 0})
-                    </button>
-                ))}
-            </div>
 
             <div className="w-full overflow-x-auto mt-4 border border-gray-400 rounded-lg">
 
-            <table className="border-collapse min-w-max">
-            <thead className="w-fit">
+<table className="border-collapse min-w-max">
+                    <thead className="w-fit">
                         {table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
                                 {headerGroup.headers.map(header => (
