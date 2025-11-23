@@ -1,5 +1,3 @@
-
-// ...existing code...
 "use client";
 
 import React, { 
@@ -8,21 +6,17 @@ import React, {
 } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
+import ButtonClear from "../../components/ButtonClear";
 import TableGeneration from "@/features/components/TableGeneration";
 import ShipmentList from "@/components/ShipmentList";
 import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
-import ButtonClear from "../../components/ButtonClear";
+import mapShipmentData from "@/lib/mapShipmentData";
+import useFilteredResults from "../hooks/useFilteredResults";
 
-interface Shipment {
-  id: number;
-  contactperson?: string;
-  container: string;
-  customer: string;
-  status?: string;
-}
 
-export default function Dashboard({shipmentId}: {shipmentId?: string}) {
+
+export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [hasSearched, sethasSearched] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<any | null>(null);
@@ -35,59 +29,20 @@ export default function Dashboard({shipmentId}: {shipmentId?: string}) {
     sethasSearched(true);
   };
 
-  const filteredResults = useMemo(() => {
-    if (!searchTerm) return [];
-    const source = Array.isArray(data) ? data : [];
-    return source.filter((row: any) => (
-        String(row.container ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.customer ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.bookingNumber ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.client ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.product ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalContractNumber ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalContractDate ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalOrderNumber ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalOrderDate ?? "").toLowerCase().includes(searchTerm) 
-      ));
-    }, [searchTerm, data]);
-
-    const handleSelectShipment = (row: any) => {
-      setSelectedShipment({
-        id: row.id ?? null,
-        plbReference: row.plbReference ?? "",
-        plbOrderDate: row.plbOrderDate ?? "",
-        customer: row.customer ?? "",
-        product: row.product ?? "",
-        customerOrderNumber: row.customerOrderNumber ?? "",
-
-        principalContractNumber: String(row.principalContractNumber ?? ""),
-        principalContractDate: row.principalContractDate ?? "",
-        principalOrderNumber: String(row.principalOrderNumber ?? ""),
-
-        containerNumber: row.containerNumber ?? "",
-        bookingNumber: row.bookingNumber ?? "",
-        blNumber: row.blNumber ?? "",
-        poEta: row.poEta ?? "",
-        etd: row.etd ?? "",
-        blDate: row.blDate ?? "",
-        eta: row.eta ?? "",
-
-        principalInvoiceNumber: String(row.principalInvoiceNumber ?? ""),
-        principalInvoiceDate: row.principalInvoiceDate ?? "",
-        invoiceDueDate: row.invoiceDueDate ?? "",
-        invoiceAmount: row.invoiceAmount ?? 0,
-      });
-  };
+  const filteredResults = useFilteredResults(searchTerm, data) 
+     const handleSelectShipment = (row: any) => {
+      setSelectedShipment(mapShipmentData(row)
+      );
+  }; 
 
     // Basic informasjon relatert til tabell data visningen
   if (loading) return <div>Table is loading...</div>;
   if (error) return <div>Error: {String(error)}</div>;
 
   return (
-    <div>
+    <>
       <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">Hovedlisten</h1>
-      {!isEditing && <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />}
-      {/* <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." /> */}
+      <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />
 
       <section className="mt-8">
         {selectedShipment ? (
@@ -124,6 +79,6 @@ export default function Dashboard({shipmentId}: {shipmentId?: string}) {
         
         )}
       </section>
-  </div>
+  </>
   );
 }
