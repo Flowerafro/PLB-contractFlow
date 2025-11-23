@@ -1,9 +1,6 @@
 "use client";
 
-import React, { 
-  useState,
-  useMemo 
-} from "react";
+import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
 import ButtonClear from "../../components/ButtonClear";
@@ -28,30 +25,13 @@ export default function Dashboard() {
     setSearchTerm(query.trim().toLowerCase());
     sethasSearched(true);
   };
-/*
-  const filteredResults = useMemo(() => {
-    if (!searchTerm) return [];
-    const source = Array.isArray(data) ? data : [];
-    return source.filter((row: any) => (
-        String(row.container ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.customer ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.bookingNumber ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.client ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.product ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalContractNumber ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalContractDate ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalOrderNumber ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalOrderDate ?? "").toLowerCase().includes(searchTerm) 
-      ));
-    }, [searchTerm, data]);
-*/
+
   const filteredResults = useFilteredResults(searchTerm, data) 
      const handleSelectShipment = (row: any) => {
       setSelectedShipment(mapShipmentData(row)
       );
   }; 
 
-    // Basic informasjon relatert til tabell data visningen
   if (loading) return <div>Table is loading...</div>;
   if (error) return <div>Error: {String(error)}</div>;
 

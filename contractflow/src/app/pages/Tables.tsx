@@ -28,32 +28,16 @@ export default function Tables() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedShipment, setSelectedShipment] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-/*   const [results, setResults] = useState<Shipment[]>([]);
-  const [searchTrimmed, setSearchTrimmed] = useState(false); */
-  
+
   const { data: data, loading, error } = hovedListenData();
 
   const filteredResults = useFilteredResults(searchTerm, data);
 
   if (loading) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '50vh',
-        flexDirection: 'column',
-        gap: '1rem'
-      }}>
+      <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
         <div>Loading table data...</div>
-        <div style={{ 
-          width: '40px', 
-          height: '40px', 
-          border: '3px solid #f3f3f3',
-          borderTop: '3px solid #007bff',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
+        <div className="w-10 h-10 border-[3px] border-gray-200 border-t-blue-600 rounded-full animate-spin" />
         <style dangerouslySetInnerHTML={{
           __html: `
             @keyframes spin {
@@ -68,24 +52,9 @@ export default function Tables() {
 
   if (error) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '50vh',
-        flexDirection: 'column',
-        gap: '1rem',
-        color: '#dc3545'
-      }}>
+      <div className="flex flex-col items-center justify-center h-[50vh] gap-4 text-red-600">
         <div>Error loading data: {error}</div>
-        <button onClick={() => window.location.reload()} style={{
-          padding: '8px 16px',
-          backgroundColor: '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer'
-        }}>
+        <button onClick={() => window.location.reload()} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
           Retry
         </button>
       </div>
@@ -94,25 +63,12 @@ export default function Tables() {
 
 
   const handleSearch = (query: string) => {
-    /* const trimmed = query.trim().toLowerCase(); */
     setSearchTerm(query.trim().toLowerCase());
   }
 
   const handleSelectedShipment = (row: any) => {
     setSelectedShipment(mapShipmentData(row));
   }
-
-  /* const handleSearch = (query: string) => {
-    const trimmed = query.trim().toLowerCase();
-    setSearchTerm(trimmed);
-    setSearchTrimmed(true);
-
-    if (!trimmed) {
-      setResults([]);
-      return;
-    }
-  };
- */
   return (
         <div>
       <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">
@@ -149,88 +105,3 @@ export default function Tables() {
         </div>
   );
 }
-
-
-/*
-Beholdt opprinnelig kode:
-"use client";
-
-import React, { useState } from "react";
-
-import SearchBar from "@/components/SearchBar";
-import DetailView from "./DetailView";
-import TabbedTableGeneration from "@/features/tables/component/TabbedTableGeneration";
-import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
-import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
-import { exportTableToExcel } from "@/lib/exportTableToExcel";
-import ExportExcelButton from "@/components/ExportExcelButton"
-import { HovedListeItem } from "../types/hovedlisten";
-
-//  -Tables-siden
-//  Her er dashboard siden lagt over slik at den kan bearbeides videre
-
-interface Shipment {
-  id: number;
-  contactperson?: string;
-  container: string;
-  customer: string;
-  status?: string;
-}
-
-export default function Tables() {
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [results, setResults] = useState<Shipment[]>([]);
-  const [searchTrimmed, setSearchTrimmed] = useState(false);
-  
-  const { data: data, loading, error } = hovedListenData();
-
-  // Basic informasjon relatert til tabell data visningen
-  if (loading) return <div>Table is loading...</div>
-  if (error) return <div>Error: {error}</div>
-
-
-  const handleSearch = (query: string) => {
-    // fjerner mellomrom og tillater søk med store og små bokstaver
-    const trimmed = query.trim().toLowerCase();
-    setSearchTerm(trimmed);
-    setSearchTrimmed(true);
-
-    // sjekker etter tomt søk, hvis tomt så skjer ingenting
-    if (!trimmed) {
-      setResults([]);
-      return;
-    }
-  };
-
-  return (
-        <div>
-      <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">
-        Tables
-      </h1>
-
-        <SearchBar onSearch={handleSearch} placeholder="Søk etter container eller kunde..." />
-
-        <section style={{ marginTop: 16 }}>
-            {searchTrimmed ? (
-            results.length === 0 ? (
-                <div> <p>Ingen treff for "{searchTerm}"</p><a href="/Home"><button>Tilbake</button></a></div>
-            ) : (
-                <DetailView filteredItems={results.map(r => ({ id: r.id, name: r.container, customer: r.customer, contactperson: r.contactperson }))} />
-            )
-            ) : (
-                
-            <div>   
-                <TabbedTableGeneration 
-                  data={data} 
-                  columnConfig={hovedListenColumns} 
-                  groupByColumn="customer"
-                />
-            </div>
-            )}
-        </section>
-        <ExportExcelButton />
-
-        </div>
-  );
-}
-*/
