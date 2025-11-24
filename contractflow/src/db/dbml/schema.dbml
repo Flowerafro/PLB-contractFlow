@@ -71,18 +71,3 @@ Table audit_log {
   changes text
   created_at text [not null, default: `datetime('now')`]
 }
-
-// Indexes
-Indexes {
-  contracts.client_id [name: 'idx_contracts_client_id']
-  contracts.principal_id [name: 'idx_contracts_principal_id']
-  contracts.order_date [name: 'idx_contracts_order_date']
-  shipments.container_number [name: 'idx_shipments_container_number']
-  shipments.eta [name: 'idx_shipments_eta']
-}
-
-// Relationships (defined inline with ref above):
-// contracts.client_id > clients.id (ON DELETE RESTRICT, ON UPDATE CASCADE)
-// contracts.principal_id > principals.id (ON DELETE SET NULL, ON UPDATE CASCADE)
-// shipments.contract_id > contracts.id (ON DELETE CASCADE, ON UPDATE CASCADE)
-// invoices.contract_id > contracts.id (ON DELETE CASCADE, ON UPDATE CASCADE)

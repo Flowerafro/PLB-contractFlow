@@ -35,9 +35,7 @@ const mockUsers = [
   }
 ];
 
-/**
- * Server action to handle user login
- */
+//Server action to handle user login
 export async function login(formData: FormData): Promise<{ success: boolean; error?: string; redirect?: string; sessionData?: string; setCookie?: string }> {
   const result = loginSchema.safeParse({
     username: formData.get("username"),
@@ -85,9 +83,7 @@ export async function login(formData: FormData): Promise<{ success: boolean; err
   };
 }
 
-/**
- * Server action to handle user logout
- */
+//Server action to handle user logout
 export async function logout(): Promise<{ redirect: string; clearSession: boolean; clearCookie?: string }> {
   // Clear session data and cookie
   return { 
@@ -97,9 +93,7 @@ export async function logout(): Promise<{ redirect: string; clearSession: boolea
   };
 }
 
-/**
- * Get current user from session
- */
+//Get current user from session
 export async function getCurrentUser(): Promise<User | null> {
   // Get current user from localStorage (client-side session check)
   // Server-side authentication is handled by requireAuth() in worker.tsx
@@ -117,25 +111,20 @@ export async function getCurrentUser(): Promise<User | null> {
   return null;
 }
 
-/**
- * Check if user is authenticated
- */
+//Check if user is authenticated
+
 export async function isAuthenticated(): Promise<boolean> {
   const user = await getCurrentUser();
   return user !== null && user.isAuthenticated;
 }
 
-/**
- * Check if user has specific role
- */
+// Check if user has specific role
 export async function hasRole(role: 'admin' | 'user'): Promise<boolean> {
   const user = await getCurrentUser();
   return user !== null && user.role === role;
 }
 
-/**
- * Require authentication middleware
- */
+// Require authentication middleware
 export async function requireAuth(): Promise<User | { redirect: string }> {
   const authenticated = await isAuthenticated();
   
@@ -146,9 +135,7 @@ export async function requireAuth(): Promise<User | { redirect: string }> {
   return (await getCurrentUser())!;
 }
 
-/**
- * Require admin role middleware
- */
+//Require admin role middleware
 export async function requireAdmin(): Promise<User | { redirect: string }> {
   const user = await requireAuth();
   
