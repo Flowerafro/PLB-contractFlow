@@ -46,7 +46,7 @@ const transformHovedListenItem = (item: any): HovedListeItem => ({
 
 export function hovedListenData(){
     const dataSource = useMemo(() => ({
-        path: '/src/features/tables/dummyData/hoved_listen_paaLissom.json',
+        path: '/dummyData/hoved_listen_paaLissom.json',
         transform: (rawData: any[]) => rawData.map(transformHovedListenItem),
         errorMessage: 'PLB contract data did not load'
     }), []);

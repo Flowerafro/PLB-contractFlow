@@ -24,7 +24,7 @@ export default function PdfModal({ data, onClose }: PdfModalProps) {
         src={fileUrl} 
         className="w-full h-full" 
       />
-        );
+      );
 // Potensielt sted vi kan tilføye andre filtyper
     }
   }

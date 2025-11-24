@@ -1,5 +1,9 @@
 
-import { useState, useEffect } from 'react';
+import { 
+    useState, 
+    useEffect, 
+    useCallback 
+} from 'react';
 import { ArchiveDocument } from '@/app/types/archiveDocument';
 import formatDate from '@/features/tables/functions/formatDate';
 
@@ -21,28 +25,50 @@ const transformArchiveDocument = (item: any): ArchiveDocument => ({
     fullFileName: item.fileName || '',
 });
 
-export function useArchiveData() {
+const fetchArchiveData = async (signal?: AbortSignal, page = 1, limit = 10): Promise<{ files: ArchiveDocument[]; total: number }> => {
+    const response = await fetch(`/plb-contractflow-r2/?page=${page}&limit=${limit}`, { signal });
+    if (!response.ok) {
+        throw new Error(`Failed to fetch archive data: ${response.status}`);
+    }
+    const data: { files: any[]; total: number } = await response.json();
+    if (!Array.isArray(data.files)) {
+        throw new Error('Unexpected response format');
+    }
+    return { files: data.files.map(transformArchiveDocument), total: data.total || 0 };
+};
+
+export function useArchiveData(page = 1, limit = 10) {
     const [data, setData] = useState<ArchiveDocument[]>([]);
+    const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        fetch("/plb-contractflow-r2")
-            .then(res => {
-                if (!res.ok) throw new Error('Failed to fetch files');
-                return res.json();
-            })
-            .then(raw => {
-                if (Array.isArray(raw)) {
-                    setData(raw.map(transformArchiveDocument));
-                } else {
-                    setError('Unexpected response format from server');
-                    setData([]);
-                }
-            })
-            .catch(e => setError(e.message))
-            .finally(() => setLoading(false));
-    }, []);
+    const fetchData = useCallback(async (signal?: AbortSignal) => {
+        try {
+            setLoading(true);
+            setError(null);
+            const result = await fetchArchiveData(signal);
+            setData(result.files);
+            setTotal(result.total);
+        } catch (err) {
+            if (err instanceof Error && err.name !== 'AbortError') {
+                setError(err.message);
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, [page, limit]);
 
-    return { data, loading, error };
+    const refetch = useCallback(() => {
+        const abortController = new AbortController();
+        fetchData(abortController.signal);
+    }, [fetchData]);
+
+    useEffect(() => {
+        const abortController = new AbortController();
+        fetchData(abortController.signal);
+        return () => abortController.abort();
+    }, [fetchData]);
+
+    return { data, total, loading, error, refetch };
 }

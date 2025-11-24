@@ -10,11 +10,7 @@ import { eq, desc } from 'drizzle-orm';
 import { HovedListeItem } from '@/app/types/hovedlisten';
 import formatDate from '@/features/tables/functions/formatDate';
 import type { Result } from '@/app/types/results';
-
-
-export interface HovedListenRepository {
-  findMany(env: { DB: D1Database }): Promise<Result<HovedListeItem[]>>;
-}
+import type { HovedListenRepository } from '../interfaces/hovedListenRepository';
 
 export function createHovedListenRepository(): HovedListenRepository {
   return {

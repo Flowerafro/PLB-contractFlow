@@ -12,15 +12,13 @@ import ContractSuccess from "./app/pages/ContractSuccess";
 import ClientOverview from "./app/pages/ClientOverview";
 import Tables from "./app/pages/Tables";
 import { hovedListenRoutes } from "./features/dataRetrieval/hovedListenRoutes";
-import { clientRoutes } from "./features/clients/clientRoutes";
 import { UserSession } from "./sessions/UserSession";
 import { getDb } from "./db/index";
 import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
-import {contracts } from "./db/schema/schema";
 import { env } from "cloudflare:workers"
+import { hovedListenRepository } from "./features/dataRetrieval/repositoryPatterns/createHovedListenRepository";
 
-type DB = D1Database;
-type R2 = R2Bucket; 
+// type DB = D1Database;
 
 /*declare global {
   var DB: D1Database;
@@ -42,7 +40,7 @@ export interface Env {
    CLOUDFLARE_ACCOUNT_ID: string;
    R2_BUCKET_NAME: string;
    R2: R2Bucket; 
-   DB: DB;
+   DB: D1Database;
    R2_SECRET_ACCESS_KEY: string;
    R2_ACCESS_KEY_ID: string;
 }
@@ -58,41 +56,36 @@ export default defineApp([
   
   
   ({ ctx }) => {
-/*
-    if (ctx && ctx.env && ctx.env.DB) {
-      // Ensure only D1Database is assigned to globalThis.DB
-      globalThis.DB = (ctx.env.DB as unknown as D1Database);
-    }
-*/
+
     },
 
-  prefix("/api/v1/hovedlisten", hovedListenRoutes),
+ // prefix("/api/v1/hovedlisten", hovedListenRoutes),
 
   //prefix("/api/v1/clients", clientRoutes),
   //prefix("/api/v1/contracts", contractRoutes),
 
 
   route("/api/v1/hovedlisten", async ({ ctx }) => {
-    try {
-      const db = getDb(ctx.env);
-
-      const r2 = ctx.env.R2;
-
-      const secretAccess = ctx.env.R2_SECRET_ACCESS_KEY;
-      const apiKey = ctx.env.R2_ACCESS_KEY_ID;
-
-      return Response.json({
-        dbConnected: !!db,
-        r2Connected: !!r2,
-        secretAccess,
-        apiKey
-      });
+    const db = env.DB;
+    if (!db) {
+      return Response.json({ error: "D1 database binding is missing" }, { status: 500 });
     }
-    catch (error) {
-      return Response.json({
-        success: false,
-        error: error instanceof Error ? error.message : String(error)
-      }, { status: 500 }
+    try {
+      const result = await hovedListenRepository.findMany({ ...env, DB: db });
+
+      if (result.success) {
+        return Response.json({ success: true, data: result.data });
+      } 
+      else {
+        return Response.json(
+          { success: false, error: result.error || "An error occurred" },
+          { status: 500 }
+        );
+      }
+    } catch (error) {
+      return Response.json(
+        { success: false, error: "Failed to fetch data"},
+        { status: 500}
       )
     }
   }),
@@ -117,7 +110,7 @@ export default defineApp([
       const formData = await request.formData();
       const data = new FormData();
       const file = formData.get('file') as File;
-       
+      
       if (!file) {
         return Response.json({ error: 'No file provided' }, { status: 400 });
       }
@@ -153,8 +146,12 @@ export default defineApp([
       }
   }),
 
-  route("/plb-contractflow-r2", async ({ ctx }) => {
+  route("/plb-contractflow-r2", async ({ request, ctx }) => {
+    
     try {
+      const url = new URL(request.url);
+      const page = parseInt(url.searchParams.get('page') || '1');
+      const limit = parseInt(url.searchParams.get('limit') || '10');
       const r2 = env.R2;
 
       if (!r2) {
@@ -163,14 +160,15 @@ export default defineApp([
       }
       const listResponse = await env.R2.list();
       console.log("R2 objects:", listResponse.objects);
-      const files = listResponse.objects.map(obj => ({
+      const allFiles = listResponse.objects.map(obj => ({
         fileName: obj.key,
         size: obj.size,
         uploaded: obj.uploaded,
 // Her kan det legges til flere metadata typer (selskap, conract, osv)
 // Interface for generiske filer?
       }));
-    return Response.json(files);
+      const paginatedFiles = allFiles.slice((page - 1) * limit, page * limit);
+      return Response.json({ files: paginatedFiles, total: allFiles.length })
     } catch (error) {
       return Response.json({ error: 'Failed to fetch files' }, { status: 500 });
     }

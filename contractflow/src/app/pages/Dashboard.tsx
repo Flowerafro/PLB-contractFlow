@@ -9,12 +9,10 @@ import DetailView from "./DetailView";
 import ButtonClear from "../../components/ButtonClear";
 import TableGeneration from "@/components/featureComponents/TableGeneration";
 import ShipmentList from "@/components/ShipmentList";
-import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
+import { hovedlistenDatabaseData } from "@/features/tables/hooks/datatypeStructures/hovedlistenDatabaseData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
 import mapShipmentData from "@/lib/mapShipmentData";
 import useFilteredResults from "../hooks/useFilteredResults";
-
-
 
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -22,29 +20,13 @@ export default function Dashboard() {
   const [selectedShipment, setSelectedShipment] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data, loading, error } = hovedListenData();
+  const { data, loading, error } = hovedlistenDatabaseData();
 
   const handleSearch = (query: string) => {
     setSearchTerm(query.trim().toLowerCase());
     sethasSearched(true);
   };
-/*
-  const filteredResults = useMemo(() => {
-    if (!searchTerm) return [];
-    const source = Array.isArray(data) ? data : [];
-    return source.filter((row: any) => (
-        String(row.container ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.customer ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.bookingNumber ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.client ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.product ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalContractNumber ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalContractDate ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalOrderNumber ?? "").toLowerCase().includes(searchTerm) ||
-        String(row.principalOrderDate ?? "").toLowerCase().includes(searchTerm) 
-      ));
-    }, [searchTerm, data]);
-*/
+
   const filteredResults = useFilteredResults(searchTerm, data) 
      const handleSelectShipment = (row: any) => {
       setSelectedShipment(mapShipmentData(row)
@@ -78,15 +60,28 @@ export default function Dashboard() {
           )
         ) : (
           <div className="bg-[var(--bg-white)] p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl/7 font-bold text-[var(--text-color-black)] sm:truncate sm:text-3xl sm:tracking-tight">
+          <h2 className="
+            text-2xl/7 
+            font-bold 
+            text-[var(--text-color-black)] 
+            sm:truncate 
+            sm:text-3xl 
+            sm:tracking-tight
+          ">
             Alle forsendelser
           </h2>
         
-          <div className="overflow-x-auto w-full flex justify-center">
+          <div className="
+            overflow-x-auto 
+            w-full 
+            flex 
+            justify-center
+          ">
             <div className="min-w-full max-w-[900px]">
               <TableGeneration 
                 data={data}
                 columnConfig={hovedListenColumns}
+                columnWidth="40rem"
                 onRowClick={handleSelectShipment}
               />
             </div>

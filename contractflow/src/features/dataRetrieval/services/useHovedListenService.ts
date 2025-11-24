@@ -1,11 +1,8 @@
-import { hovedListenRepository } from '@/features/dataRetrieval/repositoryPatterns/hovedListenRepository';
+import { hovedListenRepository } from '@/features/dataRetrieval/repositoryPatterns/createHovedListenRepository';
 import { HovedListeItem } from '@/app/types/hovedlisten';
 import { AppContext } from '@/worker';
 import { env } from 'process';
-
-export interface HovedListenService {
-  getHovedListenData(): Promise<HovedListeItem[]>;
-}
+import { HovedListenService } from '../interfaces/hovedListenService';
 
 function getSampleData(): HovedListeItem[] {
   return [
@@ -66,43 +63,33 @@ function getSampleData(): HovedListeItem[] {
   ];
 }
 
-function createHovedListenService(): HovedListenService {
+export default function useHovedListenService(): HovedListenService {
   return {
     async getHovedListenData(): Promise<HovedListeItem[]> {
       try {
         if (typeof window !== 'undefined') {
           try {
-            const response = await fetch('/api/v1/hovedlisten/');
+            const response = await fetch('/api/v1/hovedlisten');
             if (response.ok) {
               const result: { success: boolean; data: HovedListeItem[] } = await response.json();
-              return result.success ? result.data : getSampleData();
+              //              return result.success ? result.data : getSampleData();
             }
           } catch (apiError) {
             console.log('API call failed, falling back to sample data:', apiError);
-            return getSampleData();
+            return [];
+//            return getSampleData();
           }
         }
 
-        try {
-          const result = await hovedListenRepository.findMany(env);
-          if (result && result.success && Array.isArray(result.data)) {
-            return result.data;
-          }
-        } catch (dbError) {
-          console.log('Database access failed, using sample data:', dbError);
-        }
-
-        console.log('Using sample data for development');
-        return getSampleData();
+        console.log('Using empty data for development');
+        return [];
       } catch (error) {
         console.error('Service error, falling back to sample data:', error);
-        return getSampleData();
+        return [];
       }
     }
   };
 }
-
-export const hovedListenService = createHovedListenService();
 
 /*
 import { 
