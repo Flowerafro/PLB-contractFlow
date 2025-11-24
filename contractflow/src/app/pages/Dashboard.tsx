@@ -1,9 +1,6 @@
 "use client";
 
-import React, { 
-  useState,
-  useMemo 
-} from "react";
+import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
 import ButtonClear from "../../components/ButtonClear";
@@ -27,13 +24,13 @@ export default function Dashboard() {
     sethasSearched(true);
   };
 
+
   const filteredResults = useFilteredResults(searchTerm, data) 
      const handleSelectShipment = (row: any) => {
       setSelectedShipment(mapShipmentData(row)
       );
   }; 
 
-    // Basic informasjon relatert til tabell data visningen
   if (loading) return <div>Table is loading...</div>;
   if (error) return <div>Error: {String(error)}</div>;
 

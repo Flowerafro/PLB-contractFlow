@@ -28,32 +28,16 @@ export default function Tables() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedShipment, setSelectedShipment] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-/*   const [results, setResults] = useState<Shipment[]>([]);
-  const [searchTrimmed, setSearchTrimmed] = useState(false); */
-  
+
   const { data: data, loading, error } = hovedListenData();
 
   const filteredResults = useFilteredResults(searchTerm, data);
 
   if (loading) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '50vh',
-        flexDirection: 'column',
-        gap: '1rem'
-      }}>
+      <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
         <div>Loading table data...</div>
-        <div style={{ 
-          width: '40px', 
-          height: '40px', 
-          border: '3px solid #f3f3f3',
-          borderTop: '3px solid #007bff',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
+        <div className="w-10 h-10 border-[3px] border-gray-200 border-t-blue-600 rounded-full animate-spin" />
         <style dangerouslySetInnerHTML={{
           __html: `
             @keyframes spin {
@@ -68,24 +52,9 @@ export default function Tables() {
 
   if (error) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '50vh',
-        flexDirection: 'column',
-        gap: '1rem',
-        color: '#dc3545'
-      }}>
+      <div className="flex flex-col items-center justify-center h-[50vh] gap-4 text-red-600">
         <div>Error loading data: {error}</div>
-        <button onClick={() => window.location.reload()} style={{
-          padding: '8px 16px',
-          backgroundColor: '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer'
-        }}>
+        <button onClick={() => window.location.reload()} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
           Retry
         </button>
       </div>
@@ -94,14 +63,12 @@ export default function Tables() {
 
 
   const handleSearch = (query: string) => {
-    /* const trimmed = query.trim().toLowerCase(); */
     setSearchTerm(query.trim().toLowerCase());
   }
 
   const handleSelectedShipment = (row: any) => {
     setSelectedShipment(mapShipmentData(row));
   }
-
   return (
         <div>
       <h1 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--text-color-black)] leading-snug mb-4">
