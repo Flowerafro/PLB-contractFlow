@@ -1,6 +1,8 @@
 import { defineScript } from "rwsdk/worker";
 import { drizzle } from "drizzle-orm/d1";
 import { contracts, clients, principals } from "@/db/schema/schema";
+// @ts-ignore
+import hovedListenData from "@/resources/hoved_listen_paaLissom.json";
 
 export const seedData = async (env?: { DB: D1Database }) => {
   try {
@@ -15,68 +17,84 @@ export const seedData = async (env?: { DB: D1Database }) => {
     await db.delete(clients);
     await db.delete(principals);
 
-    // Insert test clients
-    const [client1] = await db
-      .insert(clients)
-      .values({
-        name: "Acme Corporation",
-        email: "contact@acme.com",
-        phone: "+1-555-0123",
-        customerCode: "ACM001",
-        country: "USA",
-      })
-      .returning();
+    // Extract unique clients from JSON data
+    const uniqueClients = Array.from(
+      new Map(
+        hovedListenData.map((item) => [
+          item.customer,
+          {
+            name: item.customer,
+            email: `contact@${item.customer.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`,
+            phone: "+47-555-0123", // Default Norwegian number
+            customerCode: item.plbReference.split('-').slice(0, 2).join('-'),
+            country: "Norway", // Default to Norway
+          }
+        ])
+      ).values()
+    );
 
-    // Insert test principals  
-    const [principal1] = await db
-      .insert(principals)
-      .values({
-        name: "Global Steel Ltd",
-      })
-      .returning();
+    // Insert clients and collect their IDs
+    const clientInsertPromises = uniqueClients.map(async (clientData) => {
+      const [client] = await db
+        .insert(clients)
+        .values(clientData)
+        .returning();
+      return { name: clientData.name, id: client.id };
+    });
 
-    // Insert test contracts
-    const contractData = [
-      {
-        plbReference: "PLB-2024-001",
-        orderDate: "2024-01-15",
-        productCode: "STEEL-A001",
-        tonnPerFcl: 25.5,
-        priceUsdPerMtC: 85000, // 850.00 USD in cents
-        totalUsdC: 2167500, // 21675.00 USD in cents 
-        commissionGroupBp: 250, // 2.5% in basis points
-        customerOrderNo: "ACM-2024-123",
-        principalContractNo: "789456",
-        principalContractDate: "2024-01-10",
-        principalOrderNo: "555789",
-        clientId: client1.id,
-        principalId: principal1.id,
-        status: "ACTIVE" as const,
-      },
-      {
-        plbReference: "PLB-2024-002", 
-        orderDate: "2024-01-22",
-        productCode: "ALU-B002",
-        tonnPerFcl: 18.2,
-        priceUsdPerMtC: 120000, // 1200.00 USD in cents
-        totalUsdC: 2184000, // 21840.00 USD in cents
-        commissionGroupBp: 300, // 3.0% in basis points
-        customerOrderNo: "ACM-2024-124",
-        principalContractNo: "789457",
-        principalContractDate: "2024-01-18",
-        principalOrderNo: "555790",
-        clientId: client1.id,
-        principalId: principal1.id,
-        status: "ACTIVE" as const,
-      }
-    ];
+    const insertedClients = await Promise.all(clientInsertPromises);
+    const clientMap = new Map(insertedClients.map(c => [c.name, c.id]));
+
+    // Extract unique principals (using principalContractNumber as identifier)
+    const uniquePrincipals = Array.from(
+      new Map(
+        hovedListenData.map((item) => [
+          item.principalContractNumber,
+          {
+            name: `Principal Contract ${item.principalContractNumber}`,
+          }
+        ])
+      ).values()
+    );
+
+    // Insert principals and collect their IDs
+    const principalInsertPromises = uniquePrincipals.map(async (principalData) => {
+      const [principal] = await db
+        .insert(principals)
+        .values(principalData)
+        .returning();
+      return { name: principalData.name, id: principal.id, contractNumber: principalData.name.split(' ').pop() };
+    });
+
+    const insertedPrincipals = await Promise.all(principalInsertPromises);
+    const principalMap = new Map(insertedPrincipals.map(p => [p.contractNumber, p.id]));
+
+    // Map JSON data to contract format
+    const contractData = hovedListenData.map((item) => ({
+      plbReference: item.plbReference,
+      orderDate: item.plbOrderDate,
+      productCode: item.product.substring(0, 20), // Truncate if too long
+      tonnPerFcl: item.tonn,
+      priceUsdPerMtC: Math.round(item.priceUsdMt * 100), // Convert to cents
+      totalUsdC: Math.round(item.totalPriceUsd * 100), // Convert to cents
+      commissionGroupBp: 250, // Default 2.5% commission
+      customerOrderNo: item.customerOrderNumber,
+      principalContractNo: item.principalContractNumber.toString(),
+      principalContractDate: item.principalContractDate,
+      principalOrderNo: item.principalOrderNumber.toString(),
+      clientId: clientMap.get(item.customer)!,
+      principalId: principalMap.get(item.principalContractNumber.toString())!,
+      status: "ACTIVE" as const,
+    }));
 
     const [...insertedContracts] = await db
       .insert(contracts)
       .values(contractData)
       .returning();
 
-    console.log("Finished seeding hovedlisten data");
+    console.log("🌱 Finished seeding hovedlisten data from JSON");
+    console.log("Inserted clients:", insertedClients.length);
+    console.log("Inserted principals:", insertedPrincipals.length);
     console.log("Inserted contracts:", insertedContracts.length);
 
     return insertedContracts;
