@@ -7,6 +7,8 @@ declare namespace Cloudflare {
 	}
 	interface Env {
 		cc: "73bedcb5d46a3f368e92d733b4564d2d";
+        CLOUDFLARE_DATABASE_ID: "ff8d2ccd-6228-47d1-a98b-5e3f0ea4d02b";
+        CLOUDFLARE_D1_TOKEN: "PiUb6m2aY4FVmMj8YyCzMV9l6ZhukS39WomAKrdh";
 		R2_BUCKET_NAME: "plb-contractflow-r2";
 		R2: R2Bucket;
 		DB: D1Database;

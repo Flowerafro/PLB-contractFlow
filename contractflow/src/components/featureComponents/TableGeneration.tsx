@@ -84,7 +84,7 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick, met
                             className={`${onRowClick ? "cursor-pointer" : "cursor-default"} ${
                                 hoveredShipmentId === row.id ? "bg-gray-100" : ""
                             }`}
-                                                        onMouseEnter={() => setHoveredShipmentId(row.id)}
+                            onMouseEnter={() => setHoveredShipmentId(row.id)}
                             onMouseLeave={() => setHoveredShipmentId(null)}
                             >
                                 {row.getVisibleCells().map(cell => (
@@ -103,7 +103,6 @@ export default function TableGeneration<T>({ data, columnConfig, onRowClick, met
                         ))}
                     </tbody>
                 </table>
-
             </div>
             <div className="
                 flex 

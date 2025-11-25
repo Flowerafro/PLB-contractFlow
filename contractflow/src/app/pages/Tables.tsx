@@ -5,11 +5,10 @@ import React, { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import DetailView from "./DetailView";
 import TabbedTableGeneration from "@/components/featureComponents/TabbedTableGeneration";
-import { hovedListenData } from "@/features/tables/hooks/datatypeStructures/hovedListenData";
+import { hovedlistenDatabaseData } from "@/features/tables/hooks/datatypeStructures/hovedlistenDatabaseData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
 import { exportTableToExcel } from "@/lib/exportTableToExcel";
 import ExportExcelButton from "@/components/ExportExcelButton"
-import { HovedListeItem } from "../types/hovedlisten";
 import useFilteredResults from "../hooks/useFilteredResults";
 import mapShipmentData from "@/lib/mapShipmentData";
 
@@ -29,7 +28,7 @@ export default function Tables() {
   const [selectedShipment, setSelectedShipment] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: data, loading, error } = hovedListenData();
+  const { data, loading, error } = hovedlistenDatabaseData();
 
   const filteredResults = useFilteredResults(searchTerm, data);
 

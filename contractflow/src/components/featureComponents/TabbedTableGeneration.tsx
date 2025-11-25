@@ -3,6 +3,7 @@ import {
     flexRender,
     getCoreRowModel, 
     getSortedRowModel,
+    getPaginationRowModel,
     SortingState,
     useReactTable,
 } from "@tanstack/react-table";
@@ -17,8 +18,9 @@ import {
  } from "react";
 
 // Komponent for tabbede tabeller
-function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, columnConfig, groupByColumn, onRowClick }: TabbedTableProps<T> & { onRowClick?: (row: T) => void }){
+export default function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, columnConfig, groupByColumn, onRowClick }: TabbedTableProps<T> & { onRowClick?: (row: T) => void }){
     const [sorting, setSorting] = useState<SortingState>([]);
+    const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
     const [hoveredShipmentId, setHoveredShipmentId] = useState<string | null>(null);    
 
     const columnHelper = createColumnHelper<T>();
@@ -27,14 +29,6 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
         Array.from(new Set(data.map(item => item[groupByColumn]))),
         [data, groupByColumn]
     );
-
-    const tabCounts = useMemo(() => {
-        const counts: Record<string, number> = {};
-        uniqueValues.forEach(value => {
-            counts[String(value)] = data.filter(item => item[groupByColumn] === value).length;
-        });
-        return counts;
-    }, [data, groupByColumn, uniqueValues]);
 
     const columns = useMemo(() => 
         columnConfig.map((config: ColumnSetup<T>) =>
@@ -77,10 +71,13 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
     const table = useReactTable({
         data: filteredData,
         columns,
-        state: { sorting },
+        state: { sorting, pagination },
         onSortingChange: setSorting,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
+        getPaginationRowModel: getPaginationRowModel(), 
+        initialState: {pagination: { pageSize: 10 }}
     });
 
     return(
@@ -100,7 +97,7 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
           }
         `}
       >
-        {String(value)} ({tabCounts[String(value)] || 0})
+        {String(value)}
       </button>
     ))}
   </div>
@@ -160,10 +157,45 @@ function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, c
 
                 </table>
             </div>
+
+            <div className="
+                flex 
+                items-center 
+                justify-between 
+                p-4"
+            >
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => table.previousPage()}
+                        disabled={!table.getCanPreviousPage()}
+                        className="px-3 py-1 border rounded disabled:opacity-50"
+                    >
+                        Previous
+                    </button>
+                    <span>
+                        Page {table.getState().pagination.pageIndex +1} of {table.getPageCount()}
+                    </span>
+                    <button onClick={() => table.nextPage()}
+                        disabled={!table.getCanNextPage()}
+                        className="px-3 py-1 border rounded disabled:opacity-50"
+                    >
+                        Next
+                    </button>
+                </div>
+                <select
+                    value={table.getState().pagination.pageSize}
+                    onChange={e => table.setPageSize(Number(e.target.value))}
+                    className="border rounded p-1"
+                >
+                    {[10, 20, 30, 40, 50].map(size => (
+                        <option key={size} value={size}>
+                            Show {size}
+                        </option>
+                    ))}
+                </select>
+            </div>
         </>
     )
 }
 
 const TabbedTableGeneration = memo(TabbedTableGenerationComponent) as typeof TabbedTableGenerationComponent;
-
-export default TabbedTableGeneration;
