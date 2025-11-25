@@ -4,7 +4,7 @@ import { hovedListenRepository } from "@/features/dataRetrieval/repositoryPatter
 import hovedListenService from "@/features/dataRetrieval/services/useHovedListenService";
 
 export const hovedListenRoutes = [
-  route("/d1-retrieval", async ({ request, ctx }: RequestInfo) => {
+  route("/api/v1/hovedlisten", async ({ request, ctx }: RequestInfo) => {
     if (request.method === "GET") {
       try {
         const result = await hovedListenRepository.findMany(ctx.env);

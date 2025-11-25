@@ -76,7 +76,7 @@ export const seedData = async (env?: { DB: D1Database }) => {
       .values(contractData)
       .returning();
 
-    console.log("🌱 Finished seeding hovedlisten data");
+    console.log("Finished seeding hovedlisten data");
     console.log("Inserted contracts:", insertedContracts.length);
 
     return insertedContracts;

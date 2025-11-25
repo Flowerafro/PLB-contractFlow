@@ -1,4 +1,4 @@
-import { hovedListenRepository } from '@/features/dataRetrieval/repositoryPatterns/createHovedListenRepository';
+import { createHovedListenRepository } from '@/features/dataRetrieval/repositoryPatterns/createHovedListenRepository';
 import { HovedListeItem } from '@/app/types/hovedlisten';
 import { AppContext } from '@/worker';
 import { env } from 'process';
@@ -72,7 +72,7 @@ export default function useHovedListenService(): HovedListenService {
             const response = await fetch('/api/v1/hovedlisten');
             if (response.ok) {
               const result: { success: boolean; data: HovedListeItem[] } = await response.json();
-              //              return result.success ? result.data : getSampleData();
+              return result.success ? result.data : [];
             }
           } catch (apiError) {
             console.log('API call failed, falling back to sample data:', apiError);

@@ -11,12 +11,28 @@ import { HovedListeItem } from '@/app/types/hovedlisten';
 import formatDate from '@/features/tables/functions/formatDate';
 import type { Result } from '@/app/types/results';
 import type { HovedListenRepository } from '../interfaces/hovedListenRepository';
+import type { D1Database } from '@cloudflare/workers-types';
+
+function safeNumber(value: any): number {
+  const num = Number(value);
+  return isNaN(num) ? 0 : num;
+}
+
+function safeDate(value: any): string {
+  if (!value) return '';
+  try {
+    const date = new Date(value);
+    return formatDate(date);
+  } catch {
+    return '';
+  }
+}
 
 export function createHovedListenRepository(): HovedListenRepository {
   return {
     async findMany(env) {
       try {
-        const database = getDb(env);
+        const database = env.DB;
         if (!database) {
           return {
             success: false,
@@ -26,50 +42,80 @@ export function createHovedListenRepository(): HovedListenRepository {
             },
           };
         }
-        const result = await database
-          .select()
-          .from(contracts)
-          .leftJoin(clients, eq(contracts.clientId, clients.id))
-          .leftJoin(principals, eq(contracts.principalId, principals.id))
-          .leftJoin(shipments, eq(shipments.contractId, contracts.id))
-          .leftJoin(invoices, eq(invoices.contractId, contracts.id))
-          .where(eq(contracts.status, 'ACTIVE'))
-          .orderBy(desc(contracts.createdAt));
 
-        const mapped: HovedListeItem[] = (result as any[]).map((row: any): HovedListeItem => {
-          const contracts = row.contracts || {};
-          const clients = row.clients || {};
-          const shipments = row.shipments || {};
-          const principals = row.principals || {};
-          const invoices = row.invoices || {};
+        const query = `
+          SELECT 
+            contracts.plb_reference,
+            contracts.order_date AS plbOrderDate,
+            clients.name AS customer,
+            contracts.product_code AS product,
+            contracts.tonn_per_fcl AS tonn,
+            contracts.price_usd_per_mt_c AS priceUsdMt,
+            contracts.total_usd_c AS totalPriceUsd,
+            contracts.commission_group_bp AS prisgrProv,
+            (SELECT po_eta FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS poEta,
+            (SELECT etd FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS etd,
+            contracts.customer_order_no AS customerOrderNumber,
+            contracts.principal_contract_no AS principalContractNumber,
+            contracts.principal_contract_date,
+            contracts.principal_order_no AS principalOrderNumber,
+            (SELECT container_number FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS containerNumber,
+            (SELECT principal_invoice_no FROM invoices WHERE invoices.contract_id = contracts.id ORDER BY invoices.id DESC LIMIT 1) AS principalInvoiceNumber,
+            (SELECT principal_invoice_date FROM invoices WHERE invoices.contract_id = contracts.id ORDER BY invoices.id DESC LIMIT 1) AS principalInvoiceDate,
+            (SELECT invoice_due_date FROM invoices WHERE invoices.contract_id = contracts.id ORDER BY invoices.id DESC LIMIT 1) AS invoiceDueDate,
+            (SELECT tonnes_delivered FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS tonnesDeliveres,
+            (SELECT invoiced_amount_c FROM invoices WHERE invoices.contract_id = contracts.id ORDER BY invoices.id DESC LIMIT 1) AS invoiceAmount,
+            (SELECT bl_date FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS blDate,
+            (SELECT eta FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS eta,
+            (SELECT booking_no FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS bookingNumber,
+            (SELECT bl_number FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS blNumber,
+            (SELECT aak_del_no FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS aakDelNumber
+          FROM contracts
+          LEFT JOIN clients ON contracts.client_id = clients.id
+          LEFT JOIN principals ON contracts.principal_id = principals.id
+          WHERE contracts.status = 'ACTIVE'
+          ORDER BY contracts.id DESC
+        `;
+
+        const result = await database.prepare(query).all();
+
+        if (!result.success) {
           return {
-            plbReference: contracts.plbReference || '',
-            plbOrderDate: contracts.orderDate ? formatDate(new Date(contracts.orderDate)) : '',
-            customer: clients.name || 'Unknown',
-            product: contracts.productCode || 'Unknown',
-            tonn: Number(contracts.tonnPerFcl) || 0,
-            priceUsdMt: Number(contracts.priceUsdPerMtC) || 0,
-            totalPriceUsd: Number(contracts.totalUsdC) || 0,
-            prisgrProv: Number(contracts.commissionGroupBp) || 0,
-            poEta: shipments.poEta ? formatDate(new Date(shipments.poEta)) : '',
-            etd: shipments.etd ? formatDate(new Date(shipments.etd)) : '',
-            customerOrderNumber: contracts.customerOrderNo || '',
-            principalContractNumber: Number(contracts.principalContractNo) || 0,
-            principalContractDate: contracts.principalContractDate ? formatDate(new Date(contracts.principalContractDate)) : '',
-            principalOrderNumber: Number(contracts.principalOrderNo) || 0,
-            containerNumber: shipments.containerNumber || '',
-            principalInvoiceNumber: Number(invoices.principalInvoiceNo) || 0,
-            principalInvoiceDate: invoices.principalInvoiceDate ? formatDate(new Date(invoices.principalInvoiceDate)) : '',
-            invoiceDueDate: invoices.invoiceDueDate ? formatDate(new Date(invoices.invoiceDueDate)) : '',
-            tonnesDeliveres: Number(shipments.tonnesDelivered) || 0,
-            invoiceAmount: Number(invoices.invoicedAmountC) || 0,
-            blDate: shipments.blDate ? formatDate(new Date(shipments.blDate)) : '',
-            eta: shipments.eta ? formatDate(new Date(shipments.eta)) : '',
-            bookingNumber: shipments.bookingNo || '',
-            blNumber: shipments.blNumber || '',
-            aakDelNumber: Number(shipments.aakDelNo) || 0,
+            success: false,
+            error: {
+              code:500,
+              message: "Failed to execute query",
+            },
           };
-        });
+        }
+
+        const mapped: HovedListeItem[] = result.results.map((row: any): HovedListeItem => ({
+          plbReference: row.plbReference || '',
+          plbOrderDate: safeDate(row.plbOrderDate),
+          customer: row.customer || 'Unknown',
+          product: row.product || 'Unknown',
+          tonn: safeNumber(row.tonn),
+          priceUsdMt: safeNumber(row.priceUsdMt),
+          totalPriceUsd: safeNumber(row.totalPriceUsd),
+          prisgrProv: safeNumber(row.prisgrProv),
+          poEta: safeDate(row.poEta),
+          etd: safeDate(row.etd),
+          customerOrderNumber: row.customerOrderNumber || '',
+          principalContractNumber: safeNumber(row.principalContractNumber),
+          principalContractDate: safeDate(row.principalContractDate),
+          principalOrderNumber: safeNumber(row.principalOrderNumber),
+          containerNumber: row.containerNumber || '',
+          principalInvoiceNumber: safeNumber(row.principalInvoiceNumber),
+          principalInvoiceDate: safeDate(row.principalInvoiceDate),
+          invoiceDueDate: safeDate(row.invoiceDueDate),
+          tonnesDeliveres: safeNumber(row.tonnesDeliveres),
+          invoiceAmount: safeNumber(row.invoiceAmount),
+          blDate: safeDate(row.blDate),
+          eta: safeDate(row.eta),
+          bookingNumber: row.bookingNumber || '',
+          blNumber: row.blNumber || '',
+          aakDelNumber: safeNumber(row.aakDelNumber),
+        }));
 
         return { success: true, data: mapped };
       } catch (error) {
