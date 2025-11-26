@@ -11,6 +11,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite dev",
+    "demo": "echo 'Demo mode: Bruk live deployment på https://worker.mathias-jarbekk1.workers.dev' && echo 'Login: admin/admin eller user/user123' && start https://worker.mathias-jarbekk1.workers.dev",
     "dev:worker": "wrangler dev --persist-to=.wrangler/state",
     "dev:worker-remote": "wrangler dev --remote",
     "dev:init": "rw-scripts dev-init",
