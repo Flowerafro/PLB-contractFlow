@@ -37,7 +37,7 @@ export default function DropdownMenu({ options }: DropdownMenuProps) {
       </button>
 
       {isOpen && (
-        <ul className="bg-(--dropdown-bg) absolute right-0 m-2 p-4 rounded-md shadow-md z-50">
+        <ul className="bg-(--dropdown-bg) absolute top-full right-1 m-2 p-4 rounded-md shadow-md z-50">
           {options.map((option) => (
             <li key={option.id} className="p-4 hover:underline rounded-md cursor-pointer">
               <button

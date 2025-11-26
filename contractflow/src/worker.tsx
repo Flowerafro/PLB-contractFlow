@@ -65,7 +65,7 @@ export default defineApp([
   //prefix("/api/v1/contracts", contractRoutes),
 
 
-  route("/api/v1/hovedlisten", async ({ ctx }) => {
+  route("/hovedlisten", async ({ ctx }) => {
     const db = env.DB;
     if (!db) {
       return Response.json({ error: "D1 database binding is missing" }, { status: 500 });

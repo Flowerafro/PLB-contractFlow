@@ -1,35 +1,24 @@
+import { useState } from "react";
 import { 
-    createColumnHelper,
     flexRender,
     getCoreRowModel, 
     getSortedRowModel,
-    SortingState,
     useReactTable,
     getPaginationRowModel
 } from "@tanstack/react-table";
-import type { ColumnSetup } from "@/features/tables/interfaces/columnSetup";
-import type { TableGenerationProps } from "@/features/tables/interfaces/tableGenerationProps";
-import { useState } from "react";
 
+import useTableColumns from "@/features/tables/hooks/useTableColumns";
+import useTableState from "@/features/tables/hooks/useTableState";
+
+import type { TableGenerationProps } from "@/features/tables/interfaces/tableGenerationProps";
+import type { ColumnSetup } from "@/features/tables/interfaces/columnSetup";
 
 export default function TableGeneration<T>({ data, columnConfig, onRowClick, meta, columnWidth = 'auto' }: TableGenerationProps<T> & { onRowClick?: (row: T) => void; meta?: any }) {
     const [hoveredShipmentId, setHoveredShipmentId] = useState<string | null>(null);
-    const [sorting, setSorting] = useState<SortingState>([]);
-    const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-    const columnHelper = createColumnHelper<T>();
+    const { sorting, setSorting, pagination, setPagination } = useTableState();
 
-    //  Gjenbrukbar kolonne-funksjon:
-    const columns = columnConfig.map((config: ColumnSetup<T>) =>
-        columnHelper.accessor(config.key as any, {
-            id: String(config.key),
-            header: () => <span>{config.header}</span>,
-            cell: config.cell ? config.cell : info => {
-                const value = info.getValue();
-                return config.formatter ? config.formatter(value) : String(value || "");
-            },
-            enableSorting: true,
-        })
-    );
+    const columns = useTableColumns<T>(columnConfig);
+
 
     const table = useReactTable({
         data,

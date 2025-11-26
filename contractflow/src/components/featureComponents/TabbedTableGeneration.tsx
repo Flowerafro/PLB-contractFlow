@@ -1,58 +1,46 @@
 import { 
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel, 
-    getSortedRowModel,
-    getPaginationRowModel,
-    SortingState,
-    useReactTable,
-} from "@tanstack/react-table";
-import type { ColumnSetup } from "@/features/tables/interfaces/columnSetup";
-import type { TabbedTableProps } from "@/features/tables/interfaces/tabbedTableProps";
-import { 
     useState,
     useMemo,
     useEffect,
     useCallback,
     memo
  } from "react";
+import { 
+    flexRender,
+    getCoreRowModel, 
+    getSortedRowModel,
+    getPaginationRowModel,
+    useReactTable,
+} from "@tanstack/react-table";
 
-// Komponent for tabbede tabeller
+import useTableState from "@/features/tables/hooks/useTableState";
+import useTableColumns from "@/features/tables/hooks/useTableColumns";
+
+import type { TabbedTableProps } from "@/features/tables/interfaces/tabbedTableProps";
+
+// -Komponent for tabbede tabeller-
+
 export default function TabbedTableGenerationComponent<T extends Record<string, any>>({ data, columnConfig, groupByColumn, onRowClick }: TabbedTableProps<T> & { onRowClick?: (row: T) => void }){
-    const [sorting, setSorting] = useState<SortingState>([]);
-    const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
     const [hoveredShipmentId, setHoveredShipmentId] = useState<string | null>(null);    
-
-    const columnHelper = createColumnHelper<T>();
+    const [selectedTab, setSelectedTab] = useState<string | null>(null);
+    const { sorting, setSorting, pagination, setPagination } = useTableState();
+    
+    const columns = useTableColumns<T>(columnConfig);
     
     const uniqueValues = useMemo(() =>
         Array.from(new Set(data.map(item => item[groupByColumn]))),
         [data, groupByColumn]
     );
 
-    const columns = useMemo(() => 
-        columnConfig.map((config: ColumnSetup<T>) =>
-            columnHelper.accessor(config.key as any, {
-                id: String(config.key),
-                header: () => <span>{config.header}</span>,
-                cell: info => {
-                    const value = info.getValue();
-                    return config.formatter ? config.formatter(value) : String(value || "");
-                },
-                enableSorting: true,
-            })
-        ), [columnConfig, columnHelper]);
-
-    const [selectedTab, setSelectedTab] = useState(() => uniqueValues[0]);
 
     useEffect(() => {
-        if (uniqueValues.length > 0 && !uniqueValues.includes(selectedTab)) {
-            setSelectedTab(uniqueValues[0]);
+        if (uniqueValues.length > 0 && (selectedTab === null || !uniqueValues.includes(selectedTab as any))) {
+            setSelectedTab(uniqueValues[0] as string);
         }
     }, [uniqueValues, selectedTab]);
 
     const filteredData = useMemo(() => 
-        data.filter(item => item[groupByColumn] === selectedTab),
+        selectedTab ? data.filter(item => item[groupByColumn] === selectedTab) : [],
         [data, groupByColumn, selectedTab]
     );
 
@@ -82,30 +70,29 @@ export default function TabbedTableGenerationComponent<T extends Record<string, 
 
     return(
         <>
-<div className="overflow-x-auto w-full">
-  <div className="flex border-b border-gray-300 bg-gray-100 rounded-lg w-max">
-    {uniqueValues.map((value, index) => (
-      <button
-        key={String(value)}
-        onClick={() => handleTabSelect(value)}
-        className={`
-          px-5 py-3 whitespace-nowrap
-          border-none transition-all
-          ${selectedTab === value ? 
-            "bg-white font-bold border-b-2 border-green-800 text-green-800" :
-            "bg-transparent text-gray-600 hover:bg-gray-300"
-          }
-        `}
-      >
-        {String(value)}
-      </button>
-    ))}
-  </div>
-</div>
+            <div className="overflow-x-auto w-full">
+                <div className="flex border-b border-gray-300 bg-gray-100 rounded-lg w-max">
+                {uniqueValues.map((value, index) => (
+                <button
+                    key={String(value)}
+                    onClick={() => handleTabSelect(value)}
+                    className={`
+                    px-5 py-3 whitespace-nowrap
+                    border-none transition-all
+                    ${selectedTab === value ? 
+                        "bg-white font-bold border-b-2 border-green-800 text-green-800" :
+                        "bg-transparent text-gray-600 hover:bg-gray-300"
+                    }
+                    `}
+                >
+                    {String(value)}
+                </button>
+                ))}
+                </div>  
+            </div>
 
-
-<div className="w-full overflow-x-auto mt-4 border border-gray-400 rounded-lg">
-  <table id="contracts-table" className="border-collapse w-full">
+            <div className="w-full overflow-x-auto mt-4 border border-gray-400 rounded-lg">
+               <table id="contracts-table" className="border-collapse w-full">
 
                     <thead className="w-fit">
                         {table.getHeaderGroups().map(headerGroup => (
