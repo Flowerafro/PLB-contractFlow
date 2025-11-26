@@ -77,11 +77,15 @@ export async function login(formData: FormData): Promise<{ success: boolean; err
   // Store session data in localStorage and cookie for authentication
   const sessionData = JSON.stringify(userData);
   
+  // Check if we're in development (local) mode
+  const isLocal = process.env.NODE_ENV === 'development' || process.env.CF_PAGES_URL?.includes('localhost');
+  const secureFlag = isLocal ? '' : 'Secure; ';
+  
   return { 
     success: true, 
     redirect: "/Home",
     sessionData: sessionData,
-    setCookie: `user_session=${encodeURIComponent(sessionData)}; Path=/; Max-Age=86400; Secure; SameSite=Lax`
+    setCookie: `user_session=${encodeURIComponent(sessionData)}; Path=/; Max-Age=86400; ${secureFlag}SameSite=Lax`
   };
 }
 
@@ -89,11 +93,15 @@ export async function login(formData: FormData): Promise<{ success: boolean; err
  * Server action to handle user logout
  */
 export async function logout(): Promise<{ redirect: string; clearSession: boolean; clearCookie?: string }> {
+  // Check if we're in development (local) mode
+  const isLocal = process.env.NODE_ENV === 'development' || process.env.CF_PAGES_URL?.includes('localhost');
+  const secureFlag = isLocal ? '' : 'Secure; ';
+  
   // Clear session data and cookie
   return { 
     redirect: "/Login", 
     clearSession: true,
-    clearCookie: "user_session=; Path=/; Max-Age=0; Secure; SameSite=Lax"
+    clearCookie: `user_session=; Path=/; Max-Age=0; ${secureFlag}SameSite=Lax`
   };
 }
 
