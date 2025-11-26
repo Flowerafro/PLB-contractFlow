@@ -67,22 +67,32 @@ export default defineApp([
 
   route("/hovedlisten", async ({ ctx }) => {
     const db = env.DB;
+    console.log("🔍 Hovedlisten endpoint called");
+    console.log("📊 Database binding:", db ? "Available" : "Missing");
+    
     if (!db) {
+      console.error("❌ D1 database binding is missing");
       return Response.json({ error: "D1 database binding is missing" }, { status: 500 });
     }
+    
     try {
+      console.log("🚀 Attempting to fetch data from repository...");
       const result = await hovedListenRepository.findMany({ ...env, DB: db });
+      console.log("📊 Repository result:", result);
 
       if (result.success) {
+        console.log("✅ Successfully fetched data, count:", result.data?.length || 0);
         return Response.json({ success: true, data: result.data });
       } 
       else {
+        console.error("❌ Repository failed:", result.error);
         return Response.json(
           { success: false, error: result.error || "An error occurred" },
           { status: 500 }
         );
       }
     } catch (error) {
+      console.error("❌ Exception in hovedlisten endpoint:", error);
       return Response.json(
         { success: false, error: "Failed to fetch data"},
         { status: 500}
