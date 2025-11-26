@@ -17,6 +17,7 @@ import { getDb } from "./db/index";
 import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
 import { env } from "cloudflare:workers"
 import { hovedListenRepository } from "./features/dataRetrieval/repositoryPatterns/createHovedListenRepository";
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 
 // type DB = D1Database;
 
@@ -200,6 +201,58 @@ export default defineApp([
       return new Response('Internal server error', { status: 500 });
     }
   }),
+  
+  route("/api/generated-pdf", async ({ request }) => {
+    const url = new URL(request.url);
+
+    const uploaded = url.searchParams.get("uploaded") || "";
+    const fileName = url.searchParams.get("fileName") || "";
+    const fullFileName = url.searchParams.get("fullFileName") || "";
+    const size = url.searchParams.get("size") || "";
+
+  
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([600, 800]);
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+    page.drawText("Archive Document", {
+      x: 50,
+      y: 760,
+      size: 22,
+      font,
+      color: rgb(0, 0, 0),
+    });
+
+    let y = 720;
+    const step = 22;
+
+    const add = (label: string, value: string) => {
+      page.drawText(`${label}: ${value}`, {
+        x: 50,
+        y,
+        size: 14,
+        font,
+        color: rgb(0, 0, 0),
+      });
+      y -= step;
+    };
+
+    add("Date", uploaded);
+    add("Filename", fileName);
+    add("Full filename", fullFileName);
+    add("Size", size);
+
+    const pdfBytes = await pdfDoc.save();
+
+    
+    return new Response(pdfBytes, {
+      headers: {
+        "Content-Type": "application/pdf",
+        "Cache-Control": "no-store",
+      },
+    });
+  }),
+
   
   render(Document, [
     route("/", () => <Login />), 

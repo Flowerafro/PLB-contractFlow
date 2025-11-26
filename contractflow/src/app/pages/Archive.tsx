@@ -7,6 +7,7 @@ import PdfModal from "@/components/PdfModal";
 import { useState } from "react";
 import { archiveColumns } from "@/features/tables/columns/archiveColumns";
 import { useArchiveData } from "@/features/tables/hooks/datatypeStructures/archiveFileData";
+import { generatePdfPreview } from "@/lib/generatePdfPreview";
 
 export default function Archive() {
   const [selectedRecord, setSelectedRecord] = useState<any>(null);
@@ -14,11 +15,21 @@ export default function Archive() {
   const { data: files, loading, error } = useArchiveData();
 
   const handleFilenameClick = (record: any) => {
-    setSelectedRecord(record);
+    const url = `/api/generated-pdf?uploaded=${encodeURIComponent(
+      record.uploaded
+    )}&fileName=${encodeURIComponent(record.fileName)}&fullFileName=${encodeURIComponent(
+      record.fullFileName
+    )}&size=${encodeURIComponent(record.size)}`;
+  
+    setSelectedRecord({
+      ...record,
+      previewUrl: url,
+    });
   };
+  
 
   function handleOpenPdf(record: any) {
-    setSelectedRecord(record);
+    handleFilenameClick(record);
   }
 
   if (loading) return <div>Loading files...</div>
