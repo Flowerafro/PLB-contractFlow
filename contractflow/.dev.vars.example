@@ -1,0 +1,18 @@
+# Cloudflare Configuration
+CLOUDFLARE_ACCOUNT_ID=__your_account_id__
+CLOUDFLARE_API_TOKEN=__your_api_token__
+CLOUDFLARE_DATABASE_ID=__your_database_id__
+
+# D1 Database Configuration  
+CLOUDFLARE_D1_TOKEN=__your_d1_token__
+D1_AUTH_TOKEN=__your_d1_token__
+DATABASE_URL=__your_database_url__
+
+# R2 Storage Configuration
+R2_ACCESS_KEY_ID=__your_r2_access_key__
+R2_SECRET_ACCESS_KEY=__your_r2_secret_key__
+R2_BUCKET_NAME=plb-contractflow-r2
+R2_PUBLIC_URL=__your_r2_public_url__
+
+# Environment
+NODE_ENV=development

@@ -81,7 +81,7 @@ export async function login(formData: FormData): Promise<{ success: boolean; err
     success: true, 
     redirect: "/Home",
     sessionData: sessionData,
-    setCookie: `user_session=${encodeURIComponent(sessionData)}; Path=/; Max-Age=86400`
+    setCookie: `user_session=${encodeURIComponent(sessionData)}; Path=/; Max-Age=86400; Secure; SameSite=Lax`
   };
 }
 
@@ -93,7 +93,7 @@ export async function logout(): Promise<{ redirect: string; clearSession: boolea
   return { 
     redirect: "/Login", 
     clearSession: true,
-    clearCookie: "user_session=; Path=/; Max-Age=0"
+    clearCookie: "user_session=; Path=/; Max-Age=0; Secure; SameSite=Lax"
   };
 }
 
