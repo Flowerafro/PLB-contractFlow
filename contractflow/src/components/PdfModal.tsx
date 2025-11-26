@@ -1,4 +1,5 @@
 "use client";
+// Modal for PDF preview via iframe, viser tilgjengelig filinformasjon.
 
 import React from "react";
 
@@ -36,7 +37,6 @@ export default function PdfModal({ data, onClose }: PdfModalProps) {
         </div>
         <div className="p-6 bg-gray-50">
         <h2 className="text-xl font-bold mb-3">File Details</h2>
-
         <p><strong>Filename:</strong> {data.fullFileName}</p>
         <p><strong>Size:</strong> {data.size} bytes</p>
         <p><strong>Uploaded:</strong> {data.uploaded}</p>

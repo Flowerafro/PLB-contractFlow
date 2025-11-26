@@ -8,6 +8,7 @@ import { useState } from "react";
 import { archiveColumns } from "@/features/tables/columns/archiveColumns";
 import { useArchiveData } from "@/features/tables/hooks/datatypeStructures/archiveFileData";
 import { generatePdfPreview } from "@/lib/generatePdfPreview";
+// Viser arkivliste med klikkbar filkolonne som åpner PDF-preview i modal.
 
 export default function Archive() {
   const [selectedRecord, setSelectedRecord] = useState<any>(null);

@@ -1,4 +1,5 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+// Bygger dynamisk PDF med pdf lib og returnerer den som data URI for iframe.
 
 export async function generatePdfPreview(record: any) {
   const pdfDoc = await PDFDocument.create();
