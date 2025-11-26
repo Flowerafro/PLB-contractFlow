@@ -25,28 +25,33 @@ export async function paginatedQuery<T>(
 ): Promise<PaginationResult<T>> {
   const { cursor = 0, limit = 50, direction = 'desc' } = params;
   
-  let query = db.select().from(table);
+  // Build query conditionally to avoid TypeScript reassignment issues
+  let baseQuery = db.select().from(table);
+  
+  const conditions = [];
   
   // Apply where conditions if provided
   if (whereConditions) {
-    query = query.where(whereConditions);
+    conditions.push(whereConditions);
   }
   
   // Apply cursor-based filtering
   if (cursor > 0) {
-    query = query.where(
+    conditions.push(
       direction === 'desc' 
         ? lt(table.id, cursor)
         : gt(table.id, cursor)
     );
   }
   
-  // Apply ordering and limit (LIMIT 50 OFFSET)
-  query = query
+  // Build final query
+  const finalQuery = conditions.length > 0 
+    ? baseQuery.where(conditions.length === 1 ? conditions[0] : sql`${conditions.join(' AND ')}`)
+    : baseQuery;
+  
+  const results = await finalQuery
     .orderBy(direction === 'desc' ? desc(table.id) : table.id)
     .limit(limit + 1); // +1 to check if there are more results
-  
-  const results = await query;
   const hasMore = results.length > limit;
   const data = hasMore ? results.slice(0, -1) : results;
   const nextCursor = hasMore && data.length > 0 ? data[data.length - 1].id : undefined;
@@ -177,12 +182,11 @@ export async function getAllPrincipals() {
   return await db.select().from(principals).orderBy(desc(principals.createdAt));
 }
 
-// Global search using the v_search view as per report
+// Global search using the v_search view
 export async function globalSearch(searchTerm: string, pagination?: PaginationParams) {
   const searchPattern = `%${searchTerm}%`;
   
-  // Use the search view for cross-table searching as specified in report
-  const searchResults = await db.execute(sql`
+  const searchResults = await db.all(sql`
     SELECT * FROM v_search 
     WHERE 
       plb_reference LIKE ${searchPattern} OR
@@ -196,7 +200,7 @@ export async function globalSearch(searchTerm: string, pagination?: PaginationPa
     ${pagination ? sql`LIMIT ${pagination.limit || 50}` : sql``}
   `);
   
-  return searchResults.rows;
+  return searchResults;
 }
 
 // Bulk operations with transaction support
