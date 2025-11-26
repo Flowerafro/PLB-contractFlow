@@ -11,7 +11,6 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite dev",
-    "dev:local": "wrangler dev --persist-to=.wrangler/state/local",
     "dev:worker": "wrangler dev --persist-to=.wrangler/state",
     "dev:worker-remote": "wrangler dev --remote",
     "dev:init": "rw-scripts dev-init",
