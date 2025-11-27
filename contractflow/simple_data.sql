@@ -1,0 +1,12 @@
+INSERT INTO principals VALUES(1,'AAK','2025-11-27 12:00:00');
+INSERT INTO clients VALUES(1,'Test Client','TC','test@test.com','123','Norway','ACTIVE','2025-11-27 12:00:00');
+INSERT INTO contracts VALUES(1,'TEST-001',1,1,'Test Product','2025-11-27',10.0,1000,10000,5,'CO001','PC001','2025-11-27','PO001','ACTIVE','2025-11-27 12:00:00');
+INSERT INTO shipments VALUES(1,1,'CONT001','BK001','BL001','DEL001','2025-11-27','2025-11-28','2025-11-29','2025-12-01',9.5,'DELIVERED','2025-11-27 12:00:00');
+INSERT INTO invoices VALUES(1,1,'INV001','2025-11-27','2025-12-01',9500,'PAID','2025-11-27 12:00:00');
+INSERT INTO audit_log VALUES(1,'contracts',1,'INSERT',1,'2025-11-27 12:00:00',NULL,'{"plb_reference":"TEST-001","client_id":1,"status":"ACTIVE"}');
+INSERT INTO sqlite_sequence VALUES('principals',1);
+INSERT INTO sqlite_sequence VALUES('clients',1);
+INSERT INTO sqlite_sequence VALUES('contracts',1);
+INSERT INTO sqlite_sequence VALUES('shipments',1);
+INSERT INTO sqlite_sequence VALUES('invoices',1);
+INSERT INTO sqlite_sequence VALUES('audit_log',1);

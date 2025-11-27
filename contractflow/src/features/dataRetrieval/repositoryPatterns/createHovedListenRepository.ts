@@ -90,7 +90,7 @@ export function createHovedListenRepository(): HovedListenRepository {
         }
 
         const mapped: HovedListeItem[] = result.results.map((row: any): HovedListeItem => ({
-          plbReference: row.plbReference || '',
+          plbReference: row.plb_reference || '',
           plbOrderDate: safeDate(row.plbOrderDate),
           customer: row.customer || 'Unknown',
           product: row.product || 'Unknown',
@@ -102,7 +102,7 @@ export function createHovedListenRepository(): HovedListenRepository {
           etd: safeDate(row.etd),
           customerOrderNumber: row.customerOrderNumber || '',
           principalContractNumber: safeNumber(row.principalContractNumber),
-          principalContractDate: safeDate(row.principalContractDate),
+          principalContractDate: safeDate(row.principal_contract_date),
           principalOrderNumber: safeNumber(row.principalOrderNumber),
           containerNumber: row.containerNumber || '',
           principalInvoiceNumber: safeNumber(row.principalInvoiceNumber),
