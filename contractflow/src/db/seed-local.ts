@@ -13,7 +13,10 @@ async function seedDatabase() {
     console.log('📊 Checking current data...');
     const checkResult = execSync('pnpm exec wrangler d1 execute plb-contractflow-db --local --command "SELECT COUNT(*) as count FROM clients;"', { encoding: 'utf8' });
     
-    if (checkResult.includes('│ 0     │') || checkResult.includes('│ count │')) {
+    // Look for the actual count value, not headers
+    const hasData = checkResult.match(/│\s*(\d+)\s*│/) && !checkResult.includes('│ 0     │');
+    
+    if (!hasData) {
       console.log('📝 No data found, adding sample data...');
       
       // Add principals
