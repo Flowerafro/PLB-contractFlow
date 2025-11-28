@@ -18,6 +18,8 @@ import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
 import { env } from "cloudflare:workers"
 import { hovedListenRepository } from "./features/dataRetrieval/repositoryPatterns/createHovedListenRepository";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+//import { contractRoutes } from "./features/contracts/contractRoutes";
+
 
 // type DB = D1Database;
 
@@ -54,7 +56,8 @@ export type AppContext = {
 export default defineApp([
 
   setCommonHeaders(),
-  
+  //prefix("/api/contracts", contractRoutes),
+
   
   ({ ctx }) => {
 
