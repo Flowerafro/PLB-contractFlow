@@ -1,12 +1,11 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-// Bygger dynamisk PDF med pdf lib og returnerer den som data URI for iframe.
 
-export async function generatePdfPreview(record: any) {
-  const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([600, 800]);
+export async function generatePdfPreview(fullContract: Record<string, any>) {
+    const pdfDoc = await PDFDocument.create();
+  let page = pdfDoc.addPage([600, 800]);  // ← endret fra const til let
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-  page.drawText("Archive Document", {
+  page.drawText("Contract Details", {
     x: 50,
     y: 760,
     size: 22,
@@ -15,29 +14,24 @@ export async function generatePdfPreview(record: any) {
   });
 
   let y = 720;
-  const step = 22;
+  const step = 18;
 
-  function add(field: string, value: any) {
-    page.drawText(`${field}: ${value || ""}`, {
+  for (const [field, value] of Object.entries(fullContract)) {
+    page.drawText(`${field}: ${value ?? ""}`, {
       x: 50,
       y,
-      size: 14,
+      size: 12,
       font,
       color: rgb(0, 0, 0),
     });
+
     y -= step;
+
+    if (y < 60) {
+      page = pdfDoc.addPage([600, 800]); // nå lov siden page = let
+      y = 760;
+    }
   }
 
-  add("Container", record.containerNo);
-  add("Customer", record.customer);
-  add("Product", record.product);
-  add("ETA", record.eta);
-  add("Filename", record.fullFileName);
-  add("Size", record.size);
-  add("Date", record.date);
-
-  // IMPORTANT: return a DATA URI instead of Blob
-  const dataUri = await pdfDoc.saveAsBase64({ dataUri: true });
-
-  return dataUri; // iframe can render this under CSP 'self'
+  return await pdfDoc.saveAsBase64({ dataUri: true });
 }
