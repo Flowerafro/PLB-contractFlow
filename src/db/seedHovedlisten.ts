@@ -78,7 +78,7 @@ export const seedData = async (env?: { DB: D1Database }) => {
       priceUsdPerMtC: Math.round(item.priceUsdMt * 100), // Convert to cents
       totalUsdC: Math.round(item.totalPriceUsd * 100), // Convert to cents
       commissionGroupBp: 250, // Default 2.5% commission
-      customerOrderNo: item.customerOrderNumber,
+      customerOrderNo: item.customerOrderNumber.toString(),
       principalContractNo: item.principalContractNumber.toString(),
       principalContractDate: item.principalContractDate,
       principalOrderNo: item.principalOrderNumber.toString(),
@@ -87,7 +87,7 @@ export const seedData = async (env?: { DB: D1Database }) => {
       status: "ACTIVE" as const,
     }));
 
-    const [...insertedContracts] = await db
+    const insertedContracts = await db
       .insert(contracts)
       .values(contractData)
       .returning();
