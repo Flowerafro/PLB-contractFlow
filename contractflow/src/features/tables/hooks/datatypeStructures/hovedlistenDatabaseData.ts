@@ -1,5 +1,5 @@
-import hovedListenService from "@/features/dataRetrieval/services/useHovedListenService";
-import useDatabase from "@/features/dataRetrieval/hooks/useDatabase";
+import hovedListenService from "@/features/databaseViews/services/useHovedListenService";
+import useDatabase from "@/features/databaseViews/hooks/useDatabase";
 import { HovedListeItem } from "@/app/types/hovedlisten";
 
 export function hovedlistenDatabaseData() {

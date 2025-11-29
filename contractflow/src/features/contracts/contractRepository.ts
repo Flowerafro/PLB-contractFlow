@@ -20,6 +20,7 @@ export interface ContractRepository {
 }
 
 export function createContractRepository(): ContractRepository {
+    const env = process.env.NODE_ENV || "development";
     const db = getDb();
 
     return {

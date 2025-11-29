@@ -5,7 +5,7 @@ import { ClientSearchItem } from "../app/types/clientSearch";
 import { clientServiceResult } from "../features/fileHandling/interfaces/clientResult";
 import type { CreateClientInput } from "../features/fileHandling/interfaces/createClientInput";
 
-const BASE_URL = "/api/clients";
+const BASE_URL = "/api/v1/clients";
 
 type ApiError = {
     error?: string | { message?: string };

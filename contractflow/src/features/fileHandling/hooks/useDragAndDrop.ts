@@ -1,8 +1,5 @@
 import { useState } from 'react';
 
-interface UseDragAndDropProps {
-  onFileDrop: (files: File[]) => void;
-}
 
 interface UseDragAndDropReturn {
   isDragOver: boolean;
@@ -37,7 +34,6 @@ export const useDragAndDrop = (onFileDrop: (files: File[]) => void): UseDragAndD
         }
     };
 
-    
     return {
         isDragOver,
         handleDragOver,

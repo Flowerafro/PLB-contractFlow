@@ -1,17 +1,6 @@
-import { getDb } from '@/db/index';
-import { 
-    contracts,
-    clients,
-    shipments,
-    principals,
-    invoices
-} from '@/db/schema/schema';
-import { eq, desc } from 'drizzle-orm';
 import { HovedListeItem } from '@/app/types/hovedlisten';
 import formatDate from '@/features/tables/functions/formatDate';
-import type { Result } from '@/app/types/results';
 import type { HovedListenRepository } from '../interfaces/hovedListenRepository';
-import type { D1Database } from '@cloudflare/workers-types';
 
 function safeNumber(value: any): number {
   const num = Number(value);

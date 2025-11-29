@@ -1,6 +1,6 @@
 // midlertidig api kall for contracthåndtering før database er på plass
 
-const BASE_URL = "/api/contracts";
+const BASE_URL = "/api/v1/contracts";
 
 type ApiError = {
     error?: string | { message?: string };

@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 
 import { uploadToR2 } from "@/features/fileHandling/services/uploadToR2";
-import { processExcelFile, shouldProcessAsExcel } from "@/features/fileHandling/services/fileProcessing";
+import { processExcelFile } from "@/features/fileHandling/services/fileProcessing";
 import { validateFileSize, validateFileType } from "@/features/fileHandling/utils/validateFile";
 import { useDragAndDrop } from "@/features/fileHandling/hooks/useDragAndDrop";
 

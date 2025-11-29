@@ -7,28 +7,12 @@ import ClientProfilePage from "@/components/clientComponents/ClientProfilePage";
 import NewClient from "@/components/clientComponents/NewClient";
 import Button from "@/components/Button";
 import useHoverEffect from "../hooks/useHoverEffect";
-import { dummyClients, addClient, getClientById } from "../../lib/clientdummydata";
-import type { Client } from "../../lib/clientdummydata";
-import type { ClientOverviewProps } from "../types/client";
+
+//import { dummyClients, addClient, getClientById } from "../../lib/clientdummydata";
+//import type { Client } from "../../lib/clientdummydata";
 
 
-
-
-
-export default function ClientOverview({ onClientClick, onNewClient, clientId }: ClientOverviewProps) {
-  const [searchClient, setSearchClient] = useState("");
-  const [filteredClients, setFilteredClients] = useState<Client[]>([]);
-  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
-  const [showNewClientForm, setShowNewClientForm] = useState(false);
-
-  const { hoverEffect, onHover, onLeave } = useHoverEffect<string>();
-
-  useEffect(() => {
-    if (!clientId) return;
-    const c = getClientById(clientId);
-    if (c) setSelectedClient(c);
-  }, [clientId]);
-
+/*
   const handleSearch = (query: string) => {
     setSearchClient(query);
     const trimmedClient = query.trim().toLowerCase();
@@ -53,6 +37,111 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
   };
 
   const clientDisplay = searchClient ? (filteredClients.length > 0 ? filteredClients : []) : dummyClients;
+*/
+
+/*
+  const handleCreateClient = (partial: Omit<Client, "id">) => {
+    const created = addClient(partial);
+    setShowNewClientForm(false);
+    handleSelectClient(created);
+  };
+*/
+import type { ClientOverviewProps } from "../types/client";
+
+interface Client {
+  id: string;
+  customerCode?: string;
+  customer?: string;
+  relation?: string;
+  contactperson?: string;
+  title?: string;
+  email?: string;
+  phone?: string;
+  country?: string;
+  clientAdded?: string;
+  status?: string;
+}
+
+export default function ClientOverview({ onClientClick, onNewClient, clientId }: ClientOverviewProps) {
+  const [searchClient, setSearchClient] = useState("");
+  const [filteredClients, setFilteredClients] = useState<Client[]>([]);
+  const [allClients, setAllClients] = useState<Client[]>([]);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [showNewClientForm, setShowNewClientForm] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const { hoverEffect, onHover, onLeave } = useHoverEffect<string>();
+
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const response = await fetch('/api/clients');
+        if (!response.ok) throw new Error('Failed to fetch clients');
+        const data = await response.json() as any;
+        if (data.success) {
+          const clients = data.data.map((c: any) => ({
+            id: c.id.toString(),
+            customerCode: c.customerCode,
+            customer: c.name,
+            email: c.email,
+            phone: c.phone,
+            country: c.country,
+            status: c.status,
+            clientAdded: c.createdAt
+          }));
+          setAllClients(clients);
+          setFilteredClients(clients);
+        } else {
+          setError((data as any).error?.message || 'Failed to load clients');
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchClients();
+  }, []);
+
+  useEffect(() => {
+    if (!clientId) return;
+    const c = allClients.find(client => client.id === clientId);
+    if (c) setSelectedClient(c);
+  }, [clientId, allClients]);
+
+  const handleSearch = async (query: string) => {
+    setSearchClient(query);
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) {
+      setFilteredClients(allClients);
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/clients?query=${encodeURIComponent(trimmedQuery)}`);
+      if (!response.ok) throw new Error('Search failed');
+      const data = await response.json();
+      if ((data as any).success) {
+        setFilteredClients((data as any).data.map((c: any) => ({
+          id: c.id.toString(),
+          customerCode: c.customerCode,
+          customer: c.name,
+          email: c.email,
+          phone: c.phone,
+          country: c.country,
+          status: c.status,
+          clientAdded: c.createdAt
+        })));
+      } else {
+        setError((data as any).error?.message || 'Search failed');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Search error');
+    }
+  };
+  const clientDisplay = searchClient ? filteredClients : allClients;
 
   const handleSelectClient = (client: Client) => {
     if (typeof window !== "undefined") {
@@ -63,10 +152,27 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
     onClientClick?.(client.id);
   };
 
-  const handleCreateClient = (partial: Omit<Client, "id">) => {
-    const created = addClient(partial);
-    setShowNewClientForm(false);
-    handleSelectClient(created);
+  const handleCreateClient = async (partial: Omit<Client, "id" | "createdAt" | "status">) => {
+    try {
+      const response = await fetch('/api/clients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...partial, status: 'ACTIVE' })
+      });
+      if (!response.ok) throw new Error('Failed to create client');
+      const data = await response.json() as any;
+      if (data.success) {
+        const newClient = data.data;
+        setAllClients(prev => [...prev, newClient]);
+        setFilteredClients(prev => [...prev, newClient]);
+        setShowNewClientForm(false);
+        handleSelectClient(newClient);
+      } else {
+        setError(data.error?.message || 'Failed to create client');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Create error');
+    }
   };
 
   if (selectedClient) {
@@ -100,11 +206,15 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
       <SearchBar placeholder="Search here..." onSearch={handleSearch} />
 
       <section className="bg-white rounded-lg border border-black/10 overflow-hidden">
-        {searchClient ? (
+        {loading ? (
+          <div className="p-4">Loading clients...</div>
+        ) : error ? (
+          <div className="p-4 text-red-500">Error: {error}</div>
+        ) : searchClient ? (
           filteredClients.length === 0 ? (
             <div className="p-4">
               <p>No clients found for "{searchClient}"</p>
-              <a href="/clients"><button>Back</button></a>
+              <button onClick={() => handleSearch("")}>Back</button>
             </div>
           ) : (
             <ClientList filteredClients={filteredClients} onSelectClient={handleSelectClient} />
@@ -115,9 +225,8 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
               <thead className="bg-gray-100 border-b-2 border-gray-300 text-[16px] text-black font-sans">
                 <tr>
                   <th className="text-left p-2">Status</th>
-                  <th className="text-left p-2">Client No</th>
-                  <th className="text-left p-2">Company Name</th>
-                  <th className="text-left p-2">Contact Person</th>
+                  <th className="text-left p-2">Client Code</th>
+                  <th className="text-left p-2">Name</th>
                   <th className="text-left p-2">Email</th>
                   <th className="text-left p-2">Phone</th>
                   <th className="text-left p-2">Country</th>
@@ -128,16 +237,15 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
                   <tr
                     key={client.id}
                     onClick={() => handleSelectClient(client)}
-                    onMouseEnter={() => onHover(client.id)}
-                    onMouseLeave={() => onLeave()} className={`cursor-pointer transition-colors ${hoverEffect === client.id ? "bg-gray-100" : ""}`}>
-                       <td className="p-2"> {client.status === "Active" ? ( 
+                    onMouseEnter={() => onHover(client.id.toString())}
+                    onMouseLeave={() => onLeave()} className={`cursor-pointer transition-colors ${hoverEffect === client.id.toString() ? "bg-gray-100" : ""}`}>
+                       <td className="p-2"> {client.status === "ACTIVE" ? ( 
                         <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
-                      ) : client.status === "Inactive" ? (
+                      ) : (
                       <span className="px-2 py-1 text-xs font-medium bg-red-100 text-gray-800 rounded-full">Inactive</span>
-                      ) : null} </td>
+                      )} </td>
                     <td className="p-4">{client.customerCode}</td>
                     <td className="p-4">{client.customer}</td>
-                    <td className="p-4">{client.contactperson}</td>
                     <td className="p-4">{client.email}</td>
                     <td className="p-4">{client.phone}</td>
                     <td className="p-4">{client.country}</td>

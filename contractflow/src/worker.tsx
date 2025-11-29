@@ -11,13 +11,14 @@ import Layout from "./app/pages/Layout";
 import ContractSuccess from "./app/pages/ContractSuccess";
 import ClientOverview from "./app/pages/ClientOverview";
 import Tables from "./app/pages/Tables";
-import { hovedListenRoutes } from "./features/dataRetrieval/hovedListenRoutes";
 import { UserSession } from "./sessions/UserSession";
-import { getDb } from "./db/index";
 import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
 import { env } from "cloudflare:workers"
-import { hovedListenRepository } from "./features/dataRetrieval/repositoryPatterns/createHovedListenRepository";
+import { hovedListenRepository } from "./features/databaseViews/repositoryPatterns/createHovedListenRepository";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import { createClientController, createClientRoutes } from "./features/databaseDataRetrieval/utilizations/clients";
+import { createContractController, createContractRoutes } from "./features/databaseDataRetrieval/utilizations/contracts";
+import { createHovedListenController } from "./features/databaseViews/controllers/hovedListenController";
 
 // type DB = D1Database;
 
@@ -61,34 +62,13 @@ export default defineApp([
     },
 
  // prefix("/api/v1/hovedlisten", hovedListenRoutes),
+  prefix("/api/v1/clients", createClientRoutes({ DB: env.DB })),
+  prefix("/api/v1/contracts", createContractRoutes({ DB: env.DB })),
 
-  //prefix("/api/v1/clients", clientRoutes),
-  //prefix("/api/v1/contracts", contractRoutes),
 
-
-  route("/hovedlisten", async ({ ctx }) => {
-    const db = env.DB;
-    if (!db) {
-      return Response.json({ error: "D1 database binding is missing" }, { status: 500 });
-    }
-    try {
-      const result = await hovedListenRepository.findMany({ ...env, DB: db });
-
-      if (result.success) {
-        return Response.json({ success: true, data: result.data });
-      } 
-      else {
-        return Response.json(
-          { success: false, error: result.error || "An error occurred" },
-          { status: 500 }
-        );
-      }
-    } catch (error) {
-      return Response.json(
-        { success: false, error: "Failed to fetch data"},
-        { status: 500}
-      )
-    }
+  route("/hovedlisten", (ctx) => {
+    const controller = createHovedListenController(hovedListenRepository, { DB: env.DB });
+    return controller.list(ctx);
   }),
 
   // Seed route(testing)
@@ -253,7 +233,68 @@ export default defineApp([
     });
   }),
 
-  
+  route("/api/clients", async (ctx) => {
+    const method = ctx.request.method.toLowerCase();
+    const controller = createClientController({ DB: env.DB });
+    switch (method) {
+      case "get":
+        return controller.list(ctx);
+      case "post":
+        return controller.create(ctx);
+      default:
+        return new Response("Method Not Allowed", { status: 405 });
+    }
+  }),
+  route("/api/clients/search", (ctx) => {
+    const controller = createClientController({ DB: env.DB });
+    return controller.search(ctx);
+  }),
+  route("/api/clients/:id", async (ctx) => {
+    const method = ctx.request.method.toLowerCase();
+    const controller = createClientController({ DB: env.DB });
+    switch (method) {
+      case "get":
+        return controller.get(ctx);
+      case "put":
+        return controller.update(ctx);
+      case "delete":
+        return controller.delete(ctx);
+      default:
+        return new Response("Method Not Allowed", { status: 405 });
+    }
+  }),
+
+  route("/api/contracts", async (ctx) => {
+    const method = ctx.request.method.toLowerCase();
+    const controller = createContractController({ DB: env.DB });
+    switch (method) {
+      case "get":
+        return controller.list(ctx);
+      case "post":
+        return controller.create(ctx);
+      default:
+        return new Response("Method Not Allowed", { status: 405 });
+    }
+  }),
+  route("/api/contracts/search", (ctx) => {
+    const controller = createContractController({ DB: env.DB });
+    return controller.search(ctx);
+  }),
+  route("/api/contracts/:id", async (ctx) => {
+    const method = ctx.request.method.toLowerCase();
+    const controller = createContractController({ DB: env.DB });
+    switch (method) {
+      case "get":
+        return controller.get(ctx);
+      case "put":
+        return controller.update(ctx);
+      case "delete":
+        return controller.delete(ctx);
+      default:
+        return new Response("Method Not Allowed", { status: 405 });
+    }
+  }),
+
   render(Document, [
     route("/", () => <Login />), 
     route("/Login", () => <Login />),
