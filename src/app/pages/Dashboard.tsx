@@ -8,7 +8,7 @@ import TableGeneration from "@/features/components/TableGeneration";
 import ShipmentList from "@/components/searchComponents/ShipmentList";
 import { hovedlistenDatabaseData } from "@/features/tables/hooks/datatypeStructures/hovedlistenDatabaseData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
-import mapShipmentData from "@/lib/mapShipmentData";
+import mapShipmentData from "@/features/util/mapShipmentData";
 import useFilteredResults from "../hooks/useFilteredResults";
 
 export default function Dashboard() {

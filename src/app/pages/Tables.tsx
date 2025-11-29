@@ -10,7 +10,7 @@ import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns
 import { exportTableToExcel } from "@/lib/exportTableToExcel";
 import ExportExcelButton from "@/components/buttons/ExportExcelButton"
 import useFilteredResults from "../hooks/useFilteredResults";
-import mapShipmentData from "@/lib/mapShipmentData";
+import mapShipmentData from "@/features/util/mapShipmentData";
 
 //  -Tables-siden
 //  Her er dashboard siden lagt over slik at den kan bearbeides videre
