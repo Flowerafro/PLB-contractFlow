@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-
 function SuccessIcon() {
   return (
     <figure

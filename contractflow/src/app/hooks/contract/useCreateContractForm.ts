@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const contractSchema = z.object({
-  client: z.string().min(1, "Choose a client"),     // fortsatt required
+  client: z.string().min(1, "Choose a client"), 
   contractName: z.string().optional(),
   clientName: z.string().optional(),
   clientEmail: z.string().email().optional(),
