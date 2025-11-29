@@ -2,8 +2,6 @@
 
 import { useContractAPI } from "@/app/hooks/contract/useContractAPI";
 import { useContractNavigation } from "@/app/hooks/contract/useContractNavigation";
-
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
