@@ -2,7 +2,7 @@ import { defineScript } from "rwsdk/worker";
 import { drizzle } from "drizzle-orm/d1";
 import { contracts, clients, principals } from "@/db/schema/schema";
 // @ts-ignore
-import hovedListenData from "@/resources/hoved_listen_paaLissom.json";
+import hovedListenData from "@/features/tables/dummyData/hoved_listen_paa_lissom.json";
 
 export const seedData = async (env?: { DB: D1Database }) => {
   try {
