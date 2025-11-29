@@ -55,7 +55,8 @@ export type AppContext = {
 export default defineApp([
 
   setCommonHeaders(),
-  
+  //prefix("/api/contracts", contractRoutes),
+
   
   ({ ctx }) => {
 
