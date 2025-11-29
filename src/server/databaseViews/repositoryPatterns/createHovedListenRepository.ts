@@ -34,7 +34,7 @@ export function createHovedListenRepository(): HovedListenRepository {
 
         const query = `
           SELECT 
-            contracts.plb_reference,
+            contracts.plb_reference AS plbReference,
             contracts.order_date AS plbOrderDate,
             clients.name AS customer,
             contracts.product_code AS product,
@@ -46,7 +46,7 @@ export function createHovedListenRepository(): HovedListenRepository {
             (SELECT etd FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS etd,
             contracts.customer_order_no AS customerOrderNumber,
             contracts.principal_contract_no AS principalContractNumber,
-            contracts.principal_contract_date,
+            contracts.principal_contract_date AS principalContractDate,
             contracts.principal_order_no AS principalOrderNumber,
             (SELECT container_number FROM shipments WHERE shipments.contract_id = contracts.id ORDER BY shipments.id DESC LIMIT 1) AS containerNumber,
             (SELECT principal_invoice_no FROM invoices WHERE invoices.contract_id = contracts.id ORDER BY invoices.id DESC LIMIT 1) AS principalInvoiceNumber,
