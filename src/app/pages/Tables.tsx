@@ -11,6 +11,8 @@ import { exportTableToExcel } from "@/lib/exportTableToExcel";
 import ExportExcelButton from "@/components/buttons/ExportExcelButton"
 import useFilteredResults from "../hooks/useFilteredResults";
 import mapShipmentData from "@/features/util/mapShipmentData";
+import LoadingSpinner from "@/features/components/LoadingSpinner";
+
 
 //  -Tables-siden
 //  Her er dashboard siden lagt over slik at den kan bearbeides videre
@@ -34,20 +36,11 @@ export default function Tables() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
-        <div>Loading table data...</div>
-        <div className="w-10 h-10 border-[3px] border-gray-200 border-t-blue-600 rounded-full animate-spin" />
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          `
-        }} />
-      </div>
+      <LoadingSpinner text="Loading table data..." />
     );
   }
+  
+  
 
   if (error) {
     return (
