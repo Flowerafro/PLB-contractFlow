@@ -1,4 +1,4 @@
-import type { ArchiveDocument } from "@/app/types/archiveDocument";
+import type { ArchiveDocument } from "@/types/archiveDocument";
 
 export async function fetchFromR2(): Promise<ArchiveDocument[]> {
   try {

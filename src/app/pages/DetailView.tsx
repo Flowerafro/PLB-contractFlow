@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import type { SearchItem } from "../../app/types/searchItem"
+import type { SearchItem } from "../../types/searchItem"
 import ButtonClear from "../../components/buttons/ButtonClear";
 import { ButtonEdit } from "../../components/buttons/ButtonEdit";
 import Button from "../../components/buttons/Button";

@@ -1,4 +1,3 @@
-
 "use client";
 
 import TableGeneration from "@/features/components/TableGeneration";

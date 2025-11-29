@@ -56,10 +56,6 @@ export default function UploadFileToR2({
             ? 'border-green-800 bg-green-50' 
             : 'border-gray-300 bg-gray-50 hover:bg-gray-100'
           }`}
-            style={{
-              outline: "2px dashed #cacacaff",
-              outlineOffset: '-10px',
-            }}
       >
         {isDragOver ? (
           <p className="text-green-800 text-lg">

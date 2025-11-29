@@ -1,18 +1,18 @@
 // midlertidig api-kall for klienthåndtering før database er på plass. ikke i bruk siden vi måtte gå tilbake til mock-data
 
-import type { Client } from "../app/types/client";
-import { ClientSearchItem } from "../app/types/clientSearch";
-import { clientServiceResult } from "../features/fileHandling/interfaces/clientResult";
+import type { Client } from "../types/client";
+import { ClientSearchItem } from "../types/clientSearch";
+import { Result } from "@/types/results";
 import type { CreateClientInput } from "../features/fileHandling/interfaces/createClientInput";
 
-const BASE_URL = "/api/v1/clients";
+const BASE_URL = "/api/clients";
 
 type ApiError = {
     error?: string | { message?: string };
     data?: unknown;
 }
 
-async function handleResponse<T>(response: Response): Promise<T> {
+async function handleResponse<T>(response: Response): Promise<Result<T>> {
     const data = (await response.json().catch(() => null)) as ApiError | null;
 
     if (!response.ok) {
@@ -23,57 +23,57 @@ async function handleResponse<T>(response: Response): Promise<T> {
                     ? data.error
                     : "Noe gikk galt med forespørselen.";
 
-        throw new Error(message);
+        return {
+            success: false,
+            error: {
+                code: response.status,
+                message: message || "Noe gikk galt med forespørselen."
+            }
+        };
     }
 
-    return data as T;
-}
+    return { 
+        success: true, 
+        data: data as T
+    };
+};
 
 export const clientAPI = {
-    async list(query?: string): Promise<Client[]> {
+    async list(query?: string): Promise<Result<Client[]>> {
         const url = query ? `${BASE_URL}?search=${encodeURIComponent(query)}` : BASE_URL;
         const result = await fetch(url);
-        const body = await handleResponse<clientServiceResult<Client[]>>(result);
-
-        return body.data ?? [];
+        return await handleResponse<Client[]>(result);
     },
 
-    async search(query: string): Promise<ClientSearchItem[]> {
+    async search(query: string): Promise<Result<ClientSearchItem[]>> {
         const url = `${BASE_URL}/search?query=${encodeURIComponent(query)}`;
         const result = await fetch(url);
-        const body = await handleResponse<clientServiceResult<ClientSearchItem[]>>(result);
-
-        return body.data ?? [];
+        return await handleResponse<ClientSearchItem[]>(result);
     },
 
-    async get(id: number): Promise<Client | null> {
+    async get(id: number): Promise<Result<Client>> {
         const result = await fetch(`${BASE_URL}/${id}`);
-        const body = await handleResponse<clientServiceResult<Client>>(result);
-        return body.data ?? null;
+        return await handleResponse<Client>(result);
     },
 
-    async create(data: CreateClientInput): Promise<Client> {
+    async create(data: CreateClientInput): Promise<Result<Client>> {
         const result = await fetch(BASE_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
 
-        const body = await handleResponse<clientServiceResult<Client>>(result);
-
-        if (!body.data) throw new Error("Feil i opprettelse av klient.");
-        return body.data;
+        return await handleResponse<Client>(result);
     },
 
-    async update(id: number, patch: Partial<CreateClientInput>): Promise<{ id: number }> {
+    async update(id: number, patch: Partial<CreateClientInput>): Promise<Result<{ id: number }>> {
         const result = await fetch(`${BASE_URL}/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(patch)
         });
 
-        const body = await handleResponse<clientServiceResult<{ id: number }>>(result);
-        return body.data!;
+        return await handleResponse<{ id: number }>(result);
     }
 
 }

@@ -62,11 +62,6 @@ export default defineApp([
 
     },
 
- // prefix("/api/v1/hovedlisten", hovedListenRoutes),
-  prefix("/api/v1/clients", createClientRoutes({ DB: env.DB })),
-  prefix("/api/v1/contracts", createContractRoutes({ DB: env.DB })),
-
-
   route("/hovedlisten", (ctx) => {
     const controller = createHovedListenController(hovedListenRepository, { DB: env.DB });
     return controller.list(ctx);

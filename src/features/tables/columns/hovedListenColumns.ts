@@ -1,4 +1,4 @@
-import type { HovedListeItem } from "@/app/types/hovedlisten";
+import type { HovedListeItem } from "@/types/hovedlisten";
 import { ColumnSetup } from "@/features/tables/interfaces/columnSetup";
 
 /*

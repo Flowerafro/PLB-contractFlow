@@ -1,7 +1,7 @@
 "use client";
 
 import ClientCard from "./ClientCard";
-import type { Client } from "../../lib/clientdummydata";
+import type { Client } from "@/types/client";
 
 export default function ClientList({
   filteredClients,

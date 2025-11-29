@@ -11,7 +11,7 @@ export default function CreateContract() {
   const { control, formState, onSubmit } = useCreateContractForm();
   const { errors, isSubmitting } = formState;
 
-  const { clients } = useClients();
+  const { clients, loading: clientsLoading, error: clientError } = useClients();
   const fields = useContractFields();
 
   return (
@@ -23,6 +23,8 @@ export default function CreateContract() {
         loading={isSubmitting}
         clients={clients}
         fields={fields}
+        clientsLoading={clientsLoading}
+        clientsError={clientError}
       />
     </section>
   );

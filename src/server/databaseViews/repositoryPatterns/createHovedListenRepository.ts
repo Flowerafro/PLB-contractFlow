@@ -1,4 +1,4 @@
-import { HovedListeItem } from '@/app/types/hovedlisten';
+import { HovedListeItem } from '@/types/hovedlisten';
 import formatDate from '@/lib/formatDate';
 import type { HovedListenRepository } from '../interfaces/hovedListenRepository';
 

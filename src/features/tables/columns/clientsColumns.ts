@@ -1,4 +1,4 @@
-import type { Client } from "@/app/types/client";
+import type { Client } from "@/types/client";
 import { ColumnSetup } from "@/features/tables/interfaces/columnSetup";
 
 /*

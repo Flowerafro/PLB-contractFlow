@@ -1,6 +1,6 @@
 import { createContractRepository } from "./contractRepository";
 import type { CreateContractInput } from "../fileHandling/interfaces/createContractInput";
-import type { Contract } from "../../app/types/contract";
+import type { Contract } from "../../types/contract";
 import type { contractServiceResult } from ".././fileHandling/interfaces/contractResult";
 
 export interface ContractService {

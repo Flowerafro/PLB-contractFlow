@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import type { SearchBarProps } from "../../app/types/searchItem";
+import type { SearchBarProps } from "../../types/searchItem";
 import { InputWithLabel } from "../global/InputWithLabel";
 import Button from "../buttons/Button";
 import ButtonClear from "../buttons/ButtonClear";

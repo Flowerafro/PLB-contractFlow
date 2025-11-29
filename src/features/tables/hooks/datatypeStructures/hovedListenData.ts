@@ -1,9 +1,6 @@
 
-import { useData } from '@/features/tables/hooks/useData';
-import { HovedListeItem } from '@/app/types/hovedlisten';
+import { HovedListeItem } from '@/types/hovedlisten';
 import formatDate from '@/lib/formatDate';
-import { useMemo } from 'react';
-
 
 const dateParseCache = new Map<string, Date>();
 
@@ -43,14 +40,3 @@ const transformHovedListenItem = (item: any): HovedListeItem => ({
     blNumber: item.blNumber || '',
     aakDelNumber: Number(item.aakDelNumber) || 0,
 });
-/*
-export function hovedListenData(){
-    const dataSource = useMemo(() => ({
-        path: '/dummyData/hoved_listen_paaLissom.json',
-        transform: (rawData: any[]) => rawData.map(transformHovedListenItem),
-        errorMessage: 'PLB contract data did not load'
-    }), []);
-
-    return useData<HovedListeItem>(dataSource);
-}
-    */

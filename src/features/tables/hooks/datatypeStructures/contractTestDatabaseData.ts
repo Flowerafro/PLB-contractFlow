@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ContractTest } from "@/app/types/contractTest";
+import { ContractTest } from "@/types/contractTest";
 
 // -Hook for uthenting av contract-data from database-
 

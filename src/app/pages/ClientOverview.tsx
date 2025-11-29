@@ -7,46 +7,7 @@ import ClientProfilePage from "@/components/clientComponents/ClientProfilePage";
 import NewClient from "@/components/clientComponents/NewClient";
 import Button from "@/components/buttons/Button";
 import useHoverEffect from "../hooks/useHoverEffect";
-
-//import { dummyClients, addClient, getClientById } from "../../lib/clientdummydata";
-//import type { Client } from "../../lib/clientdummydata";
-
-
-/*
-  const handleSearch = (query: string) => {
-    setSearchClient(query);
-    const trimmedClient = query.trim().toLowerCase();
-
-    if (!trimmedClient) {
-      setFilteredClients([]);
-      return;
-    }
-
-    const clientResults = dummyClients.filter(client =>
-      (client.customerCode ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.customer ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.contactperson ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.email ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.phone ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.country ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.clientAdded ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.relation ?? "").toLowerCase().includes(trimmedClient) ||
-      (client.status ?? "").toLowerCase().includes(trimmedClient)
-    );
-    setFilteredClients(clientResults);
-  };
-
-  const clientDisplay = searchClient ? (filteredClients.length > 0 ? filteredClients : []) : dummyClients;
-*/
-
-/*
-  const handleCreateClient = (partial: Omit<Client, "id">) => {
-    const created = addClient(partial);
-    setShowNewClientForm(false);
-    handleSelectClient(created);
-  };
-*/
-import type { ClientOverviewProps } from "../types/client";
+import type { ClientOverviewProps } from "../../types/client";
 
 interface Client {
   id: string;

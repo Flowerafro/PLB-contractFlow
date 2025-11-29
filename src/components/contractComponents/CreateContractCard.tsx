@@ -10,6 +10,8 @@ export default function CreateContractCard({
   loading,
   clients,
   fields,
+  clientsLoading,
+  clientsError,
 }: any) {
   return (
     <div className="bg-white rounded-lg shadow-md p-10 w-full max-w-md">
@@ -18,23 +20,49 @@ export default function CreateContractCard({
       <form onSubmit={onSubmit} className="grid gap-4">
 
         <LabeledField label="Choose client" error={errors.client?.message}>
-          <Controller
-            name="client"
-            control={control}
-            render={({ field }) => (
-              <select
-                {...field}
-                className="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="">----</option>
-                {clients.map((c: any) => (
-                  <option key={c.id} value={c.customerCode}>
-                    {c.customer}
-                  </option>
-                ))}
-              </select>
-            )}
-          />
+          {clientsLoading ? (
+            <div className="
+              w-full
+              p-2
+              border
+              border-gray-300
+              rounded
+              bg-gray-50
+              text-gray-500
+            ">
+              Loading clients...
+            </div>
+          ) : clientsError ? (
+            <div className="
+              w-full
+              p-2
+              border
+              border-red-300
+              rounded
+              bg-red-50
+              text-red-600
+            ">
+              Error loading clients: {clientsError}
+            </div>
+          ) : (
+            <Controller
+              name="client"
+              control={control}
+              render={({ field }) => (
+                <select
+                  {...field}
+                  className="w-full p-2 border border-gray-300 rounded"
+                >
+                  <option value="">----</option>
+                  {clients.map((c: any) => (
+                    <option key={c.id} value={c.customerCode}>
+                      {c.customer}
+                    </option>
+                  ))}
+                </select>
+              )}
+            />
+          )}
         </LabeledField>
 
         {fields.map((f: any) => (

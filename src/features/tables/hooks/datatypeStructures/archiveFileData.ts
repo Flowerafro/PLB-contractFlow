@@ -1,10 +1,10 @@
-
 import { 
     useState, 
     useEffect, 
     useCallback 
 } from 'react';
-import { ArchiveDocument } from '@/app/types/archiveDocument';
+
+import { ArchiveDocument } from '@/types/archiveDocument';
 import formatDate from '@/lib/formatDate';
 
 const dateParseCache = new Map<string, Date>();

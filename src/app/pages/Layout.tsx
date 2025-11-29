@@ -1,4 +1,3 @@
-
 "use client";
 
 import Footer from "@/components/global/pageSections/Footer";

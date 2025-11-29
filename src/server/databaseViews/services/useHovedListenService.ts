@@ -1,4 +1,4 @@
-import { HovedListeItem } from '@/app/types/hovedlisten';
+import { HovedListeItem } from '@/types/hovedlisten';
 import { AppContext } from '@/worker';
 import { HovedListenService } from '../interfaces/hovedListenService';
 

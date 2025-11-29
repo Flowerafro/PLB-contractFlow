@@ -1,7 +1,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import type { ArchiveDocument } from "@/app/types/archiveDocument";
+import type { ArchiveDocument } from "@/types/archiveDocument";
 import { ColumnSetup } from "@/features/tables/interfaces/columnSetup";
 
 //    -Kolonnetitler for Archive-
