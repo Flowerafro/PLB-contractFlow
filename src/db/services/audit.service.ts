@@ -1,10 +1,10 @@
-import { db } from '../core/config';
+import { db } from '../core/d1-config';
 import { auditLog, clients } from '../schema/schema';
 import { auditLogSchema, type AuditLogData } from '../validation/schemas';
 import { eq, and, desc } from 'drizzle-orm';
 
 /**
- * Audit Service - Tracks all database changes as per report requirements
+ * Audit Service - Tracks all database changes
  * Logs all CRUD operations with timestamps, user context, and data changes
  */
 export class AuditService {

@@ -1,5 +1,5 @@
 import { eq, like, or, desc, gt, lt, sql } from 'drizzle-orm';
-import { db } from '../core/config';
+import { db } from '../core/d1-config';
 import { clients, contracts, shipments, invoices, principals } from '../schema/schema';
 
 // Pagination interface

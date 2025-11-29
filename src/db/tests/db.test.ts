@@ -1,5 +1,5 @@
-import { db } from './config';
-import { principals, clients, contracts, shipments, invoices } from './schema/schema';
+import { db } from '../core/config';
+import { principals, clients, contracts, shipments, invoices } from '../schema/schema';
 
 async function testDatabaseSetup() {
   try {

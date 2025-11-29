@@ -88,7 +88,7 @@ export function centsToDollars(cents: number): number {
 export function validateAndFormat<T>(schema: z.ZodSchema<T>, data: unknown): T {
   const result = schema.safeParse(data);
   if (!result.success) {
-    throw new Error(`Validation failed: ${result.error.errors.map(e => e.message).join(', ')}`);
+    throw new Error(`Validation failed: ${result.error.issues.map((e: any) => e.message).join(', ')}`);
   }
   return result.data;
 }

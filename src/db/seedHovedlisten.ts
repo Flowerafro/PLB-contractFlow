@@ -2,7 +2,7 @@ import { defineScript } from "rwsdk/worker";
 import { drizzle } from "drizzle-orm/d1";
 import { contracts, clients, principals } from "@/db/schema/schema";
 // @ts-ignore
-import hovedListenData from "@/resources/hoved_listen_paaLissom.json";
+import hovedListenData from "@/features/tables/dummyData/hoved_listen_paa_lissom.json";
 
 export const seedData = async (env?: { DB: D1Database }) => {
   try {
@@ -78,7 +78,7 @@ export const seedData = async (env?: { DB: D1Database }) => {
       priceUsdPerMtC: Math.round(item.priceUsdMt * 100), // Convert to cents
       totalUsdC: Math.round(item.totalPriceUsd * 100), // Convert to cents
       commissionGroupBp: 250, // Default 2.5% commission
-      customerOrderNo: item.customerOrderNumber,
+      customerOrderNo: item.customerOrderNumber.toString(),
       principalContractNo: item.principalContractNumber.toString(),
       principalContractDate: item.principalContractDate,
       principalOrderNo: item.principalOrderNumber.toString(),
@@ -87,7 +87,7 @@ export const seedData = async (env?: { DB: D1Database }) => {
       status: "ACTIVE" as const,
     }));
 
-    const [...insertedContracts] = await db
+    const insertedContracts = await db
       .insert(contracts)
       .values(contractData)
       .returning();
