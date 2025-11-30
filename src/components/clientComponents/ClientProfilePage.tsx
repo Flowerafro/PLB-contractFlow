@@ -1,17 +1,17 @@
 "use client";
 
 /* import type { Client } from "../../app/types/client"; */
-import type { Client } from "../../lib/clientdummydata";
+import { DBClient } from "@/db/schema/schema";
 import ButtonClear from "../buttons/ButtonClear";
 
 export default function ClientProfilePage({
   client, onBack,
 }: {
-  client: Client;
+  client: DBClient;
   onBack?: () => void;
 }) {
 
-  const initials = client?.customer?.split(" ").map(n => n[0]).join("");
+  const initials = client?.name?.split(" ").map(n => n[0]).join("");
 
   return (
     <section className="min-h-screen bg-gray-50 p-4">
@@ -25,7 +25,7 @@ export default function ClientProfilePage({
                 {initials}
               </div>
 
-              <h2 className="text-xl font-semibold mb-1">{client.customer}</h2>
+              <h2 className="text-xl font-semibold mb-1">{client.name}</h2>
 
               <p className="text-gray-600 text-sm">
                 Kunde-ID: {client.customerCode ?? "–"}
@@ -37,7 +37,7 @@ export default function ClientProfilePage({
             <div className="space-y-3 text-left">
               <div>
                 <p className="text-sm text-gray-500 mb-1">Opprettet</p>
-                <p className="text-gray-800">{client.clientAdded ?? "–"}</p>
+                <p className="text-gray-800">{client.createdAt ?? "–"}</p>
               </div>
 
                 <div>

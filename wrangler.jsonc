@@ -27,7 +27,7 @@
 			"database_name": "plb-contractflow-db",
       "database_id": "ff8d2ccd-6228-47d1-a98b-5e3f0ea4d02b",
       "migrations_dir": "drizzle/migrations",
-      "remote": true
+      "remote": false
     }
   ],
 
@@ -36,7 +36,7 @@
       "bucket_name": "plb-contractflow-r2",
       "binding": "R2",
       "preview_bucket_name": "plb-contractflow-r2",
-      "remote": true
+      "remote": false
     }
   ],
   

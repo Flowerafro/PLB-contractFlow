@@ -13,12 +13,12 @@ export interface Client {
     phone?: string | null;
     country?: string | null;
     status: "ACTIVE" | "INACTIVE" | string;
-    createdAt?: string; // per nå satt som text i SQLite
-}
+    createdAt?: string | Date | null;
+/*    
+    customer?: string;
+    relation?: string;
+    contactperson?: string;
+    title?: string;
+*/
+    }
 
-
-export interface ClientOverviewProps {
-    onClientClick?: (id: string) => void;
-    onNewClient?: () => void;
-    clientId?: string;
-}

@@ -7,27 +7,20 @@ import ClientProfilePage from "@/components/clientComponents/ClientProfilePage";
 import NewClient from "@/components/clientComponents/NewClient";
 import Button from "@/components/buttons/Button";
 import useHoverEffect from "../hooks/useHoverEffect";
-import type { ClientOverviewProps } from "../../types/client";
+import { clientAPI } from "@/server/databaseDataRetrieval/utilizations/clientAPI";
+import type { DBClient } from "@/db/schema/schema";
 
-interface Client {
-  id: string;
-  customerCode?: string;
-  customer?: string;
-  relation?: string;
-  contactperson?: string;
-  title?: string;
-  email?: string;
-  phone?: string;
-  country?: string;
-  clientAdded?: string;
-  status?: string;
+export interface ClientOverviewProps {
+    onClientClick?: (id: string) => void;
+    onNewClient?: () => void;
+    clientId?: string;
 }
 
 export default function ClientOverview({ onClientClick, onNewClient, clientId }: ClientOverviewProps) {
   const [searchClient, setSearchClient] = useState("");
-  const [filteredClients, setFilteredClients] = useState<Client[]>([]);
-  const [allClients, setAllClients] = useState<Client[]>([]);
-  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [filteredClients, setFilteredClients] = useState<DBClient[]>([]);
+  const [allClients, setAllClients] = useState<DBClient[]>([]);
+  const [selectedClient, setSelectedClient] = useState<DBClient | null>(null);
   const [showNewClientForm, setShowNewClientForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -37,26 +30,20 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await fetch('/api/clients');
-        if (!response.ok) throw new Error('Failed to fetch clients');
-        const data = await response.json() as any;
-        if (data.success) {
-          const clients = data.data.map((c: any) => ({
-            id: c.id.toString(),
-            customerCode: c.customerCode,
-            customer: c.name,
-            email: c.email,
-            phone: c.phone,
-            country: c.country,
-            status: c.status,
-            clientAdded: c.createdAt
-          }));
-          setAllClients(clients);
-          setFilteredClients(clients);
+        const result = await clientAPI.list();
+        if (result.success && result.data) {
+          setAllClients(result.data);
+          setFilteredClients(result.data);
         } else {
-          setError((data as any).error?.message || 'Failed to load clients');
+          console.log('API failed, setting empty arrays');
+          setAllClients([]);
+          setFilteredClients([]);
+          setError(result.error?.message || 'Failed to load clients');
         }
       } catch (err) {
+        console.error('API error:', err);
+        setAllClients([]);
+        setFilteredClients([]);
         setError(err instanceof Error ? err.message : 'Unknown error');
       } finally {
         setLoading(false);
@@ -67,7 +54,7 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
 
   useEffect(() => {
     if (!clientId) return;
-    const c = allClients.find(client => client.id === clientId);
+    const c = allClients.find(client => client.id === parseInt(clientId));
     if (c) setSelectedClient(c);
   }, [clientId, allClients]);
 
@@ -81,55 +68,65 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
     }
 
     try {
-      const response = await fetch(`/api/clients?query=${encodeURIComponent(trimmedQuery)}`);
-      if (!response.ok) throw new Error('Search failed');
-      const data = await response.json();
-      if ((data as any).success) {
-        setFilteredClients((data as any).data.map((c: any) => ({
-          id: c.id.toString(),
-          customerCode: c.customerCode,
-          customer: c.name,
-          email: c.email,
-          phone: c.phone,
-          country: c.country,
-          status: c.status,
-          clientAdded: c.createdAt
-        })));
+      const result = await clientAPI.search(trimmedQuery);
+      console.log('Search result:', result);
+      if (result.success && result.data) {
+        console.log('Setting filteredClients to:', result.data);
+        setFilteredClients(result.data);
+        return;
       } else {
-        setError((data as any).error?.message || 'Search failed');
+        console.log('Search failed, filtering locally');
+        // Fallback: filter locally
+        const filtered = allClients.filter(client =>
+          client.name.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
+          (client.email && client.email.toLowerCase().includes(trimmedQuery.toLowerCase())) ||
+          (client.customerCode && client.customerCode.toLowerCase().includes(trimmedQuery.toLowerCase()))
+        );
+        setFilteredClients(filtered);
+        setError(result.error?.message || 'Search failed, using local filter');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Search error');
+      console.error('Search error:', err);
+      // Fallback: filter locally
+      const filtered = allClients.filter(client =>
+        client.name.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
+        (client.email && client.email.toLowerCase().includes(trimmedQuery.toLowerCase())) ||
+        (client.customerCode && client.customerCode.toLowerCase().includes(trimmedQuery.toLowerCase()))
+      );
+      setFilteredClients(filtered);
+      setError(err instanceof Error ? err.message : 'Search error, using local filter');
     }
   };
   const clientDisplay = searchClient ? filteredClients : allClients;
+  console.log('clientDisplay:', clientDisplay, 'Array.isArray:', Array.isArray(clientDisplay));
 
-  const handleSelectClient = (client: Client) => {
+  const handleSelectClient = (client: DBClient) => {
     if (typeof window !== "undefined") {
       window.history.pushState({ clientId: client.id }, "", `/clients/${client.id}`);
       window.dispatchEvent(new PopStateEvent("popstate"));
     }
     setSelectedClient(client);
-    onClientClick?.(client.id);
+    onClientClick?.(client.id.toString());
   };
 
-  const handleCreateClient = async (partial: Omit<Client, "id" | "createdAt" | "status">) => {
+  const handleCreateClient = async (partial: Omit<DBClient, "id" | "createdAt" | "status">) => {
     try {
-      const response = await fetch('/api/clients', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...partial, status: 'ACTIVE' })
-      });
-      if (!response.ok) throw new Error('Failed to create client');
-      const data = await response.json() as any;
-      if (data.success) {
-        const newClient = data.data;
+      const clientData = {
+        name: partial.name,
+        customerCode: partial.customerCode || undefined,
+        email: partial.email || undefined,
+        phone: partial.phone || undefined,
+        country: partial.country || undefined
+      }
+      const result = await clientAPI.create(clientData);
+      if (result.success && result.data) {
+        const newClient = result.data;
         setAllClients(prev => [...prev, newClient]);
         setFilteredClients(prev => [...prev, newClient]);
         setShowNewClientForm(false);
         handleSelectClient(newClient);
       } else {
-        setError(data.error?.message || 'Failed to create client');
+        setError(result.error?.message || 'Failed to create client');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Create error');
@@ -194,7 +191,7 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
                 </tr>
               </thead>
               <tbody>
-                {clientDisplay.map(client => (
+                {(clientDisplay && Array.isArray(clientDisplay) ? clientDisplay : []).map(client => (
                   <tr
                     key={client.id}
                     onClick={() => handleSelectClient(client)}
@@ -206,7 +203,7 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
                       <span className="px-2 py-1 text-xs font-medium bg-red-100 text-gray-800 rounded-full">Inactive</span>
                       )} </td>
                     <td className="p-4">{client.customerCode}</td>
-                    <td className="p-4">{client.customer}</td>
+                    <td className="p-4">{client.name}</td>
                     <td className="p-4">{client.email}</td>
                     <td className="p-4">{client.phone}</td>
                     <td className="p-4">{client.country}</td>

@@ -1,14 +1,14 @@
 "use client";
 
 import useHoverEffect from "@/app/hooks/useHoverEffect";
-import type { Client } from "@/types/client";
+import type { DBClient } from "@/db/schema/schema";
 
 export default function ClientCard({
   client,
   onSelect
 }: {
-  client: Client;
-  onSelect?: (client: Client) => void;
+  client: DBClient;
+  onSelect?: (client: DBClient) => void;
 }) {
 
 

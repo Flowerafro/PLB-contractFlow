@@ -1,15 +1,15 @@
 import { createContractRepository } from "./contractRepository";
 import type { CreateContractInput } from "../fileHandling/interfaces/createContractInput";
 import type { Contract } from "../../types/contract";
-import type { contractServiceResult } from ".././fileHandling/interfaces/contractResult";
+import type { Result } from "../../types/results";
 
 export interface ContractService {
-    create(data: CreateContractInput): Promise<contractServiceResult<Contract>>;
-    list(query?: string): Promise<contractServiceResult<Contract[]>>;
-    get(id: number): Promise<contractServiceResult<Contract>>;
-    update(id: number, patch: Partial<CreateContractInput>): Promise<contractServiceResult<{ id: number }>>;
-    delete(id: number): Promise<contractServiceResult<{ id: number }>>;
-    search(query: string): Promise<contractServiceResult<Contract[]>>;
+    create(data: CreateContractInput): Promise<Result<Contract>>;
+    list(query?: string): Promise<Result<Contract[]>>;
+    get(id: number): Promise<Result<Contract>>;
+    update(id: number, patch: Partial<CreateContractInput>): Promise<Result<{ id: number }>>;
+    delete(id: number): Promise<Result<{ id: number }>>;
+    search(query: string): Promise<Result<Contract[]>>;
 }
 
 export function createContractService(
