@@ -17,7 +17,7 @@ export interface PaginationResult<T> {
   total?: number;
 }
 
-// Cursor-based pagination for large datasets
+// Cursor-based pagination 
 export async function paginatedQuery<T>(
   table: any,
   params: PaginationParams = {},
@@ -25,12 +25,12 @@ export async function paginatedQuery<T>(
 ): Promise<PaginationResult<T>> {
   const { cursor = 0, limit = 50, direction = 'desc' } = params;
   
-  // Build query conditionally to avoid TypeScript reassignment issues
+  // avoid TypeScript reassignment issues
   let baseQuery = db.select().from(table);
   
   const conditions = [];
   
-  // Apply where conditions if provided
+  // Apply where if provided
   if (whereConditions) {
     conditions.push(whereConditions);
   }
@@ -44,7 +44,7 @@ export async function paginatedQuery<T>(
     );
   }
   
-  // Build final query
+  
   const finalQuery = conditions.length > 0 
     ? baseQuery.where(conditions.length === 1 ? conditions[0] : sql`${conditions.join(' AND ')}`)
     : baseQuery;
@@ -67,7 +67,6 @@ export async function paginatedQuery<T>(
 export async function safeTransaction<T>(operation: (tx: any) => Promise<T>): Promise<T> {
   try {
     return await db.transaction(async (tx: any) => {
-      // All operations within this block are ACID compliant
       return await operation(tx);
     });
   } catch (error) {
@@ -76,7 +75,7 @@ export async function safeTransaction<T>(operation: (tx: any) => Promise<T>): Pr
   }
 }
 
-// Client operations with pagination support
+// Client operations
 export async function getClientById(id: number) {
   const result = await db.select().from(clients).where(eq(clients.id, id));
   return result[0] || null;
@@ -105,7 +104,7 @@ export async function getAllClients(pagination?: PaginationParams) {
   return await db.select().from(clients).orderBy(desc(clients.createdAt));
 }
 
-// Contract operations with pagination
+// Contract operations
 export async function getContractById(id: number) {
   const result = await db.select().from(contracts).where(eq(contracts.id, id));
   return result[0] || null;
@@ -130,7 +129,7 @@ export async function getAllContracts(pagination?: PaginationParams) {
   return await db.select().from(contracts).orderBy(desc(contracts.createdAt));
 }
 
-// Shipment operations with pagination
+// Shipment operations
 export async function getShipmentsByContractId(contractId: number, pagination?: PaginationParams) {
   const whereCondition = eq(shipments.contractId, contractId);
   
@@ -150,7 +149,7 @@ export async function getAllShipments(pagination?: PaginationParams) {
   return await db.select().from(shipments).orderBy(desc(shipments.createdAt));
 }
 
-// Invoice operations with pagination
+// Invoice operations
 export async function getInvoicesByContractId(contractId: number, pagination?: PaginationParams) {
   const whereCondition = eq(invoices.contractId, contractId);
   
@@ -203,7 +202,7 @@ export async function globalSearch(searchTerm: string, pagination?: PaginationPa
   return searchResults;
 }
 
-// Bulk operations with transaction support
+// Bulk operations 
 export async function bulkInsertWithTransaction<T>(
   table: any,
   data: T[],
@@ -212,7 +211,7 @@ export async function bulkInsertWithTransaction<T>(
   return await safeTransaction(async (tx: any) => {
     const results: T[] = [];
     
-    // Process in batches for large datasets
+    // Process in batches
     for (let i = 0; i < data.length; i += batchSize) {
       const batch = data.slice(i, i + batchSize);
       const batchResults = await tx.insert(table).values(batch).returning();

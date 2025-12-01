@@ -5,7 +5,7 @@ export type Client = {
     email?: string | null;
     phone?: string | null;
     country?: string | null;
-    status: "ACTIVE" | "INACTIVE" | string;
+    status?: string | any;
     createdAt?: string | Date | null;
 }
 

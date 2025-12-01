@@ -8,7 +8,7 @@ import { z } from "zod";
 
 const contractSchema = z.object({
   client: z.string().min(1, "Choose a client"),
-  contractName: z.string().optional(),
+  plbReference: z.string().optional(),
   clientName: z.string().optional(),
   clientEmail: z.string().email().optional(),
   startDate: z.string().optional(),
@@ -26,7 +26,7 @@ export function useCreateContractForm() {
     resolver: zodResolver(contractSchema),
     defaultValues: {
       client: "",
-      contractName: "",
+      plbReference: "",
       clientName: "",
       clientEmail: "",
       startDate: "",
@@ -47,7 +47,7 @@ export function useCreateContractForm() {
       }
 
       const result = await contractAPI.create({
-        plbReference: data.contractName || "PLB-" + Date.now(),
+        plbReference: data.plbReference || "PLB-" + Date.now(),
         clientId: clientId,
         principalId: null,
         productCode: null,

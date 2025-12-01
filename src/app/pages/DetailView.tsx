@@ -78,7 +78,6 @@ export default function DetailView({ item, setSelectedShipment, isEditing, onEdi
                     <DetailPrincipalInfo form={form} setForm={setForm} isEditing={isEditing}  />
                 </div>
             </div>
-            {/* <ActionSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onEdit={handleEditClick} isEditing={isEditing} handleEditClick={handleEditClick} /> */}
         </div>
     </section> 
     </>

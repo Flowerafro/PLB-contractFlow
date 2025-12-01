@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
-// Base validation schemas as per report requirements
+// Base validation schemas 
 const currencyInCentsSchema = z.number().int().min(0, "Currency amount must be non-negative");
 const dateISOSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in ISO format (YYYY-MM-DD)");
 const statusSchema = z.enum(["ACTIVE", "INACTIVE", "CANCELLED"]);
 const shipmentStatusSchema = z.enum(["PENDING", "IN_TRANSIT", "DELIVERED", "CANCELLED"]);
 const invoiceStatusSchema = z.enum(["PENDING", "SENT", "PAID", "OVERDUE", "CANCELLED"]);
 
-// Client validation - as per report specs
+// Client validation
 export const clientSchema = z.object({
   name: z.string().min(1, "Client name is required").max(255),
   customerCode: z.string().max(50).optional(),
@@ -75,7 +75,7 @@ export const auditLogSchema = z.object({
   newData: z.string().optional()  // JSON string of new values
 });
 
-// Helper functions for currency conversion
+// Helpers
 export function dollarsToCents(dollars: number): number {
   return Math.round(dollars * 100);
 }
@@ -84,7 +84,6 @@ export function centsToDollars(cents: number): number {
   return cents / 100;
 }
 
-// Validation helper function
 export function validateAndFormat<T>(schema: z.ZodSchema<T>, data: unknown): T {
   const result = schema.safeParse(data);
   if (!result.success) {
@@ -93,7 +92,6 @@ export function validateAndFormat<T>(schema: z.ZodSchema<T>, data: unknown): T {
   return result.data;
 }
 
-// Type exports for use in application
 export type ClientData = z.infer<typeof clientSchema>;
 export type PrincipalData = z.infer<typeof principalSchema>;
 export type ContractData = z.infer<typeof contractSchema>;

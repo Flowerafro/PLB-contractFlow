@@ -49,7 +49,7 @@ export const shipments = sqliteTable("shipments", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   contractId: integer("contract_id").notNull()
     .references(() => contracts.id, { onDelete: "cascade", onUpdate: "cascade" }),
-  containerNumber: text("container_number").unique(), // Containers should be unique
+  containerNumber: text("container_number").unique(), 
   bookingNo: text("booking_no"),
   blNumber: text("bl_number"),
   aakDelNo: text("aak_del_no"),
@@ -84,6 +84,3 @@ export const auditLog = sqliteTable("audit_log", {
   oldData: text("old_data"), // JSON string
   newData: text("new_data")  // JSON string
 });
-
-// Performance indexes will be added via SQL migrations to avoid LibSQL compatibility issues
-// This ensures consistent behavior between local SQLite and Cloudflare D1
