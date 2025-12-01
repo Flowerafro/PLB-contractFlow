@@ -1,6 +1,5 @@
 import { RetrievalRepository } from "../interfaces/retrievalRepository";
 import { ServiceConfig } from "../interfaces/serviceConfig";
-import { ServiceResult } from "../../../types/serverTypes/serviceResult";
 import { RetrievalService } from "../interfaces/retrievalService";
 
 export function createRetrievalService<TSelect, TInsert>(

@@ -25,8 +25,6 @@ export default function DropdownMenu({ options }: DropdownMenuProps) {
       }
       return;
     }
-    
-    // For other options, navigate normally
     window.location.href = option.value;
   };
 

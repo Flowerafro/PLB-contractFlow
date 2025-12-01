@@ -1,10 +1,10 @@
-import { ServiceResult } from "@/types/serverTypes/serviceResult";
+import { Result } from "@/types/results";
 
 export interface RetrievalService<TSelect, TInsert> {
-    create(data: TInsert): Promise<ServiceResult<TSelect>>;
-    list(query?: string): Promise<ServiceResult<TSelect[]>>;
-    get(id: number): Promise<ServiceResult<TSelect>>;
-    update(id: number, patch: Partial<TInsert>): Promise<ServiceResult<{ id: number }>>;
-    delete(id: number): Promise<ServiceResult<{ id: number }>>;
-    search(query: string): Promise<ServiceResult<TSelect[]>>;
+    create(data: TInsert): Promise<Result<TSelect>>;
+    list(query?: string): Promise<Result<TSelect[]>>;
+    get(id: number): Promise<Result<TSelect>>;
+    update(id: number, patch: Partial<TInsert>): Promise<Result<{ id: number }>>;
+    delete(id: number): Promise<Result<{ id: number }>>;
+    search(query: string): Promise<Result<TSelect[]>>;
 }

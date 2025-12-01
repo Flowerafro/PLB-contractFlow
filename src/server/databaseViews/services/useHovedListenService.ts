@@ -1,5 +1,4 @@
 import { HovedListeItem } from '@/types/hovedlisten';
-import { AppContext } from '@/worker';
 import { HovedListenService } from '../interfaces/hovedListenService';
 
 export default function useHovedListenService(): HovedListenService {
@@ -16,7 +15,6 @@ export default function useHovedListenService(): HovedListenService {
           } catch (apiError) {
             console.log('API call failed, falling back to sample data:', apiError);
             return [];
-//            return getSampleData();
           }
         }
 
