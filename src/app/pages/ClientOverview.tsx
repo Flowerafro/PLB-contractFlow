@@ -98,7 +98,6 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
     }
   };
   const clientDisplay = searchClient ? filteredClients : allClients;
-  console.log('clientDisplay:', clientDisplay, 'Array.isArray:', Array.isArray(clientDisplay));
 
   const handleSelectClient = (client: DBClient) => {
     if (typeof window !== "undefined") {

@@ -20,14 +20,6 @@ import { createClientController, createClientRoutes } from "./server/databaseDat
 import { createContractController, createContractRoutes } from "./server/databaseDataRetrieval/utilizations/contracts";
 import { createHovedListenController } from "./server/databaseViews/controllers/hovedListenController";
 
-// type DB = D1Database;
-
-/*declare global {
-  var DB: D1Database;
-}
-*/
-
-
 function requireAuth(request: Request) {
   
   const cookies = request.headers.get('Cookie');
@@ -59,14 +51,14 @@ export default defineApp([
 
   
   ({ ctx }) => {
-
-    },
+    ctx;
+  },
 
   route("/hovedlisten", (ctx) => {
     const controller = createHovedListenController(hovedListenRepository, { DB: env.DB });
     return controller.list(ctx);
   }),
-
+/*
   // Seed route(testing)
   route("/seed", async ({ ctx }) => {
     try {
@@ -81,7 +73,7 @@ export default defineApp([
       }, { status: 500 });
     }
   }),
-
+*/
   route("/upload", async ({ request, ctx }) => {
     try {
       const formData = await request.formData();
@@ -141,8 +133,6 @@ export default defineApp([
         fileName: obj.key,
         size: obj.size,
         uploaded: obj.uploaded,
-// Her kan det legges til flere metadata typer (selskap, conract, osv)
-// Interface for generiske filer?
       }));
       const paginatedFiles = allFiles.slice((page - 1) * limit, page * limit);
       return Response.json({ files: paginatedFiles, total: allFiles.length })
@@ -219,9 +209,7 @@ export default defineApp([
     add("Size", size);
 
     const pdfBytes = await pdfDoc.save();
-
-    
-    return new Response(pdfBytes, {
+    return new Response(pdfBytes as any, {
       headers: {
         "Content-Type": "application/pdf",
         "Cache-Control": "no-store",

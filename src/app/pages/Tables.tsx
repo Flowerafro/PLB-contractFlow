@@ -7,10 +7,10 @@ import DetailView from "./DetailView";
 import TabbedTableGeneration from "@/features/components/TabbedTableGeneration";
 import { hovedlistenDatabaseData } from "@/features/tables/hooks/datatypeStructures/hovedlistenDatabaseData";
 import { hovedListenColumns } from "@/features/tables/columns/hovedListenColumns";
-import { exportTableToExcel } from "@/lib/exportTableToExcel";
+import { exportTableToExcel } from "@/features/tables/exportTableToExcel";
 import ExportExcelButton from "@/components/buttons/ExportExcelButton"
 import useFilteredResults from "../hooks/useFilteredResults";
-import mapShipmentData from "@/features/util/mapShipmentData";
+import mapShipmentData from "@/features/tables/util/mapShipmentData";
 import LoadingSpinner from "@/features/components/LoadingSpinner";
 
 

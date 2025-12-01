@@ -9,7 +9,7 @@ import type { AnyD1Database } from "drizzle-orm/d1";
 import { RetrievalRepository } from "../interfaces/retrievalRepository";
 import { RepositoryConfig } from "../interfaces/repositoryConfig";
 import { getDb } from "@/db/index";
-import { RepositoryResult } from "../types/repositoryResult";
+import { RepositoryResult } from "../../../types/serverTypes/repositoryResult";
 
 export default function createRetrievalRepository<T extends Table> (
     config: RepositoryConfig<T>,

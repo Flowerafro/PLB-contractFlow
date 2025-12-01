@@ -1,19 +1,15 @@
-// midlertidig api-kall for klienthåndtering før database er på plass. ikke i bruk siden vi måtte gå tilbake til mock-data
-
 import type { DBClient } from "@/db/schema/schema";
 import { ClientSearchItem } from "@/types/clientSearch";
 import { Result } from "@/types/results";
 import type { CreateClientInput } from "@/features/fileHandling/interfaces/createClientInput";
+import type { APIError } from "@/types/serverTypes/apiError";
 
 const BASE_URL = "/api/clients";
 
-type ApiError = {
-    error?: string | { message?: string };
-    data?: unknown;
-}
+
 
 async function handleResponse<T>(response: Response): Promise<Result<T>> {
-    const data = (await response.json().catch(() => null)) as ApiError | null;
+    const data = (await response.json().catch(() => null)) as APIError | null;
     console.log('API Response status:', response.status);
     console.log('API Response data:', data);
     console.log('API Response data type:', typeof data);
@@ -40,7 +36,6 @@ async function handleResponse<T>(response: Response): Promise<Result<T>> {
             }
         };
     }
-
     return data as Result<T>;
 };
 
@@ -81,5 +76,4 @@ export const clientAPI = {
 
         return await handleResponse<{ id: number }>(result);
     }
-
 }

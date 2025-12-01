@@ -1,14 +1,9 @@
-// midlertidig api kall for contracthåndtering før database er på plass
+import type { APIError } from "@/types/serverTypes/apiError";
 
-const BASE_URL = "/api/v1/contracts";
-
-type ApiError = {
-    error?: string | { message?: string };
-    data?: unknown;
-};
+const BASE_URL = "/api/contracts";
 
 async function handleResponse<T>(response: Response): Promise<T> {
-    const data = (await response.json().catch(() => null)) as ApiError | null;
+    const data = (await response.json().catch(() => null)) as APIError | null;
 
     if (!response.ok) {
         const message =
@@ -16,11 +11,10 @@ async function handleResponse<T>(response: Response): Promise<T> {
                 ? data.error.message
                 : typeof data?.error === "string"
                     ? data.error
-                    : "Noe gikk galt med forespørselen.";
+                    : "Something obstructed the request.";
 
         throw new Error(message);
     }
-
     return data as T;
 }
 
@@ -57,5 +51,23 @@ export const contractAPI = {
 
         const body = await handleResponse<{ data: { id: number } }>(result);
         return body.data!;
+    },
+
+    async delete(id: number) {
+        const result = await fetch(`${BASE_URL}/${id}`, {
+            method: "DELETE"
+        });
+
+        if (result.ok) {
+            return { id };
+        }
+        await handleResponse(result);
+        return null;
+    },
+
+    async search(query: string) {
+        const result = await fetch(`${BASE_URL}/search?query=${encodeURIComponent(query)}`);
+        const body = await handleResponse<{ data: any[] }>(result);
+        return body.data ?? [];
     }
 };

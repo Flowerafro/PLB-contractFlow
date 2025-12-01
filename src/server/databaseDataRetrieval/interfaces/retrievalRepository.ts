@@ -1,4 +1,4 @@
-import { RepositoryResult } from "@/server/databaseDataRetrieval/types/repositoryResult";
+import { RepositoryResult } from "@/types/serverTypes/repositoryResult";
 
 export interface RetrievalRepository<TSelect, TInsert> {
     create(data: TInsert): Promise<RepositoryResult<TSelect>>;

@@ -1,6 +1,6 @@
 "use client";
 
-import { exportTableToExcel } from "@/lib/exportTableToExcel";
+import { exportTableToExcel } from "@/features/tables/exportTableToExcel";
 
 export default function ExportExcelButton() {
   return (

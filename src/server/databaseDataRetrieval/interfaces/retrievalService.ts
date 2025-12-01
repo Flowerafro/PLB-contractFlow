@@ -1,4 +1,4 @@
-import { ServiceResult } from "@/server/databaseDataRetrieval/types/serviceResult";
+import { ServiceResult } from "@/types/serverTypes/serviceResult";
 
 export interface RetrievalService<TSelect, TInsert> {
     create(data: TInsert): Promise<ServiceResult<TSelect>>;

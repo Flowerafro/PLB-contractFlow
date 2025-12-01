@@ -1,13 +1,13 @@
 "use client";
 
-import { useContractAPI } from "@/app/hooks/contract/useContractAPI";
+import { contractAPI } from "@/server/databaseDataRetrieval/utilizations/contractAPI";
 import { useContractNavigation } from "@/app/hooks/contract/useContractNavigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const contractSchema = z.object({
-  client: z.string().min(1, "Choose a client"), 
+  client: z.string().min(1, "Choose a client"),
   contractName: z.string().optional(),
   clientName: z.string().optional(),
   clientEmail: z.string().email().optional(),
@@ -20,7 +20,6 @@ const contractSchema = z.object({
 export type ContractForm = z.infer<typeof contractSchema>;
 
 export function useCreateContractForm() {
-  const api = useContractAPI();
   const navigate = useContractNavigation();
 
   const form = useForm<ContractForm>({
@@ -38,21 +37,31 @@ export function useCreateContractForm() {
 
   const onSubmit = form.handleSubmit(async (data) => {
     try {
-      await api.createContract({
+      console.log("Submitting contract with data:", data);
+
+      const clientId = parseInt(data.client);
+      
+      if (!clientId || isNaN(clientId)) {
+        console.error("Invalid client selected");
+        return;
+      }
+
+      const result = await contractAPI.create({
         plbReference: data.contractName || "PLB-" + Date.now(),
-        clientId: 1,
+        clientId: clientId,
         principalId: null,
-        productCode: data.client,
-        orderDate: data.startDate,
+        productCode: null,
+        orderDate: data.startDate || null,
         status: "ACTIVE",
       });
+
+      console.log("Contract creation result:", result);
+      navigate.goToSuccess();
     } catch (error) {
-      console.warn("API call failed, continuing anyway");
+      console.error("Contract creation failed:", error);
     }
-  
-    navigate.goToSuccess();
   });
-  
+
 
   return {
     ...form,

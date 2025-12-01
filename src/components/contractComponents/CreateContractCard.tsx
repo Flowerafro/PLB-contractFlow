@@ -55,7 +55,7 @@ export default function CreateContractCard({
                 >
                   <option value="">----</option>
                   {clients.map((c: any) => (
-                    <option key={c.id} value={c.customerCode}>
+                    <option key={c.id} value={c.id}>
                       {c.customer}
                     </option>
                   ))}

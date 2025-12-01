@@ -5,6 +5,4 @@ export interface ArchiveDocument {
     fileName: string;
     size: number;
     fullFileName: string;
-//    containerNumber: string;
-//    customer: string;
 }

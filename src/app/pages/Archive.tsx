@@ -6,7 +6,7 @@ import PdfModal from "@/components/global/PdfModal";
 import { useState } from "react";
 import { archiveColumns } from "@/features/tables/columns/archiveColumns";
 import { useArchiveData } from "@/features/tables/hooks/datatypeStructures/archiveFileData";
-import { generatePdfPreview } from "@/lib/generatePdfPreview";
+import { generatePdfPreview } from "@/features/fileHandling/generatePdfPreview";
 // Viser arkivliste med klikkbar filkolonne som åpner PDF-preview i modal.
 
 export default function Archive() {
