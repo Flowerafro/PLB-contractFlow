@@ -49,7 +49,6 @@ export default defineApp([
   setCommonHeaders(),
   //prefix("/api/contracts", contractRoutes),
 
-  
   ({ ctx }) => {
     ctx;
   },
@@ -58,22 +57,7 @@ export default defineApp([
     const controller = createHovedListenController(hovedListenRepository, { DB: env.DB });
     return controller.list(ctx);
   }),
-/*
-  // Seed route(testing)
-  route("/seed", async ({ ctx }) => {
-    try {
-      const { seedData } = await import("./db/seedHovedlisten");
-      await seedData(ctx.env);
-      return Response.json({ success: true, message: "Database seeded successfully" });
-    } catch (error) {
-      console.error("Error seeding database:", error);
-      return Response.json({
-        success: false,
-        error: "Failed to seed database",
-      }, { status: 500 });
-    }
-  }),
-*/
+
   route("/upload", async ({ request, ctx }) => {
     try {
       const formData = await request.formData();
@@ -93,12 +77,6 @@ export default defineApp([
           contentType: file.type,
         },
       });
-
-      return Response.json({ 
-        success: true,
-        fileName: file.name,
-        url: `/dev-${Date.now()}-${file.name}`,
-        message: 'File uploaded to R2 successfully'});
 
       return Response.json({ 
         success: true, 

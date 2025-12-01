@@ -1,9 +1,9 @@
-import { RepositoryResult } from "@/types/serverTypes/repositoryResult";
+import { Result } from "@/types/result";
 
 export interface RetrievalRepository<TSelect, TInsert> {
-    create(data: TInsert): Promise<RepositoryResult<TSelect>>;
-    findMany(search?: string): Promise<RepositoryResult<TSelect[]>>;
-    find(id: number): Promise<RepositoryResult<TSelect>>;
-    update(id: number, patch: Partial<TInsert>): Promise<RepositoryResult<{ id: number }>>;
-    remove(id: number): Promise<RepositoryResult<{ id: number }>>;
+    create(data: TInsert): Promise<Result<TSelect>>;
+    findMany(search?: string): Promise<Result<TSelect[]>>;
+    find(id: number): Promise<Result<TSelect>>;
+    update(id: number, patch: Partial<TInsert>): Promise<Result<{ id: number }>>;
+    remove(id: number): Promise<Result<{ id: number }>>;
 }

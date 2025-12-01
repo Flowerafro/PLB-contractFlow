@@ -1,4 +1,4 @@
-import { Result } from "@/types/results";
+import { Result } from "@/types/result";
 
 export interface RetrievalService<TSelect, TInsert> {
     create(data: TInsert): Promise<Result<TSelect>>;

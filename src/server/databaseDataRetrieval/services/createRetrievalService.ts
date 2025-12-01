@@ -18,7 +18,7 @@ export function createRetrievalService<TSelect, TInsert>(
             }
             const result = await repo.create(data);
 
-            if ("error" in result) {
+            if (!result.success) {
                 return {
                     success: false,
                     error: { code: 500, message: `Databasefeil ved oppretting av ${config.entityName}.` }
@@ -31,7 +31,7 @@ export function createRetrievalService<TSelect, TInsert>(
         async list(query = "") {
             const result = await repo.findMany(query);
 
-            if ("error" in result) {
+            if (!result.success) {
                 return {
                     success: false,
                     error: { code: 500, message: `Databasefeil ved listevisning av ${config.entityName}.` }
@@ -51,7 +51,7 @@ export function createRetrievalService<TSelect, TInsert>(
 
             const result = await repo.find(id);
 
-            if ("error" in result) {
+            if (!result.success) {
                 return {
                     success: false,
                     error: { code: 500, message: `Databasefeil ved henting av ${config.entityName}.` }
@@ -78,7 +78,7 @@ export function createRetrievalService<TSelect, TInsert>(
 
             const result = await repo.update(id, patch);
 
-            if ("error" in result) {
+            if (!result.success) {
                 return {
                     success: false,
                     error: { code: 500, message: `Databasefeil ved oppdatering av ${config.entityName}.` }
@@ -98,7 +98,7 @@ export function createRetrievalService<TSelect, TInsert>(
 
             const result = await repo.remove(id);
 
-            if ("error" in result) {
+            if (!result.success) {
                 return {
                     success: false,
                     error: { code: 500, message: `Databasefeil ved sletting av ${config.entityName}.` }
@@ -111,7 +111,7 @@ export function createRetrievalService<TSelect, TInsert>(
         async search(query) {
             const result = await repo.findMany(query);
 
-            if ("error" in result) {
+            if (!result.success) {
                 return {
                     success: false,
                     error: { code: 500, message: `Databasefeil ved søk i ${config.entityName}.` }
