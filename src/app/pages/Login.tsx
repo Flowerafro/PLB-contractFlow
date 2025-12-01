@@ -1,10 +1,8 @@
 "use client"
 
 import React, { useState } from 'react';
-import { InputWLabelClient } from '../../components/clientComponents/InputWLabelClient';
 import { InputWithLabelSubmitForm } from '../../components/clientComponents/InputWithLabelSubmitForm';
 import Button from '../../components/buttons/Button';
-import Logo from '../../components/global/Logo';
 import Footer from '../../components/global/pageSections/Footer';
 import { login } from '../actions/auth';
 

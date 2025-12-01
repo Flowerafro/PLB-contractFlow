@@ -64,35 +64,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     setLoading(false);
   }
 };
-/*
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) {
-      setError("Navn på klient er påkrevd for å lagring i databasen");
-      return;
-    }
 
-    setError(null);
-    setLoading(true);
-
-    const newClient: Omit<Client, "id"> = {
-      customer: name.trim(),
-      customerCode: customerCode.trim() || undefined,
-      email: email.trim() || undefined,
-      phone: phone.trim() || undefined,
-      country: country.trim() || undefined,
-      relation: "",
-      contactperson: "",
-      title: "",
-      clientAdded: new Date().toISOString(),
-      status: "Active",
-    }
-
-    const createdClient = addClient(newClient)
-    onCreate?.(createdClient);
-    onCancel?.();
-  }
-*/
 return (   
   <div className="
     fixed 

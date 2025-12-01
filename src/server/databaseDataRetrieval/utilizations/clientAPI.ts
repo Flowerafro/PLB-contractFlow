@@ -1,6 +1,6 @@
 import type { DBClient } from "@/db/schema/schema";
 import { ClientSearchItem } from "@/types/clientSearch";
-import { Result } from "@/types/results";
+import { Result } from "@/types/result";
 import type { CreateClientInput } from "@/features/fileHandling/interfaces/createClientInput";
 import type { APIError } from "@/types/serverTypes/apiError";
 

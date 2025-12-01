@@ -16,5 +16,3 @@ export default function Layout({ children }: { children?: React.ReactNode }) {
     </div>
   );
 }
-
-/* relative h-full min-h-full flex flex-col bg-[var(--bg-color)] */

@@ -3,13 +3,11 @@ import { Table,
          like,
          or
  } from "drizzle-orm";
-
 import type { AnyD1Database } from "drizzle-orm/d1";
 
 import { RetrievalRepository } from "../interfaces/retrievalRepository";
 import { RepositoryConfig } from "../interfaces/repositoryConfig";
 import { getDb } from "@/db/index";
-import { RepositoryResult } from "../../../types/serverTypes/repositoryResult";
 
 export default function createRetrievalRepository<T extends Table> (
     config: RepositoryConfig<T>,
@@ -21,10 +19,10 @@ export default function createRetrievalRepository<T extends Table> (
         async create(data) {
             try {
                 const result = await db.insert(config.table).values(data).returning();
-                return { data: result[0] };
+                return { success: true, data: result[0] };
             }
             catch (error) {
-                return { error };
+                return { success: false, error: { code: 500, message: "Database error during creation" } };
             }
         },
 
@@ -32,7 +30,7 @@ export default function createRetrievalRepository<T extends Table> (
             try {
                 if (!search || search.trim() === "") {
                     const result = await db.select().from(config.table);
-                    return { data: result };
+                    return { success: true, data: result };
                 }
 
                 const value = `%${search.toLowerCase()}%`;
@@ -45,9 +43,9 @@ export default function createRetrievalRepository<T extends Table> (
                     .from(config.table)
                     .where(or(...conditions));
 
-                return { data: result };
+                return { success: true, data: result };
             } catch (error) {
-                return { error };
+                return { success: false, error: { code: 500, message: "Database error during search" } };
             }
         },
 
@@ -57,27 +55,29 @@ export default function createRetrievalRepository<T extends Table> (
                     .select()
                     .from(config.table)
                     .where(eq(config.table[config.idField] as any, id));
-                return { data: result[0] ?? null };
+                return { success: true, data: result[0] ?? null };
             } catch (error) {
-                return { error };
+                return { success: false, error: { code: 500, message: "Database error during find" } };
             }
         },
 
         async update(id, patch) {
             try {
-                await db.delete(config.table).where(eq(config.table[config.idField] as any, id));
-                return { data: { id } };
+                await db.update(config.table)
+                    .set(patch)
+                    .where(eq(config.table[config.idField] as any, id));
+                return { success: true, data: { id } };
             } catch (error) {
-                return { error };
+                return { success: false, error: { code: 500, message: "Database error during update" } };
             }
         },
 
         async remove(id) {
             try {
                 await db.delete(config.table).where(eq(config.table[config.idField] as any, id));
-                return { data: { id } };
+                return { success: true, data: { id } };
             } catch (error) {
-                return { error };
+                return { success: false, error: { code: 500, message: "Database error during deletion" } };
             }
         }
     };
