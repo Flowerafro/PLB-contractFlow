@@ -11,7 +11,6 @@ export function exportTableToExcel(
     console.error(`exportTableToExcel: No <table> found with id "${tableId}"`);
     return;
   }
-  // Gjør tabellen om til et Excel ark
   const workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
 
   const excelBuffer = XLSX.write(workbook, {
