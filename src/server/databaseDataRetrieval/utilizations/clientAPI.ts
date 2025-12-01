@@ -6,8 +6,6 @@ import type { APIError } from "@/types/serverTypes/apiError";
 
 const BASE_URL = "/api/clients";
 
-
-
 async function handleResponse<T>(response: Response): Promise<Result<T>> {
     const data = (await response.json().catch(() => null)) as APIError | null;
     console.log('API Response status:', response.status);

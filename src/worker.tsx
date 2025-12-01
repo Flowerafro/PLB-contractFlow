@@ -47,7 +47,6 @@ export type AppContext = {
 export default defineApp([
 
   setCommonHeaders(),
-  //prefix("/api/contracts", contractRoutes),
 
   ({ ctx }) => {
     ctx;
@@ -261,7 +260,6 @@ export default defineApp([
     route("/", () => <Login />), 
     route("/Login", () => <Login />),
     
-    // Protected routes - require authentication  
     route("/Home", ({ request }) => {
       const authResult = requireAuth(request);
       if (authResult instanceof Response) return authResult;
@@ -307,5 +305,4 @@ export default defineApp([
   
 ]);
 
-// Export Durable Objects
 export { UserSession };
