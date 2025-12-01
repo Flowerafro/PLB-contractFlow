@@ -1,23 +1,23 @@
 /**
  * D1 Database Setup for Cloudflare
- * Creates all tables, indexes, and views for PLB ContractFlow
+ * Creates all tables, indexes, and views
  */
 
 async function setupD1Database() {
   console.log('Setting up PLB ContractFlow D1 Database...');
 
   const setupQueries = [
-    // Enable foreign keys
+    
     'PRAGMA foreign_keys = ON',
     
-    // Create principals table
+    
     `CREATE TABLE IF NOT EXISTS principals (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
       created_at TEXT DEFAULT (datetime('now')) NOT NULL
     )`,
     
-    // Create clients table  
+     
     `CREATE TABLE IF NOT EXISTS clients (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
@@ -29,7 +29,7 @@ async function setupD1Database() {
       created_at TEXT DEFAULT (datetime('now')) NOT NULL
     )`,
     
-    // Create contracts table
+    
     `CREATE TABLE IF NOT EXISTS contracts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       plb_reference TEXT NOT NULL UNIQUE,
@@ -51,7 +51,7 @@ async function setupD1Database() {
       FOREIGN KEY (principal_id) REFERENCES principals(id) ON UPDATE CASCADE ON DELETE SET NULL
     )`,
     
-    // Create shipments table
+    
     `CREATE TABLE IF NOT EXISTS shipments (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       contract_id INTEGER NOT NULL,
@@ -69,7 +69,7 @@ async function setupD1Database() {
       FOREIGN KEY (contract_id) REFERENCES contracts(id) ON UPDATE CASCADE ON DELETE CASCADE
     )`,
     
-    // Create invoices table
+    
     `CREATE TABLE IF NOT EXISTS invoices (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       contract_id INTEGER NOT NULL,
@@ -82,7 +82,7 @@ async function setupD1Database() {
       FOREIGN KEY (contract_id) REFERENCES contracts(id) ON UPDATE CASCADE ON DELETE CASCADE
     )`,
     
-    // Create audit log table
+    
     `CREATE TABLE IF NOT EXISTS audit_log (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       table_name TEXT NOT NULL,
@@ -94,7 +94,7 @@ async function setupD1Database() {
       new_data TEXT
     )`,
     
-    // Create search view for cross-table queries
+    
     `CREATE VIEW IF NOT EXISTS v_search AS
     SELECT
         c.id as contract_id,
@@ -120,7 +120,7 @@ async function setupD1Database() {
     LEFT JOIN shipments s ON s.contract_id = c.id
     LEFT JOIN invoices i ON i.contract_id = c.id`,
     
-    // Create indexes for performance
+    // Create indexes
     'CREATE INDEX IF NOT EXISTS idx_clients_customer_code ON clients(customer_code)',
     'CREATE INDEX IF NOT EXISTS idx_clients_status ON clients(status)',
     'CREATE INDEX IF NOT EXISTS idx_contracts_client_id ON contracts(client_id)',
@@ -142,5 +142,4 @@ async function setupD1Database() {
   return setupQueries;
 }
 
-// Export the setup queries for D1 execution
 export { setupD1Database };

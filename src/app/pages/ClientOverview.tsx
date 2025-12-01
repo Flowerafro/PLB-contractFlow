@@ -108,28 +108,11 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
     onClientClick?.(client.id.toString());
   };
 
-  const handleCreateClient = async (partial: Omit<DBClient, "id" | "createdAt" | "status">) => {
-    try {
-      const clientData = {
-        name: partial.name,
-        customerCode: partial.customerCode || undefined,
-        email: partial.email || undefined,
-        phone: partial.phone || undefined,
-        country: partial.country || undefined
-      }
-      const result = await clientAPI.create(clientData);
-      if (result.success && result.data) {
-        const newClient = result.data;
-        setAllClients(prev => [...prev, newClient]);
-        setFilteredClients(prev => [...prev, newClient]);
-        setShowNewClientForm(false);
-        handleSelectClient(newClient);
-      } else {
-        setError(result.error?.message || 'Failed to create client');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Create error');
-    }
+  const handleCreateClient = (newClient: DBClient) => {
+    setAllClients(prev => [...prev, newClient]);
+    setFilteredClients(prev => [...prev, newClient]);
+    setShowNewClientForm(false);
+    handleSelectClient(newClient);
   };
 
   if (selectedClient) {

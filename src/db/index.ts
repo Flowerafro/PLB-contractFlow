@@ -7,4 +7,3 @@ export function getDb(env: { DB: D1Database }) {
 }
 
 export type DB = DrizzleD1Database<typeof schema>;
-//export { schema };

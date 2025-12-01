@@ -15,8 +15,8 @@ function createDbClient() {
     console.log('Using Cloudflare D1 database...');
     return d1Drizzle((globalThis as any).DB, { schema });
   } else {
-    // Local development - use LibSQL client
-    console.log('Using local LibSQL database...');
+    // Local development - use SQLite client
+    console.log('Using local SQLite database...');
     const client = createClient({
       url: process.env.DATABASE_URL ?? 'file:./local.db',
     });

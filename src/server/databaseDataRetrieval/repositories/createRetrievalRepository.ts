@@ -22,7 +22,26 @@ export default function createRetrievalRepository<T extends Table> (
                 return { success: true, data: result[0] };
             }
             catch (error) {
-                return { success: false, error: { code: 500, message: "Database error during creation" } };
+                console.error('Database error during creation:', error);
+                
+                const errorMessage = error instanceof Error ? error.message : String(error);
+                if (errorMessage.includes('UNIQUE constraint failed') || errorMessage.includes('unique')) {
+                    return { 
+                        success: false, 
+                        error: { 
+                            code: 409, 
+                            message: "A record with this information already exists" 
+                        } 
+                    };
+                }
+                
+                return { 
+                    success: false, 
+                    error: { 
+                        code: 500, 
+                        message: "Database error during creation" 
+                    } 
+                };
             }
         },
 

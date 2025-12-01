@@ -1,4 +1,5 @@
 -- Global search view for contracts, clients, principals, shipments and invoices
+-- Evt brukes i dashboard
 CREATE VIEW IF NOT EXISTS v_search AS
 SELECT 
     c.id as contract_id,

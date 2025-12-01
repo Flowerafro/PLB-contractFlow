@@ -10,7 +10,7 @@ import { eq, and, desc } from 'drizzle-orm';
 export class AuditService {
   
   /**
-   * Log an INSERT operation
+   * Log INSERT
    */
   static async logInsert(
     tableName: string, 
@@ -29,7 +29,7 @@ export class AuditService {
   }
 
   /**
-   * Log an UPDATE operation with old and new values
+   * Log  UPDATE 
    */
   static async logUpdate(
     tableName: string, 
@@ -49,7 +49,7 @@ export class AuditService {
   }
 
   /**
-   * Log a DELETE operation
+   * Log DELETE 
    */
   static async logDelete(
     tableName: string, 
@@ -68,11 +68,11 @@ export class AuditService {
   }
 
   /**
-   * Create audit log entry with validation
+   * Create audit log validation
    */
   private static async createAuditEntry(auditData: Omit<AuditLogData, 'timestamp'>) {
     try {
-      // Validate audit data before insertion
+      // Validate audit data before insert
       const validatedData = auditLogSchema.parse(auditData);
       
       const [result] = await db.insert(auditLog).values({
@@ -87,13 +87,13 @@ export class AuditService {
       return result;
     } catch (error) {
       console.error('Audit logging failed:', error);
-      // Don't throw - audit failures shouldn't break business operations
+      // audit failures shouldn't break business operations
       return null;
     }
   }
 
   /**
-   * Get audit trail for a specific record
+   * Get audit trail for one record
    */
   static async getAuditTrail(tableName: string, recordId: number) {
     return await db.select()
@@ -108,7 +108,7 @@ export class AuditService {
   }
 
   /**
-   * Get audit trail for a user
+   * Get audit trail for one user
    */
   static async getUserAuditTrail(userId: number, limit = 50) {
     return await db.select()
@@ -119,7 +119,7 @@ export class AuditService {
   }
 
   /**
-   * Get recent audit entries across all tables
+   * Get audit entries across all tables
    */
   static async getRecentAuditEntries(limit = 100) {
     return await db.select()
