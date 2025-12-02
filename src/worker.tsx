@@ -1,4 +1,4 @@
-import { render, route, prefix } from "rwsdk/router";
+import { render, route } from "rwsdk/router";
 import { defineApp } from "rwsdk/worker";
 import { Document } from "./app/Document";
 import { setCommonHeaders } from "./app/headers";
@@ -60,15 +60,12 @@ export default defineApp([
   route("/upload", async ({ request, ctx }) => {
     try {
       const formData = await request.formData();
-      const data = new FormData();
       const file = formData.get('file') as File;
       
       if (!file) {
         return Response.json({ error: 'No file provided' }, { status: 400 });
       }
       
-      const timestamp = Date.now();
-      const fileName = `${timestamp}-${file.name}`;
       const r2ObjectKey = `${file.name}`;
    
       await env.R2.put(r2ObjectKey, file.stream(), {
@@ -80,14 +77,8 @@ export default defineApp([
       return Response.json({ 
         success: true,
         fileName: file.name,
-        url: `/dev-${Date.now()}-${file.name}`,
-        message: 'File uploaded to R2 successfully'});
-
-      return Response.json({ 
-        success: true, 
-        fileName,
-        url: r2ObjectKey ,
-        message: 'File uploaded successfully' 
+        url: r2ObjectKey,
+        message: 'File uploaded to R2 successfully'
       });
    
       } catch (error) {
@@ -266,7 +257,6 @@ export default defineApp([
     route("/", () => <Login />), 
     route("/Login", () => <Login />),
     
-    // Protected routes - require authentication  
     route("/Home", ({ request }) => {
       const authResult = requireAuth(request);
       if (authResult instanceof Response) return authResult;
@@ -312,5 +302,4 @@ export default defineApp([
   
 ]);
 
-// Export Durable Objects
 export { UserSession };
