@@ -25,10 +25,11 @@ export default function Dashboard() {
   };
 
 
-  const filteredResults = useFilteredResults(searchTerm, data) 
-     const handleSelectShipment = (row: any) => {
+  const filteredResults = useFilteredResults(searchTerm, data);
+  
+  const handleSelectShipment = (row: any) => {
       setSelectedShipment(mapShipmentData(row)
-      );
+    );
   }; 
 
   if (loading) return <div>Table is loading...</div>;

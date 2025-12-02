@@ -14,4 +14,3 @@ export async function fetchFromR2(): Promise<ArchiveDocument[]> {
     throw new Error(error.message || "Unknown error fetching files");
   }
 }
-
