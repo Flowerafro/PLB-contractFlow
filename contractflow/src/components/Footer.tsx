@@ -1,9 +1,0 @@
-
-
-export default function Footer() {
-    return (
-      <footer className="w-full bg-[var(--primary-color)] flex items-center justify-center gap-4 py-4">
-       <p className=" text-white text-center ">  © 2025 PLB-ContractFlow. All Rights Reserved.</p>
-      </footer>
-    );
-  }

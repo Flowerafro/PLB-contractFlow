@@ -1,0 +1,73 @@
+// Database: PLB Contract Management System
+// Type: SQLite (LibSQL)
+
+Table clients {
+  id integer [pk, increment]
+  name text [not null, unique]
+  customer_code text
+  email text
+  phone text
+  country text
+  status text [not null, default: 'ACTIVE']
+  created_at text [not null, default: `datetime('now')`]
+}
+
+Table principals {
+  id integer [pk, increment]
+  name text [not null, unique, default: 'AAK']
+  created_at text [not null, default: `datetime('now')`]
+}
+
+Table contracts {
+  id integer [pk, increment]
+  plb_reference text [not null, unique]
+  client_id integer [not null, ref: > clients.id]
+  principal_id integer [ref: > principals.id]
+  product_code text
+  order_date text
+  tonn_per_fcl real
+  price_usd_per_mt_c integer [not null, default: 0]
+  total_usd_c integer [not null, default: 0]
+  commission_group_bp integer
+  customer_order_no text
+  principal_contract_no text
+  principal_contract_date text
+  principal_order_no text
+  status text [not null, default: 'ACTIVE']
+  created_at text [not null, default: `datetime('now')`]
+}
+
+Table shipments {
+  id integer [pk, increment]
+  contract_id integer [not null, ref: > contracts.id]
+  container_number text
+  booking_no text
+  bl_number text
+  aak_del_no text
+  po_eta text
+  etd text
+  bl_date text
+  eta text
+  tonnes_delivered real
+  created_at text [not null, default: `datetime('now')`]
+}
+
+Table invoices {
+  id integer [pk, increment]
+  contract_id integer [not null, ref: > contracts.id]
+  principal_invoice_no text [unique]
+  principal_invoice_date text
+  invoice_due_date text
+  invoiced_amount_c integer [not null, default: 0]
+  created_at text [not null, default: `datetime('now')`]
+}
+
+Table audit_log {
+  id integer [pk, increment]
+  table_name text [not null]
+  record_id integer [not null]
+  action text [not null]
+  user_id integer
+  changes text
+  created_at text [not null, default: `datetime('now')`]
+}
