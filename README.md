@@ -92,3 +92,9 @@ Viser alle klienter/kunder som ligger i D1 databasen.
 
 ### Log Out
 Logger deg ut og tar deg tilbake til Login-siden. Access-cookien som brukes for tilgangskontroll slettes, slik at man ikke kan gå direkte forbi login-siden uten å oppgi godkjente credentials.
+
+
+
+
+
+**Utviklet med ❤️ for PLB Food & Dairy Consultants AS**
