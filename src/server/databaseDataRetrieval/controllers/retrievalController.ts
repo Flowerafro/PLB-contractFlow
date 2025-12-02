@@ -47,7 +47,7 @@ export function createRetrievalController<T extends Table>(
             } catch (err) {
                 return new Response(JSON.stringify({
                     success: false,
-                    error: "Feil ved henting av data."
+                    error: "Error encountered while data fetching."
                 }), {
                     status: 500,
                     headers: { "Content-Type": "application/json" }
@@ -61,7 +61,7 @@ export function createRetrievalController<T extends Table>(
             if (isNaN(id)) {
                 return new Response(JSON.stringify({
                     success: false,
-                    error: "Ugyldig ID."
+                    error: "Invalid ID."
                 }), {
                     status: 400,
                     headers: { "Content-Type": "application/json" }

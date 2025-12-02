@@ -1,6 +1,6 @@
 "use client";
 
-import { contractAPI } from "@/server/databaseDataRetrieval/utilizations/contractAPI";
+import { contractAPI } from "@/server/databaseDataRetrieval/utilizations/apiClient";
 import { useContractNavigation } from "@/app/hooks/contract/useContractNavigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -56,7 +56,12 @@ export function useCreateContractForm() {
       });
 
       console.log("Contract creation result:", result);
-      navigate.goToSuccess();
+
+      if (result.success) {
+        navigate.goToSuccess();
+      } else {
+        console.error("Contract creation failed:", result.error?.message);
+      }
     } catch (error) {
       console.error("Contract creation failed:", error);
     }

@@ -21,7 +21,7 @@ export function createRetrievalService<TSelect, TInsert>(
             if (!result.success) {
                 return {
                     success: false,
-                    error: { code: 500, message: `Databasefeil ved oppretting av ${config.entityName}.` }
+                    error: { code: 500, message: `Database error uring creation of ${config.entityName}.` }
                 };
             }
 
@@ -34,7 +34,7 @@ export function createRetrievalService<TSelect, TInsert>(
             if (!result.success) {
                 return {
                     success: false,
-                    error: { code: 500, message: `Databasefeil ved listevisning av ${config.entityName}.` }
+                    error: { code: 500, message: `Database error at displaying list of ${config.entityName}.` }
                 };
             }
 
@@ -45,7 +45,7 @@ export function createRetrievalService<TSelect, TInsert>(
             if (!id || isNaN(id)) {
                 return {
                     success: false,
-                    error: { code: 400, message: `Ugyldig ${config.entityName}-ID.` }
+                    error: { code: 400, message: `Invalid ${config.entityName}-ID.` }
                 };
             }
 
@@ -54,14 +54,14 @@ export function createRetrievalService<TSelect, TInsert>(
             if (!result.success) {
                 return {
                     success: false,
-                    error: { code: 500, message: `Databasefeil ved henting av ${config.entityName}.` }
+                    error: { code: 500, message: `Database error in fetching ${config.entityName}.` }
                 };
             }
 
             if (!result.data) {
                 return {
                     success: false,
-                    error: { code: 404, message: `${config.entityName} ikke funnet.` }
+                    error: { code: 404, message: `${config.entityName} not found.` }
                 };
             }
 
@@ -72,7 +72,7 @@ export function createRetrievalService<TSelect, TInsert>(
             if (!id || isNaN(id)) {
                 return {
                     success: false,
-                    error: { code: 400, message: `Ugyldig ${config.entityName}-ID.` }
+                    error: { code: 400, message: `Invalid ${config.entityName}-ID.` }
                 };
             }
 
@@ -81,7 +81,7 @@ export function createRetrievalService<TSelect, TInsert>(
             if (!result.success) {
                 return {
                     success: false,
-                    error: { code: 500, message: `Databasefeil ved oppdatering av ${config.entityName}.` }
+                    error: { code: 500, message: `Database error encountered when updating ${config.entityName}.` }
                 };
             }
 
@@ -92,7 +92,7 @@ export function createRetrievalService<TSelect, TInsert>(
             if (!id || isNaN(id)) {
                 return {
                     success: false,
-                    error: { code: 400, message: `Ugyldig ${config.entityName}-ID.` }
+                    error: { code: 400, message: `Invalid ${config.entityName}-ID.` }
                 };
             }
 
@@ -101,7 +101,7 @@ export function createRetrievalService<TSelect, TInsert>(
             if (!result.success) {
                 return {
                     success: false,
-                    error: { code: 500, message: `Databasefeil ved sletting av ${config.entityName}.` }
+                    error: { code: 500, message: `Database error at deletion of ${config.entityName}.` }
                 };
             }
 
@@ -114,7 +114,7 @@ export function createRetrievalService<TSelect, TInsert>(
             if (!result.success) {
                 return {
                     success: false,
-                    error: { code: 500, message: `Databasefeil ved søk i ${config.entityName}.` }
+                    error: { code: 500, message: `Database error while searching ${config.entityName}.` }
                 };
             }
 

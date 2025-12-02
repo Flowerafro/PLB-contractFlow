@@ -16,8 +16,8 @@ import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
 import { env } from "cloudflare:workers"
 import { hovedListenRepository } from "./server/databaseViews/repositoryPatterns/createHovedListenRepository";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-import { createClientController, createClientRoutes } from "./server/databaseDataRetrieval/utilizations/clients";
-import { createContractController, createContractRoutes } from "./server/databaseDataRetrieval/utilizations/contracts";
+import { createClientController } from "./server/databaseDataRetrieval/utilizations/clients";
+import { createContractController } from "./server/databaseDataRetrieval/utilizations/contracts";
 import { createHovedListenController } from "./server/databaseViews/controllers/hovedListenController";
 
 function requireAuth(request: Request) {
@@ -47,7 +47,7 @@ export type AppContext = {
 export default defineApp([
 
   setCommonHeaders(),
-
+  
   ({ ctx }) => {
     ctx;
   },
@@ -76,6 +76,12 @@ export default defineApp([
           contentType: file.type,
         },
       });
+
+      return Response.json({ 
+        success: true,
+        fileName: file.name,
+        url: `/dev-${Date.now()}-${file.name}`,
+        message: 'File uploaded to R2 successfully'});
 
       return Response.json({ 
         success: true, 
@@ -260,6 +266,7 @@ export default defineApp([
     route("/", () => <Login />), 
     route("/Login", () => <Login />),
     
+    // Protected routes - require authentication  
     route("/Home", ({ request }) => {
       const authResult = requireAuth(request);
       if (authResult instanceof Response) return authResult;
@@ -305,4 +312,5 @@ export default defineApp([
   
 ]);
 
+// Export Durable Objects
 export { UserSession };

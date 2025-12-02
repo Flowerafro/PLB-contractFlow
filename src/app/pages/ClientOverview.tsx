@@ -7,7 +7,7 @@ import ClientProfilePage from "@/components/clientComponents/ClientProfilePage";
 import NewClient from "@/components/clientComponents/NewClient";
 import Button from "@/components/buttons/Button";
 import useHoverEffect from "../hooks/useHoverEffect";
-import { clientAPI } from "@/server/databaseDataRetrieval/utilizations/clientAPI";
+import { clientAPI } from "@/server/databaseDataRetrieval/utilizations/apiClient";
 import type { DBClient } from "@/db/schema/schema";
 
 export interface ClientOverviewProps {
@@ -35,7 +35,6 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
           setAllClients(result.data);
           setFilteredClients(result.data);
         } else {
-          console.log('API failed, setting empty arrays');
           setAllClients([]);
           setFilteredClients([]);
           setError(result.error?.message || 'Failed to load clients');
@@ -69,14 +68,10 @@ export default function ClientOverview({ onClientClick, onNewClient, clientId }:
 
     try {
       const result = await clientAPI.search(trimmedQuery);
-      console.log('Search result:', result);
       if (result.success && result.data) {
-        console.log('Setting filteredClients to:', result.data);
         setFilteredClients(result.data);
         return;
       } else {
-        console.log('Search failed, filtering locally');
-        // Fallback: filter locally
         const filtered = allClients.filter(client =>
           client.name.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
           (client.email && client.email.toLowerCase().includes(trimmedQuery.toLowerCase())) ||

@@ -1,9 +1,10 @@
 "use client"
 
 import type { CreateClientInput } from "@/features/fileHandling/interfaces/createClientInput";
+
 import React, { useState } from "react";
 import type { DBClient } from "@/db/schema/schema";
-import { clientAPI } from "@/server/databaseDataRetrieval/utilizations/clientAPI";
+import { clientAPI } from "@/server/databaseDataRetrieval/utilizations/apiClient";
 import { InputWithLabelSubmitForm } from "@/components/clientComponents/InputWithLabelSubmitForm";
 import ButtonClear from "@/components/buttons/ButtonClear";
 
